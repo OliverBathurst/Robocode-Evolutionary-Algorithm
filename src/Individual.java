@@ -1,19 +1,28 @@
 import robocode.Robot;
 
 class Individual implements Comparable<Individual>{
+    Double[] geneMin, geneMax, genes;
     private float fitness = 0;
+    private int numGenes;
     private Robot r;
+
+    Individual(){}
 
     Individual(Robot robot){
         this.r = robot;
     }
 
-    float getFitness(){
-        return 1;
+    Individual(int memberLength, Double[] startGenes, Double[] gMin, Double[] gMax){
+        this.geneMin = gMin;
+        this.geneMax = gMax;
+        this.numGenes = memberLength;
+        this.genes = startGenes;
     }
 
-    Robot getIndividual(){
-        return r;
+    int getNumGenes(){return this.numGenes;}
+
+    float getFitness(){
+        return this.fitness;
     }
 
     void setFitness(float fitness){

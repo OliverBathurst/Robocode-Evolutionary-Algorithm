@@ -1,4 +1,9 @@
-public class Evaluator {
+class Evaluator {
+    Evaluator(){}
 
-    void evaluateFitness(){}
+    float calculateFitness(Individual individual){
+        //calc fitness here
+        return 1;
+    }
+
 }
