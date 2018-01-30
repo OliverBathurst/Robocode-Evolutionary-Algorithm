@@ -1,16 +1,16 @@
 class TestEA{
     private final float targetFitness, mutationRate;
     private final int populationSize;
-    private final Evaluator evalOp;
-    private final Mutator mutateOp;
+    private final CustomEvaluator evalOp;
+    private final RandomMutator mutateOp;
     private int generations;
 
     TestEA(int populationSize, float targetFitness, float mutationRate,
-           Evaluator evaluator, Mutator mutate){
+           CustomEvaluator customEvaluator, RandomMutator mutate){
         this.populationSize = populationSize;
         this.targetFitness = targetFitness;
         this.mutationRate = mutationRate;
-        this.evalOp = evaluator;
+        this.evalOp = customEvaluator;
         this.mutateOp = mutate;
     }
 
