@@ -5,7 +5,7 @@ import java.util.Random;
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
  */
 
-class UniformCrossover {
+class UniformCrossover implements Crossover{
     private final Random numGen = new Random(System.currentTimeMillis());
 
     UniformCrossover(){}
@@ -13,7 +13,9 @@ class UniformCrossover {
     Individual performCrossover(Individual parentA, Individual parentB){
         return crossover(parentA, parentB);
     }
-    private Individual crossover(Individual parentA, Individual parentB){
+
+    @Override
+    public Individual crossover(Individual parentA, Individual parentB) {
         int numGenes = parentA.getNumGenes();
         Double[] newGenes = new Double[numGenes];
 

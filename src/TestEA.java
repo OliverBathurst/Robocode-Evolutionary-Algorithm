@@ -1,3 +1,8 @@
+/**
+ * Created by Oliver on 29/01/2018.
+ * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
+ */
+
 class TestEA implements EvolutionaryAlgorithm {
     private float targetFitness, mutationRate;
     private int populationSize;
@@ -19,7 +24,7 @@ class TestEA implements EvolutionaryAlgorithm {
 
     @Override
     public void run() {
-        Population p = new Population(populationSize);
+        NewPopulation p = new NewPopulation(populationSize);
         p.generatePopulation();
         //do rest here
         generations++;
