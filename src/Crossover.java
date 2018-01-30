@@ -3,6 +3,6 @@
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
  */
 
-public interface Crossover {
+interface Crossover {
     Individual crossover(Individual parentA, Individual parentB);
 }

@@ -3,7 +3,7 @@
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
  */
 
-public class TornamentSelect implements Selector{
+public class TournamentSelect implements Selector{
     @Override
     public Individual select(Individual a, Individual b) {
         return null;

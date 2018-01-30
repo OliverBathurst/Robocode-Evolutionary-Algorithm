@@ -3,6 +3,6 @@
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
  */
 
-public interface Selector {
+interface Selector {
     Individual select(Individual a, Individual b);
 }

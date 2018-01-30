@@ -3,6 +3,6 @@
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
  */
 
-public interface Evaluator {
+interface Evaluator {
     float evaluateFitness(Individual individual);
 }
