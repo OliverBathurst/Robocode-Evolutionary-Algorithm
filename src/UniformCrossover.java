@@ -1,3 +1,5 @@
+import robocode.Robot;
+
 import java.util.Random;
 
 /**
@@ -16,17 +18,17 @@ class UniformCrossover implements Crossover{
 
     @Override
     public Individual crossover(Individual parentA, Individual parentB) {
-        int numGenes = parentA.getNumGenes();
+        int numGenes = parentA.geneLength;
         Double[] newGenes = new Double[numGenes];
 
-        for(int gInd=0; gInd<numGenes; gInd++){
-            if(this.numGen.nextDouble()>0.5){
-                newGenes[gInd] = parentA.genes[gInd];
+        for(int gene = 0; gene < numGenes - 1; gene++){
+            if(this.numGen.nextDouble() > 0.5){
+                newGenes[gene] = parentA.genes[gene];
             }else{
-                newGenes[gInd] = parentB.genes[gInd];
+                newGenes[gene] = parentB.genes[gene];
             }
         }
 
-        return new Individual(numGenes,newGenes,parentA.geneMin,parentA.geneMax);
+        return new Individual(new Robot(), newGenes, parentA.geneMin, parentA.geneMax, parentA.geneLength);
     }
 }

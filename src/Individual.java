@@ -4,26 +4,35 @@ import robocode.Robot;
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
  */
 
-class Individual implements Comparable<Individual>{
-    Double[] geneMin, geneMax, genes;
-    private float fitness = 0;
-    private int numGenes;
+class Individual extends PopulationMember implements Comparable<Individual>{
     private Robot r;
 
     Individual(){}
 
-    Individual(Robot robot){
+    Individual(Robot robot, Double[] geneMin, Double[] geneMax, int genomeLength){
         this.r = robot;
+        super.genes = new Double[genomeLength];
+        super.geneLength = genomeLength;
+        super.geneMin = geneMin;
+        super.geneMax = geneMax;
     }
 
-    Individual(int memberLength, Double[] startGenes, Double[] gMin, Double[] gMax){
-        this.geneMin = gMin;
-        this.geneMax = gMax;
-        this.numGenes = memberLength;
-        this.genes = startGenes;
+    Individual(Robot robot, Double[] startGenes, Double[] geneMin, Double[] geneMax, int genomeLength){
+        this.r = robot;
+        super.initialGenes = startGenes;
+        super.genes = new Double[genomeLength];
+        super.geneLength = genomeLength;
+        super.geneMin = geneMin;
+        super.geneMax = geneMax;
     }
 
-    int getNumGenes(){return this.numGenes;}
+    Robot getRobot(){
+        return r;
+    }
+
+    Double[] getGenes(){return this.genes;}
+
+    int getGeneLength(){return this.genes.length;}
 
     float getFitness(){
         return this.fitness;

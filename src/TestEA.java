@@ -25,7 +25,7 @@ class TestEA implements EvolutionaryAlgorithm {
     @Override
     public void run() {
         NewPopulation p = new NewPopulation(populationSize);
-        p.generatePopulation();
+        p.createPopulation();
         //do rest here
         generations++;
     }

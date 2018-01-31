@@ -5,4 +5,5 @@
 
 interface Population {
     void createPopulation();
+    Individual createMember(Individual individual);
 }

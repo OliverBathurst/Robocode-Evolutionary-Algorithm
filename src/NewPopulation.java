@@ -1,44 +1,49 @@
 import robocode.Robot;
-import java.util.ArrayList;
-import java.util.Comparator;
+
+import java.util.Arrays;
+import java.util.Random;
+
 /**
  * Created by Oliver on 29/01/2018.
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
  */
 
 class NewPopulation implements Population {
-    private final ArrayList<Individual> population = new ArrayList<>();
-    private final int size;
-    private Comparator<Individual> comparator;
+    private final Double[] geneMin = new Double[]{0.0,0.0,0.0,0.0,0.0,0.0,0.0};//example mins
+    private final Double[] geneMax = new Double[]{100.0,100.0,100.0,100.0,100.0,100.0,100.0};//example maxes
+    private final Individual[] population;
+    private final Random geneRandomize = new Random();
 
     NewPopulation(int size){
-        this.size = size;
+        this.population = new Individual[size];
     }
 
-    ArrayList<Individual> returnPop(){
+    Individual[] returnPop(){
         return population;
     }
 
-    void setComparator(Comparator<Individual> c){
-        this.comparator = c;
-    }
-
     Individual returnBest(){
-        return population.get(0);
+        return population[0];
     }
 
     void sort(){
-        if(comparator != null){
-            population.sort(comparator);
-        }else{
-            population.sort((o1, o2) -> (int) (o1.getFitness() - o2.getFitness()));
-        }
+        Arrays.sort(population, (o1, o2) -> (int) (o1.getFitness() - o2.getFitness()));//sort ascending
     }
 
     @Override
     public void createPopulation() {
-        for(int i = 0; i < size; i++) {
-            population.add(new Individual(new Robot()));
+        for(int i = 0; i < population.length - 1; i++) {
+            population[i] = (createMember(new Individual()));
         }
+    }
+    @Override
+    public Individual createMember(Individual individual) {
+        Double[] genes = new Double[geneMin.length];
+
+        for(int i = 0; i < geneMin.length - 1; i++){
+            genes[i] = geneMin[i] + (geneMax[i] -  geneMin[i]) * geneRandomize.nextDouble();
+        }
+
+        return new Individual(new Robot(), genes, geneMin, geneMax, geneMin.length);
     }
 }

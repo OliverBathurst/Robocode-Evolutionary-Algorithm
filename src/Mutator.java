@@ -5,4 +5,5 @@
 
 interface Mutator {
     void mutate(Individual individual);
+    void setMutationPercentage(float percent);
 }
