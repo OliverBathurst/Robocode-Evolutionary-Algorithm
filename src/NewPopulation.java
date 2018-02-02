@@ -18,16 +18,23 @@ class NewPopulation implements Population {
         this.population = new Individual[size];
     }
 
-    Individual[] returnPop(){
-        return population;
-    }
-
     Individual returnBest(){
         return population[0];
     }
 
-    void sort(){
+    @Override
+    public Individual[] returnPopulation() {
+        return population;
+    }
+
+    @Override
+    public void sort(){
         Arrays.sort(population, (o1, o2) -> (int) (o1.getFitness() - o2.getFitness()));//sort ascending
+    }
+
+    @Override
+    public int getSize() {
+        return population.length;
     }
 
     @Override

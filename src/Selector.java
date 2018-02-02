@@ -4,5 +4,6 @@
  */
 
 interface Selector {
-    Individual select(Individual a, Individual b);
+    Individual selectFromPopulation(Population pop);
+    Individual[] selectIndividualsFromPopulation(Population pop, int number);
 }

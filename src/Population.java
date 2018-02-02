@@ -6,4 +6,7 @@
 interface Population {
     void createPopulation();
     Individual createIndividual();
+    Individual[] returnPopulation();
+    void sort();
+    int getSize();
 }
