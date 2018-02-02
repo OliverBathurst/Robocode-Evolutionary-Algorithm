@@ -16,12 +16,12 @@ class RandomMutator implements Mutator {
         for(int i = 0; i < individual.getGeneLength() - 1; i++){
             if(random.nextFloat() < percentage){
                 individual.getGenes()[i] =
-                        individual.geneMin[i] + (individual.geneMax[i] -  individual.geneMin[i]) * random.nextDouble();
+                        individual.geneMin[i] + (individual.geneMax[i] - individual.geneMin[i]) * random.nextDouble();
             }
         }
     }
     @Override
     public void setMutationPercentage(float percent) {
-        this.percentage = (percent/100);
+        this.percentage = percent;
     }
 }
