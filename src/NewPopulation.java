@@ -33,11 +33,11 @@ class NewPopulation implements Population {
     @Override
     public void createPopulation() {
         for(int i = 0; i < population.length - 1; i++) {
-            population[i] = (createMember(new Individual()));
+            population[i] = (createIndividual());
         }
     }
     @Override
-    public Individual createMember(Individual individual) {
+    public Individual createIndividual() {
         Double[] genes = new Double[geneMin.length];
 
         for(int i = 0; i < geneMin.length - 1; i++){
