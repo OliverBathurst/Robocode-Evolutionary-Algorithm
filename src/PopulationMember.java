@@ -4,7 +4,7 @@
  */
 
 abstract class PopulationMember {
-    Double[] geneMin, geneMax, genes, initialGenes;
+    Double[] geneMin, geneMax, genes;
     int geneLength;
     float fitness;
 }

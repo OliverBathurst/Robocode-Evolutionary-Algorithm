@@ -41,7 +41,7 @@ class NewPopulation implements Population {
         Double[] genes = new Double[geneMin.length];
 
         for(int i = 0; i < geneMin.length - 1; i++){
-            genes[i] = geneMin[i] + (geneMax[i] -  geneMin[i]) * geneRandomize.nextDouble();
+            genes[i] = geneMin[i] + (geneMax[i] - geneMin[i]) * geneRandomize.nextDouble();
         }
 
         return new Individual(new Robot(), genes, geneMin, geneMax, geneMin.length);

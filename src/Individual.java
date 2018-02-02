@@ -9,18 +9,9 @@ class Individual extends PopulationMember implements Comparable<Individual>{
 
     Individual(){}
 
-    Individual(Robot robot, Double[] geneMin, Double[] geneMax, int genomeLength){
-        this.r = robot;
-        super.genes = new Double[genomeLength];
-        super.geneLength = genomeLength;
-        super.geneMin = geneMin;
-        super.geneMax = geneMax;
-    }
-
     Individual(Robot robot, Double[] startGenes, Double[] geneMin, Double[] geneMax, int genomeLength){
         this.r = robot;
-        super.initialGenes = startGenes;
-        super.genes = new Double[genomeLength];
+        super.genes = startGenes;
         super.geneLength = genomeLength;
         super.geneMin = geneMin;
         super.geneMax = geneMax;
