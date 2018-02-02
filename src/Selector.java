@@ -4,6 +4,7 @@
  */
 
 interface Selector {
-    Individual selectFromPopulation(Population pop);
-    Individual[] selectIndividualsFromPopulation(Population pop, int number);
+    Individual selectFromPopulation(Individual[] pop);
+    Individual[] selectIndividualsFromPopulation(Individual[] pop, int number);
+    void sort(Individual[] individuals);
 }

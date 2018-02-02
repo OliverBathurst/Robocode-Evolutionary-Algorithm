@@ -9,7 +9,7 @@ class CustomEvaluator implements Evaluator {
 
     @Override
     public float evaluateFitness(Individual individual) {
-        return 0;
+        return individual.getRobot().getTime();
     }
 
 }

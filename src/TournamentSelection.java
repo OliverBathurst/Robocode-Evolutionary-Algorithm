@@ -7,12 +7,12 @@ import java.util.Random;
 
 public class TournamentSelection implements Selector{
     @Override
-    public Individual selectFromPopulation(Population pop) {
+    public Individual selectFromPopulation(Individual[] pop) {
         return selectIndividualsFromPopulation(pop, 5)[0];
     }
 
     @Override
-    public Individual[] selectIndividualsFromPopulation(Population pop, int number) {
+    public Individual[] selectIndividualsFromPopulation(Individual[] pop, int number) {
         Random numGen = new Random(System.currentTimeMillis());
 
         Individual[] selected = new Individual[number];
@@ -22,7 +22,7 @@ public class TournamentSelection implements Selector{
         int numSelected = 0;
         while(numSelected < number){
             for(int competitor = 0; competitor < number; competitor++){
-                competitors[competitor] = pop.returnPopulation()[numGen.nextInt(pop.getSize())];
+                competitors[competitor] = pop[numGen.nextInt(pop.length)];
             }
             tempBest = competitors[0];
             for(int tournament = 0; tournament < number; tournament++){
@@ -35,4 +35,7 @@ public class TournamentSelection implements Selector{
         }
         return selected;
     }
+
+    @Override
+    public void sort(Individual[] individuals) {}
 }

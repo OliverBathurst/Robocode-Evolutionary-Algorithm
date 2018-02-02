@@ -9,7 +9,7 @@ class RandomMutator implements Mutator {
     private float percentage;
     private final Random random = new Random();
 
-    RandomMutator(){}
+    RandomMutator(float mutationPercentage){this.percentage = mutationPercentage;}
 
     @Override
     public void mutate(Individual individual) {

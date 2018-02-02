@@ -7,13 +7,18 @@ import java.util.Arrays;
 
 public class GreedySelection implements Selector{
     @Override
-    public Individual selectFromPopulation(Population pop) {
+    public Individual selectFromPopulation(Individual[] pop) {
         return selectIndividualsFromPopulation(pop, 1)[0];
     }
 
     @Override
-    public Individual[] selectIndividualsFromPopulation(Population pop, int number) {
-        pop.sort();
-        return Arrays.copyOfRange(pop.returnPopulation(),0,number);
+    public Individual[] selectIndividualsFromPopulation(Individual[] pop, int number) {
+        sort(pop);
+        return Arrays.copyOfRange(pop,0,number);
+    }
+
+    @Override
+    public void sort(Individual[] individuals) {
+        Arrays.sort(individuals, (o1, o2) -> (int) (o1.getFitness() - o2.getFitness()));//sort ascending
     }
 }
