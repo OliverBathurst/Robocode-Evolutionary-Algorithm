@@ -1,7 +1,4 @@
-import robocode.Robot;
-
 import java.util.*;
-
 /**
  * Created by Oliver on 29/01/2018.
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
@@ -17,10 +14,6 @@ class NewPopulation implements Population {
     NewPopulation(int size){
         this.populationSize = size;
         this.population = new ArrayList<>(size);
-    }
-
-    Individual returnBest(){
-        return population.get(0);
     }
     @Override
     public ArrayList<Individual> returnPopulation() {
@@ -48,6 +41,6 @@ class NewPopulation implements Population {
             genes[i] = geneMin[i] + (geneMax[i] - geneMin[i]) * geneRandomize.nextDouble();
         }
 
-        return new Individual(new Robot(), genes, geneMin, geneMax, geneMin.length);
+        return new Individual(genes, geneMin, geneMax, geneMin.length);
     }
 }

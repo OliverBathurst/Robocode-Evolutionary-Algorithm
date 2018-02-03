@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -6,36 +7,37 @@ import java.util.Random;
  */
 
 public class TournamentSelection implements Selector{
+
     @Override
-    public Individual selectFromPopulation(Individual[] pop) {
-        return selectIndividualsFromPopulation(pop, 5)[0];
+    public Individual selectFromPopulation(ArrayList<Individual> pop) {
+        return selectIndividualsFromPopulation(pop, 5).get(0);
     }
 
     @Override
-    public Individual[] selectIndividualsFromPopulation(Individual[] pop, int number) {
+    public ArrayList<Individual> selectIndividualsFromPopulation(ArrayList<Individual> pop, int number) {
         Random numGen = new Random(System.currentTimeMillis());
 
-        Individual[] selected = new Individual[number];
-        Individual[] competitors = new Individual[number];
+        ArrayList<Individual> selected = new ArrayList<>();
+        ArrayList<Individual> competitors = new ArrayList<>();
         Individual tempBest;
 
         int numSelected = 0;
         while(numSelected < number){
             for(int competitor = 0; competitor < number; competitor++){
-                competitors[competitor] = pop[numGen.nextInt(pop.length)];
+                competitors.add(competitor, pop.get(numGen.nextInt(pop.size())));
             }
-            tempBest = competitors[0];
+            tempBest = competitors.get(0);
             for(int tournament = 0; tournament < number; tournament++){
-                if(tempBest.compareTo(competitors[tournament]) > 0){
-                    tempBest = competitors[tournament];
+                if(tempBest.compareTo(competitors.get(tournament)) > 0){
+                    tempBest = competitors.get(tournament);
                 }
             }
-            selected[numSelected] = tempBest;
+            selected.add(numSelected, tempBest);
             numSelected++;
         }
         return selected;
     }
 
     @Override
-    public void sort(Individual[] individuals) {}
+    public void sort(ArrayList<Individual> individuals) { }
 }

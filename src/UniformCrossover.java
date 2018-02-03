@@ -29,6 +29,6 @@ class UniformCrossover implements Crossover{
             }
         }
 
-        return new Individual(new Robot(), newGenes, parentA.geneMin, parentA.geneMax, parentA.geneLength);
+        return new Individual(newGenes, parentA.geneMin, parentA.geneMax, parentA.geneLength);
     }
 }
