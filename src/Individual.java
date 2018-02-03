@@ -1,16 +1,21 @@
 import robocode.Robot;
+import java.util.Random;
+
 /**
  * Created by Oliver on 29/01/2018.
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
  */
 
 class Individual extends PopulationMember implements Comparable<Individual>{
-    private Robot r;
+    private String[] robotNames = new String[]{"sample.RamFire", "sample.Corners", "sample.Crazy", "sample.VelociRobot", "sample.TrackFire", "sample.Walls"};
+    private Random rand = new Random();
 
-    Individual(){}
+    private String robotName;
+    private Robot r;
 
     Individual(Robot robot, Double[] startGenes, Double[] geneMin, Double[] geneMax, int genomeLength){
         this.r = robot;
+        this.robotName = randomRobotName();
         super.genes = startGenes;
         super.geneLength = genomeLength;
         super.geneMin = geneMin;
@@ -31,6 +36,14 @@ class Individual extends PopulationMember implements Comparable<Individual>{
 
     void setFitness(float fitness){
         this.fitness = fitness;
+    }
+
+    private String randomRobotName(){
+        return robotNames[rand.nextInt(robotNames.length)];
+    }
+
+    String getRobotName(){
+        return robotName;
     }
 
     @Override

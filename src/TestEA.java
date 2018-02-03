@@ -7,7 +7,8 @@ import java.util.Arrays;
  */
 
 class TestEA implements EvolutionaryAlgorithm {
-    private final ArrayList<Individual> population = new ArrayList<>();
+    private ArrayList<Individual> population = new ArrayList<>();
+    private BattleRunner br = new BattleRunner();
     private Individual best;
     private Population populationInit;
     private Evaluator evalOp;
@@ -36,34 +37,30 @@ class TestEA implements EvolutionaryAlgorithm {
         Individual[] tmpPop = new Individual[this.populationInit.getSize()];//Temporary Arrays
         Individual[] tmpSelect = new Individual[this.populationInit.getSize() * 2];
 
-        //Initialise population
         populationInit.createPopulation();
+        population = populationInit.returnPopulation();//ensure empty
 
-        population.clear();//ensure empty
-        population.addAll(Arrays.asList(populationInit.returnPopulation()));
-
-        //Evaluate the initial population
-        for(Individual individual: population) {
-            individual.setFitness(evalOp.evaluateFitness(individual));
+        for (Individual aPopulation : population) {
+            aPopulation.setFitness(evalOp.evaluateFitness(aPopulation));
         }
         //Main Evolutionary Loop
-        boolean finished = false; //Sentinel for while loop
-        ArrayList<Individual> Children = new ArrayList<>(); //temp pop for storing children
+        boolean finished = false;//Sentinel for while loop
+        ArrayList<Individual> Children = new ArrayList<>();//temp pop for storing children
 
         this.generations = 0;//set generations back to 0
+
         while(!finished){
+            //float[] finesses = br.runBatchWithSamples(population, population, 1);
             //Perform mutation
             for (Individual individual: population) {
-                mutateOp.mutate(individual); //mutate
-                individual.setFitness(evalOp.evaluateFitness(individual)); //evaluate
+                mutateOp.mutate(individual);//mutate
+                individual.setFitness(evalOp.evaluateFitness(individual));//evaluate
             }
             //Clear Children from old gen and generate new ones
             Children.clear();
             tmpPop = population.toArray(tmpPop);
-            while(Children.size() < population.size()) {
-                //perform crossover on selected parents and add to children
+            while(Children.size() < population.size()) {//perform crossover on selected parents and add to children
                 Children.add(this.crossOp.crossover(parentSelectOp.selectFromPopulation(tmpPop), parentSelectOp.selectFromPopulation(tmpPop)));
-                //Evaluate Fitness
             }
             //Evaluate children
             for(Individual childIndividual: Children) {
@@ -73,14 +70,16 @@ class TestEA implements EvolutionaryAlgorithm {
             //temporarily add all pop to children
             Children.addAll(population);
             tmpSelect = Children.toArray(tmpSelect);
+
             population.clear();//clear pop ready for next gen
             population.addAll(Arrays.asList(genSelectOp.selectIndividualsFromPopulation(tmpSelect, populationSize)));
             //make sure to find the best for this gen
-            setBest();
+            //setBest();
             //increment generations
             this.generations++;
             //check for terminal condition
-            finished = terminateCondition();
+            //finished = terminateCondition();
+
             if(generations==1){
                 System.out.println("Generation:\tFitness:\tGene1:\tGene2:");
             }else if((generations%50)==0){
@@ -88,9 +87,9 @@ class TestEA implements EvolutionaryAlgorithm {
                         this.best.getFitness() + "\t" +
                         this.best.genes[0]+"\t"+this.best.genes[1]);
             }
+            finished = true;
         }
-        //check that best really is before returning
-        setBest();
+        //setBest();//check that best really is before returning
         return this.best;
     }
 

@@ -1,7 +1,6 @@
 import robocode.Robot;
 
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by Oliver on 29/01/2018.
@@ -11,36 +10,34 @@ import java.util.Random;
 class NewPopulation implements Population {
     private final Double[] geneMin = new Double[]{0.0,0.0,0.0,0.0,0.0,0.0,0.0};//example mins
     private final Double[] geneMax = new Double[]{100.0,100.0,100.0,100.0,100.0,100.0,100.0};//example maxes
-    private final Individual[] population;
+    private final ArrayList<Individual> population;
+    private final int populationSize;
     private final Random geneRandomize = new Random();
 
     NewPopulation(int size){
-        this.population = new Individual[size];
+        this.populationSize = size;
+        this.population = new ArrayList<>(size);
     }
 
     Individual returnBest(){
-        return population[0];
+        return population.get(0);
     }
-
     @Override
-    public Individual[] returnPopulation() {
+    public ArrayList<Individual> returnPopulation() {
         return population;
     }
-
     @Override
     public void sort(){
-        Arrays.sort(population, (o1, o2) -> (int) (o1.getFitness() - o2.getFitness()));//sort ascending
+        population.sort((o1, o2) -> (int) (o1.getFitness() - o2.getFitness()));
     }
-
     @Override
     public int getSize() {
-        return population.length;
+        return population.size();
     }
-
     @Override
     public void createPopulation() {
-        for(int i = 0; i < population.length - 1; i++) {
-            population[i] = (createIndividual());
+        for(int i = 0; i < populationSize; i++) {
+            population.add(createIndividual());
         }
     }
     @Override
