@@ -7,6 +7,7 @@ import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.BattleErrorEvent;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 
 /**
@@ -14,39 +15,80 @@ import java.io.FileWriter;
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
  */
 
-class Battle {
+class Battle implements BattleMaker{
     private String[] opponents = new String[] {"sample.SittingDuck" ,"sample.SittingDuck","sample.SittingDuck","sample.SittingDuck","sample.SittingDuck"};
-    private String path = "C:\\robocode\\robots\\sampleex";
-    private String JARS = "C:\\robocode\\libs\\robocode.jar;";
-    private String packageName = "sampleex";
-    private String name = "OliverGP";
+    private String path = "C:\\robocode\\robots\\sampleex", robocodePath = "C:/Robocode", jar = "C:\\robocode\\libs\\robocode.jar;",
+            packageName = "sampleex", name = "OliverGP";
+    private int opponentsSize = 5;
+    private final boolean visible;
 
-    private Individual individual;
-    private boolean visible;
-
-    Battle(boolean visible, Individual individual){
+    Battle(boolean visible){
         this.visible = visible;
-        this.individual = individual;
     }
-    float getIndividualFitness(){
-        BattleObserver battleObserver = new BattleObserver();
-        RobocodeEngine engine = new RobocodeEngine(new java.io.File("C:/Robocode")); // Run from C:/Robocode
-        engine.addBattleListener(battleObserver);
-        engine.setVisible(visible);
-        BattlefieldSpecification battlefield = new BattlefieldSpecification(800, 600); // 800x600
+    @Override
+    public void setOpponents(String[] opponents){
+        this.opponents = opponents;
+        this.opponentsSize = opponents.length;
+    }
+    @Override
+    public void setNumOpponents(int number) {
+        opponentsSize = (number > opponents.length) ? opponents.length : number;
+    }
+    @Override
+    public void setRobocodeDir(String path){
+        this.robocodePath = path;
+    }
+    @Override
+    public void setRobotName(String name){
+        this.name = name;
+    }
+    @Override
+    public void setRobotsDir(String path){
+        this.path = path;
+    }
+    @Override
+    public void setJarPath(String jarPath){
+        this.jar = jarPath;
+    }
+    @Override
+    public void setPackageName(String packageName){
+        this.packageName = packageName;
+    }
 
-        String customRobot = compile();
-        RobotSpecification[] selectedRobots = engine.getLocalRepository(customRobot + ", sample.Corners");
+    float getIndividualFitness(Individual individual){
+        int counter = 0;
+        float returnFitness = 0;
 
-        BattleSpecification battleSpec = new BattleSpecification(1, battlefield, selectedRobots);
-        engine.runBattle(battleSpec, true); // waits till the battle finishes
-        engine.close();
+        String robotPath = writeAndCompileIndividual(individual);
 
-        float returnVal = 0;
-        for(BattleResults BR: battleObserver.getResults()){
-            returnVal = BR.getScore()/5;
+        for (String opponent : opponents) {//fight against each opponent
+            if(counter < opponentsSize) {
+                System.out.println("Running battle between: " + name + " and " + opponent);
+                BattleObserver battleObserver = new BattleObserver();
+                RobocodeEngine engine = new RobocodeEngine(new File(robocodePath));//Run from C:/Robocode
+                engine.addBattleListener(battleObserver);
+                engine.setVisible(visible);
+                BattlefieldSpecification battlefield = new BattlefieldSpecification(800, 600); // 800x600
+                RobotSpecification[] selectedRobots = engine.getLocalRepository(robotPath + ", " + opponent);
+                engine.runBattle(new BattleSpecification(1, battlefield, selectedRobots), true); // waits till the battle finishes
+                engine.close();
+
+                BattleResults[] battleResults = battleObserver.getResults();
+
+                int eaIndex = 0, botIndex = 1;//assume
+                if (!battleResults[0].getTeamLeaderName().equals(name)) {//if not at index 0, flip indexes
+                    eaIndex = 1;
+                    botIndex = 0;
+                }
+                int eaScore = battleResults[eaIndex].getScore();//get EA score
+                int botScore = battleResults[botIndex].getScore();//get Bot score
+
+                returnFitness += ((eaScore) / (eaScore + botScore));// get fitness for round
+
+                counter++;
+            }
         }
-        return returnVal;
+        return returnFitness;
     }
 
     class BattleObserver extends BattleAdaptor {
@@ -66,52 +108,50 @@ class Battle {
         }
     }
 
-    private String getCode(){
-        return "package " + packageName + ";\n" +
-        "import robocode.*;" + "\n" +
-        "public class " + name + " extends AdvancedRobot{\n" +
-            "public void run(){\n" +
-                "while(true) {\n" +
-                    "turnGunRight(Double.POSITIVE_INFINITY);\n" +
-                "}\n" +
-            "}\n\n" +
-
-            "public void onScannedRobot(ScannedRobotEvent e) {\n" +
-                "ahead(" + individual.getGenes()[0] + ");\n" +
-                "turnRight("+ individual.getGenes()[1] +");\n" +
-                "turnGunRight("+ individual.getGenes()[2] +");\n" +
-                "turnRadarRight("+ individual.getGenes()[3] +");\n" +
-                "fire("+ individual.getGenes()[4] +");\n" +
-            "}\n\n" +
-            "public void onHitByBullet(HitByBulletEvent e){\n" +
-                "turnRadarRight("+ individual.getGenes()[4] +");\n" +
-            "}\n\n" +
-            "public void onHitWall(HitWallEvent e) {\n" +
-                "back(20);\n" +
-                "ahead("+ individual.getGenes()[4] +");\n" +
-            "}\n}";
-    }
-    String compile(){
+    @Override
+    public String writeAndCompileIndividual(Individual individual){
+        String filePath = path + "\\" + name +".java";
         try{
-            BufferedWriter out = new BufferedWriter(new FileWriter(path + "\\" + name +".java"));
-            out.write(getCode());
+            BufferedWriter out = new BufferedWriter(new FileWriter(filePath));
+            out.write(generateRobotCode(individual));
             out.close();
+
+            String command = "javac -cp " + jar + " " + filePath;
+            Process process = Runtime.getRuntime().exec(command);
+            process.waitFor();
+            if(process.exitValue() != 0) {
+                System.out.println(command + "Exited with value: " + process.exitValue());
+            }
         }catch(Exception e){
             System.err.println("Error: " + e.getMessage());
         }
-
-        // Compile code
-        try {
-            execute("javac -cp " + JARS + " " + path + "\\" + name + ".java");
-        }catch(Exception e){
-            e.printStackTrace();
-        }
         return packageName + "." + name;
     }
-    private static void execute(String command) throws Exception{
-        Process process = Runtime.getRuntime().exec(command);
-        process.waitFor();
-        if(process.exitValue() != 0)
-            System.out.println(command + "exited with value " + process.exitValue());
+
+    @Override
+    public String generateRobotCode(Individual individual) {
+        return "package " + packageName + ";\n" +
+                "import robocode.*;" + "\n" +
+                "public class " + name + " extends AdvancedRobot{\n" +
+                "public void run(){\n" +
+                "while(true) {\n" +
+                "turnGunRight(Double.POSITIVE_INFINITY);\n" +
+                "}\n" +
+                "}\n\n" +
+
+                "public void onScannedRobot(ScannedRobotEvent e) {\n" +
+                "ahead(" + individual.genes[0] + ");\n" +
+                "turnRight("+ individual.genes[1] +");\n" +
+                "turnGunRight("+ individual.genes[2] +");\n" +
+                "turnRadarRight("+ individual.genes[3] +");\n" +
+                "fire("+ individual.genes[4] +");\n" +
+                "}\n\n" +
+                "public void onHitByBullet(HitByBulletEvent e){\n" +
+                "turnRadarRight("+ individual.genes[4] +");\n" +
+                "}\n\n" +
+                "public void onHitWall(HitWallEvent e) {\n" +
+                "back(20);\n" +
+                "ahead("+ individual.genes[4] +");\n" +
+                "}\n}";
     }
 }

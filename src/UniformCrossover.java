@@ -1,5 +1,3 @@
-import robocode.Robot;
-
 import java.util.Random;
 
 /**
