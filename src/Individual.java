@@ -24,10 +24,6 @@ class Individual extends PopulationMember implements Comparable<Individual>{
         this.fitness = fitness;
     }
 
-    String getRobotName(){
-        return "oliver.Bathurst";
-    }
-
     @Override
     public int compareTo(Individual o) {
         if(this.fitness == o.getFitness()){

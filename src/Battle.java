@@ -62,7 +62,6 @@ class Battle implements BattleMaker{
         String robotPath = writeAndCompileIndividual(individual);
 
         for (int i = 0; i < opponentsSize; i++) {//fight against each opponent
-
             System.out.println("Running battle between: " + name + " and " + opponents[i]);
             BattleObserver battleObserver = new BattleObserver();
             RobocodeEngine engine = new RobocodeEngine(new File(robocodePath));//Run from C:/Robocode
@@ -134,7 +133,7 @@ class Battle implements BattleMaker{
     public String generateRobotCode(Individual individual) {
         return "package " + packageName + ";\n" +
                 "import robocode.*;" + "\n" +
-                "public class " + name + " extends AdvancedRobot{\n" +
+                "public class " + name + " extends Robot{\n" +
                 "public void run(){\n" +
                 "while(true) {\n" +
                 "turnGunRight(Double.POSITIVE_INFINITY);\n" +
@@ -142,18 +141,17 @@ class Battle implements BattleMaker{
                 "}\n\n" +
 
                 "public void onScannedRobot(ScannedRobotEvent e) {\n" +
-                "ahead(" + individual.genes[0] + ");\n" +
-                "turnRight("+ individual.genes[1] +");\n" +
-                "turnGunRight("+ individual.genes[2] +");\n" +
-                "turnRadarRight("+ individual.genes[3] +");\n" +
-                "fire("+ individual.genes[4] +");\n" +
+                "fire("+ individual.genes[0] +");\n" +
+                "ahead("+ individual.genes[1] +");\n" +
+                "turnRight("+ individual.genes[2] +");\n" +
+                "turnGunRight("+ individual.genes[3] +");\n" +
                 "}\n\n" +
                 "public void onHitByBullet(HitByBulletEvent e){\n" +
                 "turnRadarRight("+ individual.genes[4] +");\n" +
+                "turnRight("+ individual.genes[5] +");\n" +
                 "}\n\n" +
                 "public void onHitWall(HitWallEvent e) {\n" +
-                "back(" + individual.genes[5] + ");\n" +
-                "ahead("+ individual.genes[4] +");\n" +
+                "back(" + individual.genes[6] + ");\n" +
                 "}\n}";
     }
 }

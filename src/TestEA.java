@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 class TestEA implements EvolutionaryAlgorithm {
     private ArrayList<Individual> population = new ArrayList<>();
+    private final int generationsLimit = 5000;
     private Individual best;
     private Population populationInit;
     private Evaluator evalOp;
@@ -14,7 +15,6 @@ class TestEA implements EvolutionaryAlgorithm {
     private Selector parentSelectOp, genSelectOp;
     private Mutator mutateOp;
     private int generations;
-    private final int generationsLimit = 5000;
     private float targetFitness;
     private boolean minimize;
 

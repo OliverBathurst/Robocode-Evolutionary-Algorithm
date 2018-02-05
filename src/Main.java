@@ -7,8 +7,8 @@ class Main{
 
     public static void main(String[] args) {
         TestEA testEA = new TestEA();
-        testEA.init(10,false, new NewPopulation(4),
-                new CustomEvaluator(), new RandomMutator(3), new TournamentSelection(), new GreedySelection(), new UniformCrossover());
+        testEA.init(10,false, new NewPopulation(10),
+                new CustomEvaluator(), new RandomMutator(50), new TournamentSelection(), new GreedySelection(), new UniformCrossover());
         Individual i = testEA.run();
         System.out.println("Best individual: " + i.getFitness());
     }
