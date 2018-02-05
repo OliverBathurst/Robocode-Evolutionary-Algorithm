@@ -13,7 +13,7 @@ class TestEA implements EvolutionaryAlgorithm {
     private Crossover crossOp;
     private Selector parentSelectOp, genSelectOp;
     private Mutator mutateOp;
-    private int generations;
+    private int generations, populationSize;
     private float targetFitness;
     private boolean minimize;
 
@@ -66,9 +66,10 @@ class TestEA implements EvolutionaryAlgorithm {
             }
 
             System.out.println("Clearing and adding...");
+            this.populationSize = population.size();
             population.clear();//clear pop ready for next gen
             ///error here
-            population.addAll(genSelectOp.selectIndividualsFromPopulation(children, population.size()));//SELECT FOR NEXT GEN
+            population.addAll(genSelectOp.selectIndividualsFromPopulation(children, populationSize));//SELECT FOR NEXT GEN
             System.out.println("New population size: " + population.size());
             setBest();
 
@@ -107,8 +108,9 @@ class TestEA implements EvolutionaryAlgorithm {
                 this.best = population.get(0);
             }
         }
+        float currentFitness = 0f;
         for (Individual individual: population) {
-            if(this.best.compareTo(individual) > 0) {
+            if(individual.getFitness() > currentFitness){
                 this.best = individual;
             }
         }
