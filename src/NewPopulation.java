@@ -37,7 +37,7 @@ class NewPopulation implements Population {
     public Individual createIndividual() {
         Double[] genes = new Double[geneMin.length];
 
-        for(int i = 0; i < geneMin.length - 1; i++){
+        for(int i = 0; i < geneMin.length; i++){
             genes[i] = geneMin[i] + (geneMax[i] - geneMin[i]) * geneRandomize.nextDouble();
         }
 

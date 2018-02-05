@@ -79,10 +79,9 @@ class TestEA implements EvolutionaryAlgorithm {
             finished = terminateCondition();
 
             this.generations++;
-            System.out.println("Generations: " + this.generations);
 
-            System.out.println("Generation:\tFitness:\tGene1:\tGene2:");
-            System.out.println(this.generations + "\t" + this.best.getFitness() + "\t" + this.best.genes[0]+"\t"+this.best.genes[1]);
+            System.out.println("Generation: " + this.generations + "\nFitness: " + this.best.getFitness()
+                + "\nGenome:\n" + getBestGenome());
         }
         setBest();
         return this.best;
@@ -115,5 +114,13 @@ class TestEA implements EvolutionaryAlgorithm {
                 this.best = individual;
             }
         }
+    }
+    private String getBestGenome(){
+        StringBuilder asString = new StringBuilder();
+        int length = this.best.getGenes().length;
+        for(int i = 0; i < length; i++){
+            asString.append("Gene: ").append(i).append(" Value: ").append(this.best.genes[i]).append("\n");
+        }
+        return asString.toString();
     }
 }

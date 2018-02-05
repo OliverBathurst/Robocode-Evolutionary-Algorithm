@@ -149,9 +149,10 @@ class Battle implements BattleMaker{
                 "public void onHitByBullet(HitByBulletEvent e){\n" +
                 "turnRadarRight("+ individual.genes[4] +");\n" +
                 "turnRight("+ individual.genes[5] +");\n" +
+                "ahead("+ individual.genes[6] +");\n" +
                 "}\n\n" +
                 "public void onHitWall(HitWallEvent e) {\n" +
-                "back(" + individual.genes[6] + ");\n" +
+                "back(" + individual.genes[7] + ");\n" +
                 "}\n}";
     }
 }
