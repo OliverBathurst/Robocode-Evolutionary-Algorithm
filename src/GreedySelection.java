@@ -14,7 +14,7 @@ public class GreedySelection implements Selector{
 
     @Override
     public ArrayList<Individual> selectIndividualsFromPopulation(ArrayList<Individual> pop, int number) {
-        sort(pop);
+        sort(pop); //err here
         return new ArrayList<>(pop.subList(0,number));
     }
 

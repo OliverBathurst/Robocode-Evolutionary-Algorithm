@@ -7,7 +7,7 @@ class Main{
 
     public static void main(String[] args) {
         TestEA testEA = new TestEA();
-        testEA.init(3,50, false, new NewPopulation(256),
+        testEA.init(4,false, new NewPopulation(4),
                 new CustomEvaluator(), new RandomMutator(3), new TournamentSelection(), new GreedySelection(), new UniformCrossover());
         testEA.run();
     }

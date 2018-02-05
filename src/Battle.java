@@ -16,10 +16,11 @@ import java.io.FileWriter;
  */
 
 class Battle implements BattleMaker{
-    private String[] opponents = new String[] {"sample.SittingDuck" ,"sample.SittingDuck","sample.SittingDuck","sample.SittingDuck","sample.SittingDuck"};
-    private String path = "C:\\robocode\\robots\\sampleex", robocodePath = "C:/Robocode", jar = "C:\\robocode\\libs\\robocode.jar;",
-            packageName = "sampleex", name = "OliverGP";
-    private int opponentsSize = 5;
+    private String[] opponents = new String[] {"sample.SittingDuck" ,"sample.Corners","sample.Crazy"
+            ,"sample.Fire","sample.RamFire", "sample.SpinBot", "sample.Target", "sample.VelociRobot", "sample.Walls"};
+    private String path = "C:\\robocode\\robots\\sample", robocodePath = "C:/Robocode", jar = "C:\\robocode\\libs\\robocode.jar;",
+            packageName = "sample", name = "OliverGP";
+    private int opponentsSize = 9;
     private final boolean visible;
 
     Battle(boolean visible){
@@ -56,38 +57,39 @@ class Battle implements BattleMaker{
     }
 
     float getIndividualFitness(Individual individual){
-        int counter = 0;
         float returnFitness = 0;
 
         String robotPath = writeAndCompileIndividual(individual);
 
-        for (String opponent : opponents) {//fight against each opponent
-            if(counter < opponentsSize) {
-                System.out.println("Running battle between: " + name + " and " + opponent);
-                BattleObserver battleObserver = new BattleObserver();
-                RobocodeEngine engine = new RobocodeEngine(new File(robocodePath));//Run from C:/Robocode
-                engine.addBattleListener(battleObserver);
-                engine.setVisible(visible);
-                BattlefieldSpecification battlefield = new BattlefieldSpecification(800, 600); // 800x600
-                RobotSpecification[] selectedRobots = engine.getLocalRepository(robotPath + ", " + opponent);
-                engine.runBattle(new BattleSpecification(1, battlefield, selectedRobots), true); // waits till the battle finishes
-                engine.close();
+        for (int i = 0; i < opponentsSize; i++) {//fight against each opponent
 
-                BattleResults[] battleResults = battleObserver.getResults();
+            System.out.println("Running battle between: " + name + " and " + opponents[i]);
+            BattleObserver battleObserver = new BattleObserver();
+            RobocodeEngine engine = new RobocodeEngine(new File(robocodePath));//Run from C:/Robocode
+            engine.addBattleListener(battleObserver);
+            engine.setVisible(visible);
+            BattlefieldSpecification battlefield = new BattlefieldSpecification(800, 600); // 800x600
+            RobotSpecification[] selectedRobots = engine.getLocalRepository(robotPath + ", " + opponents[i]);
+            engine.runBattle(new BattleSpecification(1, battlefield, selectedRobots), true); // waits till the battle finishes
+            engine.close();
 
-                int eaIndex = 0, botIndex = 1;//assume
-                if (!battleResults[0].getTeamLeaderName().equals(name)) {//if not at index 0, flip indexes
-                    eaIndex = 1;
-                    botIndex = 0;
-                }
-                int eaScore = battleResults[eaIndex].getScore();//get EA score
-                int botScore = battleResults[botIndex].getScore();//get Bot score
+            BattleResults[] battleResults = battleObserver.getResults();
+            int eaIndex = 0, botIndex = 1;//assume
+            if (!battleResults[0].getTeamLeaderName().equals(name)) {//if not at index 0, flip indexes
+                 eaIndex = 1;
+                 botIndex = 0;
+            }
+            int eaScore = battleResults[eaIndex].getScore();//get EA score
+            int botScore = battleResults[botIndex].getScore();//get Bot score
 
-                returnFitness += ((eaScore) / (eaScore + botScore));// get fitness for round
-
-                counter++;
+            int demoninator = (eaScore + botScore);
+            if(demoninator != 0) {
+                returnFitness += ((eaScore) / demoninator);// get fitness for round
+            }else{
+                returnFitness += eaScore;
             }
         }
+        System.out.println("Fitness of: " + returnFitness);
         return returnFitness;
     }
 
@@ -150,7 +152,7 @@ class Battle implements BattleMaker{
                 "turnRadarRight("+ individual.genes[4] +");\n" +
                 "}\n\n" +
                 "public void onHitWall(HitWallEvent e) {\n" +
-                "back(20);\n" +
+                "back(" + individual.genes[5] + ");\n" +
                 "ahead("+ individual.genes[4] +");\n" +
                 "}\n}";
     }

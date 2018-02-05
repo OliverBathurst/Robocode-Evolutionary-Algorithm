@@ -4,7 +4,7 @@
  */
 
 interface EvolutionaryAlgorithm {
-    void init(int populationSize, float targetFitness, boolean minimise, Population population,
+    void init(float targetFitness, boolean minimise, Population population,
            Evaluator customEvaluator, Mutator mutate, Selector parent, Selector generation, Crossover crossover);
     boolean terminateCondition();
     Individual run();
