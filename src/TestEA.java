@@ -13,7 +13,8 @@ class TestEA implements EvolutionaryAlgorithm {
     private Crossover crossOp;
     private Selector parentSelectOp, genSelectOp;
     private Mutator mutateOp;
-    private int generations, populationSize;
+    private int generations;
+    private final int generationsLimit = 5000;
     private float targetFitness;
     private boolean minimize;
 
@@ -29,6 +30,8 @@ class TestEA implements EvolutionaryAlgorithm {
         this.mutateOp = mutate;
         this.crossOp = crossover;
     }
+    @Override
+    public void setNumGenerations(int number) {}
 
     @Override
     public Individual run() {
@@ -66,7 +69,7 @@ class TestEA implements EvolutionaryAlgorithm {
             }
 
             System.out.println("Clearing and adding...");
-            this.populationSize = population.size();
+            int populationSize = population.size();
             population.clear();//clear pop ready for next gen
             ///error here
             population.addAll(genSelectOp.selectIndividualsFromPopulation(children, populationSize));//SELECT FOR NEXT GEN
@@ -78,11 +81,8 @@ class TestEA implements EvolutionaryAlgorithm {
             this.generations++;
             System.out.println("Generations: " + this.generations);
 
-            if(generations == 1){
-                System.out.println("Generation:\tFitness:\tGene1:\tGene2:");
-            }else{
-                System.out.println(this.generations + "\t" + this.best.getFitness() + "\t" + this.best.genes[0]+"\t"+this.best.genes[1]);
-            }
+            System.out.println("Generation:\tFitness:\tGene1:\tGene2:");
+            System.out.println(this.generations + "\t" + this.best.getFitness() + "\t" + this.best.genes[0]+"\t"+this.best.genes[1]);
         }
         setBest();
         return this.best;
@@ -96,12 +96,13 @@ class TestEA implements EvolutionaryAlgorithm {
             } else if ((this.best.getFitness() > this.targetFitness) && (!this.minimize)) {
                 terminate = true;
             }
-            if (this.generations >= 50000) {
+            if (this.generations >= generationsLimit) {
                 terminate = true;
             }
         }
         return terminate;
     }
+
     private void setBest(){
         if(this.generations <= 1){
             if(population.size() > 0) {

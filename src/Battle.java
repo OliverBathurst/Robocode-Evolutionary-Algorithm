@@ -82,9 +82,9 @@ class Battle implements BattleMaker{
             int eaScore = battleResults[eaIndex].getScore();//get EA score
             int botScore = battleResults[botIndex].getScore();//get Bot score
 
-            int demoninator = (eaScore + botScore);
-            if(demoninator != 0) {
-                returnFitness += ((eaScore) / demoninator);// get fitness for round
+            int denominator = (eaScore + botScore);
+            if(denominator != 0) {
+                returnFitness += ((eaScore) / denominator);// get fitness for round
             }else{
                 returnFitness += eaScore;
             }
