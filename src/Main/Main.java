@@ -1,4 +1,6 @@
+package Main;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -42,11 +44,11 @@ public class Main extends Application{
                 new CustomEvaluator(), new RandomMutator(50), new TournamentSelection(), new GreedySelection(), new UniformCrossover());
         testEA.setNumGenerations(1);//set no gens to 1, so can call a new generation on demand
 
-        new Thread(() -> {
+        Platform.runLater(() -> {
             for(int i = 0; i < 20; i++) {
                 Individual individual = testEA.run();//run once
                 series.getData().add(new XYChart.Data(i, individual.getFitness()));
             }
-        }).run();
+        });
     }
 }

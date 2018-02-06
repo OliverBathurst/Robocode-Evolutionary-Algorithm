@@ -1,3 +1,6 @@
+package Main;
+
+import Framework.BattleMaker;
 import robocode.BattleResults;
 import robocode.control.BattleSpecification;
 import robocode.control.BattlefieldSpecification;
@@ -15,7 +18,7 @@ import java.io.FileWriter;
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
  */
 
-class Battle implements BattleMaker{
+class Battle implements BattleMaker {
     private String[] opponents = new String[] {"sample.SittingDuck" ,"sample.Corners","sample.Crazy"
             ,"sample.Fire","sample.RamFire", "sample.SpinBot", "sample.Target", "sample.VelociRobot", "sample.Walls"};
     private String path = "C:\\robocode\\robots\\sample", robocodePath = "C:/Robocode", jar = "C:\\robocode\\libs\\robocode.jar;",

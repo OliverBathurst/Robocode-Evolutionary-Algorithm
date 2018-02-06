@@ -1,3 +1,7 @@
+package Main;
+
+import Framework.Selector;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -6,7 +10,7 @@ import java.util.Random;
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
  */
 
-public class TournamentSelection implements Selector{
+public class TournamentSelection implements Selector {
 
     @Override
     public Individual selectFromPopulation(ArrayList<Individual> pop) {

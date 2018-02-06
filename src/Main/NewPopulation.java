@@ -1,10 +1,14 @@
+package Main;
+
+import Framework.Population;
+
 import java.util.*;
 /**
  * Created by Oliver on 29/01/2018.
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
  */
 
-class NewPopulation implements Population {
+public class NewPopulation implements Population {
     private final Double[] geneMin = new Double[]{0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};//example mins
     private final Double[] geneMax = new Double[]{100.0,100.0,360.0,360.0,360.0,360.0,100.0,100.0};//example maxes
     private final ArrayList<Individual> population;

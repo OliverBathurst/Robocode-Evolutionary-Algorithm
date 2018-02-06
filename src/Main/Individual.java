@@ -1,9 +1,11 @@
+package Main;
+
 /**
  * Created by Oliver on 29/01/2018.
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
  */
 
-class Individual extends PopulationMember implements Comparable<Individual>{
+public class Individual extends PopulationMember implements Comparable<Individual>{
 
     Individual(Double[] startGenes, Double[] geneMin, Double[] geneMax, int genomeLength){
         super.genes = startGenes;

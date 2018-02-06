@@ -1,3 +1,7 @@
+package Framework;
+
+import Main.Individual;
+
 import java.util.ArrayList;
 
 /**
@@ -5,7 +9,7 @@ import java.util.ArrayList;
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
  */
 
-interface Population {
+public interface Population {
     void createPopulation();
     Individual createIndividual();
     ArrayList<Individual> returnPopulation();

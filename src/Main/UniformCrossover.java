@@ -1,3 +1,7 @@
+package Main;
+
+import Framework.Crossover;
+
 import java.util.Random;
 
 /**
@@ -5,7 +9,7 @@ import java.util.Random;
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
  */
 
-class UniformCrossover implements Crossover{
+public class UniformCrossover implements Crossover {
     private final Random numGen = new Random(System.currentTimeMillis());
 
     UniformCrossover(){}

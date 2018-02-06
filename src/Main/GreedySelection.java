@@ -1,3 +1,7 @@
+package Main;
+
+import Framework.Selector;
+
 import java.util.ArrayList;
 
 /**
@@ -5,7 +9,7 @@ import java.util.ArrayList;
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
  */
 
-public class GreedySelection implements Selector{
+public class GreedySelection implements Selector {
 
     @Override
     public Individual selectFromPopulation(ArrayList<Individual> pop) {
