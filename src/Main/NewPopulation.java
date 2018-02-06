@@ -25,7 +25,7 @@ public class NewPopulation implements Population {
     }
     @Override
     public void sort(){
-        population.sort((o1, o2) -> (int) (o1.getFitness() - o2.getFitness()));
+        population.sort((o1, o2) -> (int) (o1.fitness - o2.fitness));
     }
     @Override
     public int getSize() {

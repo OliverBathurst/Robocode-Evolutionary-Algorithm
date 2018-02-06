@@ -25,6 +25,6 @@ public class GreedySelection implements Selector {
 
     @Override
     public void sort(ArrayList<Individual> individuals) {
-        individuals.sort((o1, o2) -> (int) (o1.getFitness() - o2.getFitness()));//sort ascending
+        individuals.sort((o1, o2) -> (int) (o1.fitness - o2.fitness));//sort ascending
     }
 }
