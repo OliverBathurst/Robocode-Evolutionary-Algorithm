@@ -90,10 +90,11 @@ class TestEA implements EvolutionaryAlgorithm {
 
             this.generations++;
 
-            log.log(generations, this.best.fitness);
-
-            System.out.println("Generation: " + this.generations + "\nFitness: " + this.best.fitness
-                + "\nGenome:\n" + getBestGenome());
+            if(this.best != null) {
+                log.log(generations, this.best.fitness);
+                System.out.println("Generation: " + this.generations + "\nFitness: " + this.best.fitness
+                        + "\nGenome:\n" + getBestGenome());
+            }
         }
         setBest();
         return this.best;
