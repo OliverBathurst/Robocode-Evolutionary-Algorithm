@@ -14,7 +14,7 @@ class TestEA implements EvolutionaryAlgorithm {
     private Crossover crossOp;
     private Selector parentSelectOp, genSelectOp;
     private Mutator mutateOp;
-    private int generations;
+    private int generations, noRuns = 0;
     private float targetFitness;
     private boolean minimize;
 
@@ -41,9 +41,10 @@ class TestEA implements EvolutionaryAlgorithm {
 
         boolean finished = false;//Sentinel for while loop
         this.generations = 0;//set generations back to
+        this.noRuns++;//increment number of times run() has been called
 
+        System.out.println("Current number of runs: " + this.noRuns);
         System.out.println("Population size: " + population.size());
-
         System.out.println("Evaluating population...");
         for (Individual individual: population) {
             individual.setFitness(evalOp.evaluateFitness(individual));//EVALUATE
