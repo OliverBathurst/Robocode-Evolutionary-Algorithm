@@ -18,19 +18,15 @@ public class Individual extends PopulationMember implements Comparable<Individua
 
     int getGeneLength(){return this.genes.length;}
 
-    float getFitness(){
-        return this.fitness;
-    }
-
     void setFitness(float fitness){
         this.fitness = fitness;
     }
 
     @Override
     public int compareTo(Individual o) {
-        if(this.fitness == o.getFitness()){
+        if(this.fitness == o.fitness){
             return 0;
         }
-        return this.fitness > o.getFitness() ? 1 : -1;
+        return this.fitness > o.fitness ? 1 : -1;
     }
 }

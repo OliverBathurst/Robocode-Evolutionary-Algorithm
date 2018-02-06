@@ -12,5 +12,6 @@ public interface EvolutionaryAlgorithm {
               Evaluator customEvaluator, Mutator mutate, Selector parent, Selector generation, Crossover crossover);
     boolean terminateCondition();
     void setNumGenerations(int number);
+    void setLogger(Logger log);
     Individual run();
 }

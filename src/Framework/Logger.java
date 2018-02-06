@@ -7,6 +7,6 @@ package Framework;
 
 public interface Logger {
     Object getLog();
-    void log(String key, String value);
+    void log(Object key, Object value);
     void writeToFile();
 }

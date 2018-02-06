@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  */
 
 public class Main extends Application{
-    private XYChart.Series series;
+    private XYChart.Series<Number, Number> series;
 
     public static void main(String[] args) {
         launch(args);
@@ -30,7 +30,7 @@ public class Main extends Application{
         yAxis.setLabel("Fitness");
         final LineChart<Number,Number> lineChart = new LineChart<>(xAxis,yAxis);
         lineChart.setTitle("Fitness over Generations");
-        series = new XYChart.Series();
+        series = new XYChart.Series<>();
         series.setName("Fitness");
         lineChart.getData().add(series);
         Scene scene = new Scene(lineChart,800,600);
@@ -47,7 +47,7 @@ public class Main extends Application{
         Platform.runLater(() -> {
             for(int i = 0; i < 20; i++) {
                 Individual individual = testEA.run();//run once
-                series.getData().add(new XYChart.Data(i, individual.getFitness()));
+                series.getData().add(new XYChart.Data<>(i, individual.fitness));
             }
         });
     }

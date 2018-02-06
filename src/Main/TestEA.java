@@ -10,15 +10,15 @@ import java.util.ArrayList;
  */
 
 class TestEA implements EvolutionaryAlgorithm {
+    private int generations, noRuns = 0, generationsLimit = Integer.MAX_VALUE;
     private ArrayList<Individual> population = new ArrayList<>();
-    private final int generationsLimit = 5000;
     private Individual best;
     private Population populationInit;
     private Evaluator evalOp;
     private Crossover crossOp;
     private Selector parentSelectOp, genSelectOp;
     private Mutator mutateOp;
-    private int generations, noRuns = 0;
+    private Logger log;
     private float targetFitness;
     private boolean minimize;
 
@@ -35,7 +35,12 @@ class TestEA implements EvolutionaryAlgorithm {
         this.crossOp = crossover;
     }
     @Override
-    public void setNumGenerations(int number) {}
+    public void setNumGenerations(int number) {this.generationsLimit = number;}
+
+    @Override
+    public void setLogger(Logger log) {
+        this.log = log;
+    }
 
     @Override
     public Individual run() {
@@ -85,7 +90,9 @@ class TestEA implements EvolutionaryAlgorithm {
 
             this.generations++;
 
-            System.out.println("Generation: " + this.generations + "\nFitness: " + this.best.getFitness()
+            log.log(generations, this.best.fitness);
+
+            System.out.println("Generation: " + this.generations + "\nFitness: " + this.best.fitness
                 + "\nGenome:\n" + getBestGenome());
         }
         setBest();
@@ -95,9 +102,9 @@ class TestEA implements EvolutionaryAlgorithm {
     public boolean terminateCondition() {
         boolean terminate = false;
         if(this.best != null) {
-            if ((this.best.getFitness() < this.targetFitness) && (this.minimize)) {
+            if ((this.best.fitness < this.targetFitness) && (this.minimize)) {
                 terminate = true;
-            } else if ((this.best.getFitness() > this.targetFitness) && (!this.minimize)) {
+            } else if ((this.best.fitness > this.targetFitness) && (!this.minimize)) {
                 terminate = true;
             }
             if (this.generations >= generationsLimit) {
@@ -115,14 +122,14 @@ class TestEA implements EvolutionaryAlgorithm {
         }
         float currentFitness = 0f;
         for (Individual individual: population) {
-            if(individual.getFitness() > currentFitness){
+            if(individual.fitness > currentFitness){
                 this.best = individual;
             }
         }
     }
     private String getBestGenome(){
         StringBuilder asString = new StringBuilder();
-        int length = this.best.getGenes().length;
+        int length = this.best.genes.length;
         for(int i = 0; i < length; i++){
             asString.append("Gene: ").append(i).append(" Value: ").append(this.best.genes[i]).append("\n");
         }
