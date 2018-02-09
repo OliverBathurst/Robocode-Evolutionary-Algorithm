@@ -8,5 +8,5 @@ package Main;
 abstract class PopulationMember {
     Double[] geneMin, geneMax, genes;
     int geneLength;
-    float fitness;
+    float fitness = 0f;
 }

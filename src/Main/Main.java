@@ -13,6 +13,7 @@ public class Main {
         testEA.setNumGenerations(1);//set no gens to 1, so can call a new generation on demand
 
         testEA.run();//run once
+        testEA.setLogger(new Log());
         testEA.getLogger().writeToFile();
     }
 }
