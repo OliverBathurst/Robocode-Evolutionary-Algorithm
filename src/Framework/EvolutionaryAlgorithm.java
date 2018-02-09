@@ -13,5 +13,6 @@ public interface EvolutionaryAlgorithm {
     boolean terminateCondition();
     void setNumGenerations(int number);
     void setLogger(Logger log);
+    Logger getLogger();
     Individual run();
 }

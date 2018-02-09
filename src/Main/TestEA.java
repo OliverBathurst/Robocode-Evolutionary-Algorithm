@@ -43,6 +43,11 @@ class TestEA implements EvolutionaryAlgorithm {
     }
 
     @Override
+    public Logger getLogger() {
+        return log;
+    }
+
+    @Override
     public Individual run() {
         populationInit.createPopulation();//INITIALISE
         population = populationInit.returnPopulation();
@@ -84,8 +89,8 @@ class TestEA implements EvolutionaryAlgorithm {
             ///error here
             population.addAll(genSelectOp.selectIndividualsFromPopulation(children, populationSize));//SELECT FOR NEXT GEN
             System.out.println("New population size: " + population.size());
-            setBest();
 
+            setBest();
             finished = terminateCondition();
 
             this.generations++;
@@ -124,6 +129,7 @@ class TestEA implements EvolutionaryAlgorithm {
         float currentFitness = 0f;
         for (Individual individual: population) {
             if(individual.fitness > currentFitness){
+                currentFitness = individual.fitness;
                 this.best = individual;
             }
         }

@@ -12,6 +12,7 @@ public class Main {
                 new CustomEvaluator(), new RandomMutator(50), new TournamentSelection(), new GreedySelection(), new UniformCrossover());
         testEA.setNumGenerations(1);//set no gens to 1, so can call a new generation on demand
 
-        Individual individual = testEA.run();//run once
+        testEA.run();//run once
+        testEA.getLogger().writeToFile();
     }
 }
