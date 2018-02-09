@@ -122,13 +122,12 @@ class TestEA implements EvolutionaryAlgorithm {
 
     private void setBest(){
         if(this.generations <= 1){
-            if(population.size() > 0) {
-                this.best = population.get(0);
-            }
+            assert population.size() > 0;
+            this.best = population.get(0);
         }
         float currentFitness = 0f;
         for (Individual individual: population) {
-            if(individual.fitness > currentFitness){
+            if(individual.fitness >= currentFitness){
                 currentFitness = individual.fitness;
                 this.best = individual;
             }

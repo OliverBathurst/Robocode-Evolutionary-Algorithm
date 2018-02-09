@@ -12,6 +12,7 @@ public class Individual extends PopulationMember implements Comparable<Individua
         super.geneLength = genomeLength;
         super.geneMin = geneMin;
         super.geneMax = geneMax;
+        super.fitness = 0f;
     }
 
     Double[] getGenes(){return this.genes;}
