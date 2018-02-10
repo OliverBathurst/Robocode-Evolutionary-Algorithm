@@ -59,12 +59,10 @@ class Battle implements BattleMaker {
         this.packageName = packageName;
     }
     @Override
-    public float getFitnessSequentialBattle(Individual individual){
-        float returnFitness;
+    public float getIndividualFitness(Individual individual){
+        float returnFitness = 0.0f;
 
         String robotPath = writeAndCompileIndividual(individual);
-
-        int eaScore = 0, botScore = 0;
 
         for (int i = 0; i < opponentsSize; i++) {//fight against each opponent
             System.out.println("Running battle between: " + name + " and " + opponents[i]);
@@ -83,50 +81,15 @@ class Battle implements BattleMaker {
                  eaIndex = 1;
                  botIndex = 0;
             }
-            eaScore += battleResults[eaIndex].getScore();//get EA score
-            botScore += battleResults[botIndex].getScore();//get Bot score
-        }
+            int eaScore = battleResults[eaIndex].getScore();//get EA score
+            int botScore = battleResults[botIndex].getScore();//get Bot score
 
-        int denominator = (eaScore + botScore);
-        if(denominator != 0) {
-            returnFitness = ((eaScore) / denominator);// get fitness for round
-        }else{
-            returnFitness = eaScore;//eaScore must be 0, eaScore + botScore = 0, therefore both are 0.
-        }
-
-        System.out.println("Fitness of: " + returnFitness);
-        return returnFitness;
-    }
-    @Override
-    public float getFitnessBatchBattle(Individual individual){
-        float returnFitness;
-        String robotPath = writeAndCompileIndividual(individual);
-
-        BattleObserver battleObserver = new BattleObserver();
-        RobocodeEngine engine = new RobocodeEngine(new File(robocodePath));//Run from C:/Robocode
-        engine.addBattleListener(battleObserver);
-        engine.setVisible(visible);
-        BattlefieldSpecification battlefield = new BattlefieldSpecification(800, 600); // 800x600
-        RobotSpecification[] selectedRobots = engine.getLocalRepository(robotPath + ", " + stringifyOpponentArray(opponents));
-        engine.runBattle(new BattleSpecification(1, battlefield, selectedRobots), true); // waits till the battle finishes
-        engine.close();
-
-        BattleResults[] battleResults = battleObserver.getResults();
-
-        int score = 0, botScores = 0;
-        for(BattleResults br: battleResults){
-            if(br.getTeamLeaderName().equals(name)){
-                score = br.getScore();
+            int denominator = (eaScore + botScore);
+            if(denominator != 0) {
+                returnFitness = (returnFitness + (eaScore / denominator))/2;//compute average fitness after each round
             }else{
-                botScores += br.getScore();
+                returnFitness = eaScore;//eaScore must be 0, eaScore + botScore = 0, therefore both are 0.
             }
-        }
-
-        int denominator = (score + botScores);
-        if(denominator != 0) {
-            returnFitness = ((score) / denominator);// get fitness for round
-        }else{
-            returnFitness = score;
         }
 
         System.out.println("Fitness of: " + returnFitness);
@@ -154,7 +117,7 @@ class Battle implements BattleMaker {
     public String stringifyOpponentArray(String[] opponents){
         StringBuilder opponentString = new StringBuilder();
         for(String s: opponents){
-            opponentString.append(s).append(" , ");
+            opponentString.append(s).append(",");
         }
         return opponentString.toString();
     }
