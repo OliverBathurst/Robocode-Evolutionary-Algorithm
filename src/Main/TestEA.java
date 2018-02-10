@@ -43,6 +43,11 @@ class TestEA implements EvolutionaryAlgorithm {
     }
 
     @Override
+    public Logger getLogger() {
+        return log;
+    }
+
+    @Override
     public Individual run() {
         populationInit.createPopulation();//INITIALISE
         population = populationInit.returnPopulation();

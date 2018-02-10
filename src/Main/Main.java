@@ -10,7 +10,8 @@ class Main {
         TestEA testEA = new TestEA();
         testEA.init(10,false, new NewPopulation(10),
                 new CustomEvaluator(), new RandomMutator(50), new TournamentSelection(), new GreedySelection(), new UniformCrossover());
-        testEA.setNumGenerations(1);//set no gens to 1, so can call a new generation on demand
+        testEA.setLogger(new Log());
         testEA.run();//run once
+        //testEA.getLogger().writeToFile();
     }
 }
