@@ -105,7 +105,8 @@ class TestEA implements EvolutionaryAlgorithm {
         if(this.best != null) {
             if ((this.best.fitness < this.targetFitness) && (this.minimize)) {
                 terminate = true;
-            } else if ((this.best.fitness > this.targetFitness) && (!this.minimize)) {
+            }
+            if ((this.best.fitness > this.targetFitness) && (!this.minimize)) {
                 terminate = true;
             }
             if (this.generations >= generationsLimit) {
@@ -116,11 +117,6 @@ class TestEA implements EvolutionaryAlgorithm {
     }
 
     private void setBest(){
-        if(this.generations <= 1){
-            if(population.size() > 0) {
-                this.best = population.get(0);
-            }
-        }
         float currentFitness = 0f;
         for (Individual individual: population) {
             if(individual.fitness > currentFitness){

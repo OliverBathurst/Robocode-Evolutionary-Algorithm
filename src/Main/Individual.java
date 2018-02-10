@@ -14,8 +14,6 @@ public class Individual extends PopulationMember implements Comparable<Individua
         super.geneMax = geneMax;
     }
 
-    Double[] getGenes(){return this.genes;}
-
     int getGeneLength(){return this.genes.length;}
 
     void setFitness(float fitness){

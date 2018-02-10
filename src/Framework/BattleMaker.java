@@ -16,5 +16,8 @@ public interface BattleMaker {
     void setRobotsDir(String path);
     void setPackageName(String packageName);
     String writeAndCompileIndividual(Individual individual);
+    float getFitnessSequentialBattle(Individual individual);
+    float getFitnessBatchBattle(Individual individual);
+    String stringifyOpponentArray(String[] opponents);
     String generateRobotCode(Individual individual);
 }
