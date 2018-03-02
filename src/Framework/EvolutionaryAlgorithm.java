@@ -14,5 +14,5 @@ public interface EvolutionaryAlgorithm {
     void setNumGenerations(int number);
     void setLogger(Logger log);
     Logger getLogger();
-    Individual run();
+    Individual getBest();
 }

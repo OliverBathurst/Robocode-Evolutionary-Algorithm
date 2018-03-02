@@ -1,6 +1,8 @@
 package Main;
 import Framework.Logger;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -28,18 +30,24 @@ public class Log implements Logger {
 
     @Override
     public void writeToFile() {
-        try {
-            PrintWriter pw = new PrintWriter(new File("output.csv"));
-            StringBuilder sb = new StringBuilder();
+        JFrame parentFrame = new JFrame();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("CSV File", "csv"));
+        int userSelection = fileChooser.showSaveDialog(parentFrame);
 
-            for (Map.Entry<Object, Object> pair : log.entrySet()) {
-                sb.append(pair.getKey().toString()).append(",").append(pair.getValue().toString())
-                        .append("\n");
-            }
-            pw.write(sb.toString());
-            pw.close();
-        }catch (Exception e){
-            System.out.println("Error writing to file: " + e.getMessage());
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            try {
+                PrintWriter pw = new PrintWriter(new File(fileChooser.getSelectedFile().getAbsolutePath()));
+                StringBuilder sb = new StringBuilder();
+
+                for (Map.Entry<Object, Object> pair : log.entrySet()) {
+                    sb.append(pair.getKey().toString()).append(",").append(pair.getValue().toString())
+                            .append("\n");
+                }
+                pw.write(sb.toString());
+                pw.close();
+            }catch (Exception ignored){}
         }
     }
 }

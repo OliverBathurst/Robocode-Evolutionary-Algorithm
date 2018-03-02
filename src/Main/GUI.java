@@ -1,54 +1,74 @@
-/*package Main;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
-import javafx.stage.Stage;
+package Main;
+import javax.swing.*;
 
-/**
- * Created by Oliver on 29/01/2018.
- * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
- */
-/*
-public class GUI extends Application{
-    private XYChart.Series<Number, Number> series;
+public class GUI {
+    private JPanel panel1;
+    private JButton runButton;
+    private JButton stopButton;
+    private JButton openGraphButton;
+    private JTextArea outputText;
+    private JButton write;
+    private JButton printBest;
+    private TestEA testEA;
+    private boolean hasStopped = false;
 
-    public static void main(String[] args) {
-        launch(args);
+    GUI(){
+        runButton.addActionListener(e -> run());
+        stopButton.addActionListener(e -> stop());
+        openGraphButton.addActionListener(e -> openGraphView());
+        write.addActionListener(e -> writeToFile());
+        printBest.addActionListener(e -> printBest());
     }
 
-    public GUI(){}
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Robocode Evolutionary Algorithm");
-        final NumberAxis xAxis = new NumberAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        xAxis.setLabel("Generations");
-        yAxis.setLabel("Fitness");
-        final LineChart<Number,Number> lineChart = new LineChart<>(xAxis,yAxis);
-        lineChart.setTitle("Fitness over Generations");
-        series = new XYChart.Series<>();
-        series.setName("Fitness");
-        lineChart.getData().add(series);
-        Scene scene = new Scene(lineChart,800,600);
-        scene.setOnMouseClicked(event -> run());
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    public static void main(String[] args){
+        JFrame j = new JFrame("Robocode Evolutionary Algorithm");
+        j.setContentPane(new GUI().panel1);
+        j.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        j.pack();
+        j.setVisible(true);
     }
+
     private void run(){
-        TestEA testEA = new TestEA();
+        if(testEA == null){
+            setupEnvironment();
+        }
+        if(!hasStopped) {
+            testEA.start();//run once
+        }else{
+            outputText.append("Thread has stopped, restarting\n");
+            hasStopped = false;
+            testEA = null;
+            run();
+        }
+    }
+
+    private void stop(){
+        testEA.stop();
+        hasStopped = true;
+    }
+
+    private void printBest(){
+        Individual i = testEA.getBest();
+        if(i != null) {
+            outputText.append("Best: " + i.fitness + "\n");
+            outputText.append(testEA.printGenome());
+        }else{
+            outputText.append("Null individual\n");
+        }
+    }
+
+    private void openGraphView(){
+
+    }
+
+    private void writeToFile(){
+        testEA.getLogger().writeToFile();
+    }
+
+    private void setupEnvironment(){
+        testEA = new TestEA();
+        testEA.setLogger(new Log());
         testEA.init(10,false, new NewPopulation(10),
                 new CustomEvaluator(), new RandomMutator(50), new TournamentSelection(), new GreedySelection(), new UniformCrossover());
-        testEA.setNumGenerations(1);//set no gens to 1, so can call a new generation on demand
-
-        Platform.runLater(() -> {
-            for(int i = 0; i < 20; i++) {
-                Individual individual = testEA.run();//run once
-                series.getData().add(new XYChart.Data<>(i, individual.fitness));
-            }
-        });
     }
-}*/
+}
