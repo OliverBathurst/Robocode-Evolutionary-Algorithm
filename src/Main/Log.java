@@ -19,7 +19,7 @@ public class Log implements Logger {
     Log(){}
 
     @Override
-    public Object getLog() {
+    public HashMap<Object, Object> getLog() {
         return log;
     }
 

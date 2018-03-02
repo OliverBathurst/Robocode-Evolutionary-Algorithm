@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 
 class TestEA extends Thread implements EvolutionaryAlgorithm {
-    private int generations, noRuns = 0, generationsLimit = Integer.MAX_VALUE;
+    private int generations = 0, generationsLimit = Integer.MAX_VALUE;
     private ArrayList<Individual> population = new ArrayList<>();
     private Individual best;
     private Population populationInit;
@@ -57,8 +57,7 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
         ArrayList<Individual> children = new ArrayList<>();//temp pop for storing children
 
         boolean finished = false;//Sentinel for while loop
-        this.generations = 0;//set generations back to
-        
+
         System.out.println("Population size: " + population.size());
         System.out.println("Evaluating population...");
 
@@ -67,6 +66,7 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
         }
 
         System.out.println("Entering evolutionary loop");
+
         while(!finished){
             children.clear();
             System.out.println("Crossing over...");

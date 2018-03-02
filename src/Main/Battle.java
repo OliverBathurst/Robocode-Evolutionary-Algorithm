@@ -22,7 +22,7 @@ class Battle implements BattleMaker {
     private String[] opponents = new String[] {"sample.SittingDuck" ,"sample.Corners","sample.Crazy"
             ,"sample.Fire","sample.RamFire", "sample.SpinBot", "sample.Target", "sample.VelociRobot", "sample.Walls"};
     private String path = "C:\\robocode\\robots\\sample", robocodePath = "C:/Robocode", jar = "C:\\robocode\\libs\\robocode.jar;",
-            packageName = "sample", name = "OliverGP";
+            packageName = "sample", name = "OliverBathurstEA";
     private int opponentsSize = 9;
     private final boolean visible;
 
