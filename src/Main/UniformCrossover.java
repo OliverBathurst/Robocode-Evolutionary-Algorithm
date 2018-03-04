@@ -14,10 +14,6 @@ public class UniformCrossover implements Crossover {
 
     UniformCrossover(){}
 
-    Individual performCrossover(Individual parentA, Individual parentB){
-        return crossover(parentA, parentB);
-    }
-
     @Override
     public Individual crossover(Individual parentA, Individual parentB) {
         int numGenes = parentA.geneLength;

@@ -1,6 +1,9 @@
 package Main;
 import Framework.Logger;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.text.DefaultCaret;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -13,6 +16,11 @@ class GUI {
     private JTextArea outputText;
     private JButton write;
     private JButton printBest;
+    private JSlider popSize;
+    private JLabel populationLabel;
+    private JSlider generationSlider;
+    private JLabel genLimit;
+    private JCheckBox generationLimit;
     private TestEA testEA;
     private boolean hasStopped = false;
     private int launchCounter = 0;
@@ -23,9 +31,12 @@ class GUI {
         openGraphButton.addActionListener(e -> openGraphView());
         write.addActionListener(e -> writeToFile());
         printBest.addActionListener(e -> printBest());
+        ((DefaultCaret) outputText.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         PrintStream out = new PrintStream(new outputPrintStream(outputText) );
         System.setOut(out);
         System.setErr(out);
+        popSize.addChangeListener(e -> populationLabel.setText("Population Size: " + popSize.getValue()));
+        generationSlider.addChangeListener(e -> genLimit.setText("Generation Limit: " + generationSlider.getValue()));
     }
     private class outputPrintStream extends OutputStream  {
         private final JTextArea jta;
@@ -102,9 +113,16 @@ class GUI {
     }
 
     private void setupEnvironment(){
-        testEA = new TestEA();
-        testEA.setLogger(new Log());
-        testEA.init(10,false, new NewPopulation(10),
-                new CustomEvaluator(), new RandomMutator(50), new TournamentSelection(), new GreedySelection(), new UniformCrossover());
+        int generationSize = generationSlider.getValue();
+        int populationSize = popSize.getValue();
+        if(populationSize != 0) {
+            testEA = new TestEA();
+            testEA.setLogger(new Log());
+            testEA.init(10, false, new NewPopulation(populationSize),
+                    new CustomEvaluator(), new RandomMutator(1), new TournamentSelection(), new GreedySelection(), new NPointCrossover(3));//UniformCrossover()
+            if(generationLimit.isSelected()){
+                testEA.setNumGenerations(generationSize);
+            }
+        }
     }
 }

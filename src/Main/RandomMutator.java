@@ -10,22 +10,22 @@ import java.util.Random;
  */
 
 class RandomMutator implements Mutator {
-    private float percentage;
+    private double percentage;
     private final Random random = new Random();
 
-    RandomMutator(float mutationPercentage){this.percentage = mutationPercentage;}
+    RandomMutator(double mutationPercentage){this.percentage = mutationPercentage;}
 
     @Override
     public void mutate(Individual individual) {
         for(int i = 0; i < individual.getGeneLength(); i++){
-            if(random.nextFloat() < percentage){
+            if(random.nextDouble() < percentage){
                 individual.genes[i] =
                         individual.geneMin[i] + (individual.geneMax[i] - individual.geneMin[i]) * random.nextDouble();
             }
         }
     }
     @Override
-    public void setMutationPercentage(float percent) {
+    public void setMutationPercentage(double percent) {
         this.percentage = percent;
     }
 }

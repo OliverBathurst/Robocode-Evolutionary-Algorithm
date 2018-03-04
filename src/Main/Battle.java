@@ -19,8 +19,7 @@ import java.io.FileWriter;
  */
 
 class Battle implements BattleMaker {
-    private String[] opponents = new String[] {"sample.SittingDuck" ,"sample.Corners","sample.Crazy"
-            ,"sample.Fire","sample.RamFire", "sample.SpinBot", "sample.Target", "sample.VelociRobot", "sample.Walls"};
+    private String[] opponents = new String[] {"sample.SittingDuck" ,"sample.Corners","sample.Crazy","sample.Fire","sample.RamFire", "sample.SpinBot", "sample.Target", "sample.VelociRobot", "sample.Walls"};
     private String path = "C:\\robocode\\robots\\sample", robocodePath = "C:/Robocode", jar = "C:\\robocode\\libs\\robocode.jar;",
             packageName = "sample", name = "OliverBathurstEA";
     private int opponentsSize = 9;
@@ -64,7 +63,7 @@ class Battle implements BattleMaker {
 
         String robotPath = writeAndCompileIndividual(individual);
 
-        for (int i = 0; i < opponentsSize; i++) {//fight against each opponent
+        for (int i = 0; i < (opponentsSize > opponents.length ? opponents.length : opponentsSize); i++) {//fight against each opponent
             System.out.println("Running battle between: " + name + " and " + opponents[i]);
             BattleObserver battleObserver = new BattleObserver();
             RobocodeEngine engine = new RobocodeEngine(new File(robocodePath));//Run from C:/Robocode
@@ -86,12 +85,12 @@ class Battle implements BattleMaker {
 
             int denominator = (eaScore + botScore);
             if(denominator != 0) {
-                returnFitness = (returnFitness + (eaScore / denominator))/2;//compute average fitness after each round
+                returnFitness += (eaScore / denominator);//compute average fitness after each round
             }else{
-                returnFitness = eaScore;//eaScore must be 0, eaScore + botScore = 0, therefore both are 0.
+                returnFitness += eaScore;//eaScore must be 0, eaScore + botScore = 0, therefore both are 0.
             }
         }
-
+        returnFitness = returnFitness/opponentsSize;//average fitness over all battles
         System.out.println("Fitness of: " + returnFitness);
         return returnFitness;
     }
@@ -152,7 +151,6 @@ class Battle implements BattleMaker {
                 "turnGunRight(Double.POSITIVE_INFINITY);\n" +
                 "}\n" +
                 "}\n\n" +
-
                 "public void onScannedRobot(ScannedRobotEvent e) {\n" +
                 "fire("+ individual.genes[0] +");\n" +
                 "ahead("+ individual.genes[1] +");\n" +
@@ -166,6 +164,10 @@ class Battle implements BattleMaker {
                 "}\n\n" +
                 "public void onHitWall(HitWallEvent e) {\n" +
                 "back(" + individual.genes[7] + ");\n" +
-                "}\n}";
+                "}" +
+                "public void onHitRobot(HitRobotEvent e) {\n" +
+                "back(" + individual.genes[8] + ");\n" +
+                "}\n" +
+                "\n}";
     }
 }

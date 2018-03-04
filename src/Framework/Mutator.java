@@ -9,5 +9,5 @@ import Main.Individual;
 
 public interface Mutator {
     void mutate(Individual individual);
-    void setMutationPercentage(float percent);
+    void setMutationPercentage(double percent);
 }
