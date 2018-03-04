@@ -152,11 +152,12 @@ class Battle implements BattleMaker {
                 "}\n" +
                 "}\n\n" +
                 "public void onScannedRobot(ScannedRobotEvent e) {\n" +
+                "if(!e.getName().contains(getName())){\n" +
                 "fire("+ individual.genes[0] +");\n" +
                 "ahead("+ individual.genes[1] +");\n" +
                 "turnRight("+ individual.genes[2] +");\n" +
                 "turnGunRight("+ individual.genes[3] +");\n" +
-                "}\n\n" +
+                "}\n}\n\n" +
                 "public void onHitByBullet(HitByBulletEvent e){\n" +
                 "turnRadarRight("+ individual.genes[4] +");\n" +
                 "turnRight("+ individual.genes[5] +");\n" +
