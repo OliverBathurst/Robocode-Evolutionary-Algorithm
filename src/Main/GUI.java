@@ -1,8 +1,6 @@
 package Main;
 import Framework.Logger;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.text.DefaultCaret;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -25,7 +23,7 @@ class GUI {
     private boolean hasStopped = false;
     private int launchCounter = 0;
 
-    GUI(){
+    private GUI(){
         runButton.addActionListener(e -> run());
         stopButton.addActionListener(e -> stop());
         openGraphButton.addActionListener(e -> openGraphView());

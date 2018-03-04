@@ -7,7 +7,7 @@ import Framework.Crossover;
 import java.util.Arrays;
 
 public class NPointCrossover implements Crossover {
-    private int crossoverPoint;
+    private final int crossoverPoint;
 
     NPointCrossover(int crossoverPoint){
         this.crossoverPoint = crossoverPoint;
