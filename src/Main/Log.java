@@ -30,15 +30,13 @@ public class Log implements Logger {
 
     @Override
     public void writeToFile() {
-        JFrame parentFrame = new JFrame();
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Save");
-        fileChooser.setFileFilter(new FileNameExtensionFilter("CSV File", "csv"));
-        int userSelection = fileChooser.showSaveDialog(parentFrame);
+        fileChooser.setFileFilter(new FileNameExtensionFilter("CSV File", ".csv"));
 
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
+        if (fileChooser.showSaveDialog(new JFrame()) == JFileChooser.APPROVE_OPTION) {
             try {
-                PrintWriter pw = new PrintWriter(new File(fileChooser.getSelectedFile().getAbsolutePath()));
+                PrintWriter pw = new PrintWriter(new File(fileChooser.getSelectedFile().getAbsolutePath() + ".csv"));
                 StringBuilder sb = new StringBuilder();
 
                 for (Map.Entry<Object, Object> pair : log.entrySet()) {

@@ -5,7 +5,6 @@ import robocode.BattleResults;
 import robocode.control.BattleSpecification;
 import robocode.control.BattlefieldSpecification;
 import robocode.control.RobocodeEngine;
-import robocode.control.RobotSpecification;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.BattleErrorEvent;
@@ -69,9 +68,8 @@ class Battle implements BattleMaker {
             RobocodeEngine engine = new RobocodeEngine(new File(robocodePath));//Run from C:/Robocode
             engine.addBattleListener(battleObserver);
             engine.setVisible(visible);
-            BattlefieldSpecification battlefield = new BattlefieldSpecification(800, 600); // 800x600
-            RobotSpecification[] selectedRobots = engine.getLocalRepository(robotPath + ", " + opponents[i]);
-            engine.runBattle(new BattleSpecification(1, battlefield, selectedRobots), true); // waits till the battle finishes
+            engine.runBattle(new BattleSpecification(1, new BattlefieldSpecification(800, 600),
+                    engine.getLocalRepository(robotPath + ", " + opponents[i])), true); // waits till the battle finishes
             engine.close();
 
             BattleResults[] battleResults = battleObserver.getResults();
@@ -129,11 +127,10 @@ class Battle implements BattleMaker {
             out.write(generateRobotCode(individual));
             out.close();
 
-            String command = "javac -cp " + jar + " " + filePath;
-            Process process = Runtime.getRuntime().exec(command);
-            process.waitFor();
+            Process process = Runtime.getRuntime().exec("javac -cp " + jar + " " + filePath);
+            process.waitFor();//block thread
             if(process.exitValue() != 0) {
-                System.out.println(command + "Exited with value: " + process.exitValue());
+                System.out.println("Exited with value: " + process.exitValue());
             }
         }catch(Exception e){
             System.err.println("Error: " + e.getMessage());

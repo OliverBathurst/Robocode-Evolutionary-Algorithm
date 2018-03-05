@@ -87,10 +87,11 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
 
             System.out.println("Clearing and adding...");
             int populationSize = population.size();
-            population.clear();//clear pop ready for next gen
 
+            population.clear();//clear pop ready for next gen
             population.addAll(genSelectOp.selectIndividualsFromPopulation(children, populationSize));//SELECT FOR NEXT GEN
             System.out.println("New population size: " + population.size());
+
             setBest();
 
             finished = terminateCondition();
@@ -133,8 +134,7 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
     }
     String printGenome(){
         StringBuilder asString = new StringBuilder();
-        int length = this.best.genes.length;
-        for(int i = 0; i < length; i++){
+        for(int i = 0; i < this.best.getGeneLength(); i++){
             asString.append("Gene: ").append(i).append(" Value: ").append(this.best.genes[i]).append("\n");
         }
         return asString.toString();

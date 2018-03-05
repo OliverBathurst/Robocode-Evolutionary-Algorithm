@@ -10,7 +10,6 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -40,15 +39,14 @@ class GraphView {
             series = new XYChart.Series<>();
             series.setName("Fitness");
 
-            HashMap<Object, Object> map = log.getLog();
-            int counter = 1;
-            for (Map.Entry me : map.entrySet()) {
+            int counter = 0;
+            for (Map.Entry me : log.getLog().entrySet()) {
                 series.getData().add(new XYChart.Data<>(counter, (float) me.getValue()));
                 counter++;
             }
+
             lineChart.getData().add(series);
-            Scene scene = new Scene(lineChart, 800, 600);
-            primaryStage.setScene(scene);
+            primaryStage.setScene(new Scene(lineChart, 800, 600));
             primaryStage.show();
         }
     }
