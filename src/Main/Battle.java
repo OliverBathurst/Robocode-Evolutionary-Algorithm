@@ -73,15 +73,14 @@ class Battle implements BattleMaker {
             engine.close();
 
             BattleResults[] battleResults = battleObserver.getResults();
-            int eaIndex = 0, botIndex = 1;//assume
-            if (!battleResults[0].getTeamLeaderName().equals(name)) {//if not at index 0, flip indexes
-                 eaIndex = 1;
-                 botIndex = 0;
-            }
-            int eaScore = battleResults[eaIndex].getScore();//get EA score
-            int botScore = battleResults[botIndex].getScore();//get Bot score
+            float eaScore = battleResults[1].getScore(), botScore = battleResults[0].getScore();//assume
 
-            int denominator = (eaScore + botScore);
+            if (battleResults[0].getTeamLeaderName().contains(name)) {//if not at index 0, flip indexes
+                eaScore = battleResults[0].getScore();
+                botScore = battleResults[1].getScore();
+            }
+
+            float denominator = (eaScore + botScore);
             if(denominator != 0) {
                 returnFitness += (eaScore / denominator);//compute average fitness after each round
             }else{
@@ -89,7 +88,44 @@ class Battle implements BattleMaker {
             }
         }
         returnFitness = returnFitness/opponentsSize;//average fitness over all battles
-        System.out.println("Fitness of: " + returnFitness);
+        System.out.println("Calculated fitness of: " + returnFitness);
+        return returnFitness;
+    }
+
+    public float getIndividualFitnessBatchRun(Individual individual){
+        float eaFitness = 0.0f, botsFitness = 0.0f, returnFitness;
+        int opponentsSize = opponents.length;
+
+        BattleObserver battleObserver = new BattleObserver();
+        RobocodeEngine engine = new RobocodeEngine(new File(robocodePath));//Run from C:/Robocode
+        engine.addBattleListener(battleObserver);
+
+        engine.setVisible(visible);
+        engine.runBattle(new BattleSpecification(1, new BattlefieldSpecification(800, 600),
+                engine.getLocalRepository(writeAndCompileIndividual(individual) + ", "
+                        + stringifyOpponentArray(opponents))), true); // waits till the battle finishes
+        engine.close();
+
+        for(BattleResults br: battleObserver.getResults()){
+            if(br.getTeamLeaderName().contains(name)){
+                eaFitness = br.getScore();
+            }else{
+                botsFitness += br.getScore();
+            }
+        }
+
+        float avgBotFitness = botsFitness/opponentsSize;
+        float denominator = (eaFitness + avgBotFitness);
+        System.out.println("Average bot fitness: " + avgBotFitness);
+        System.out.println("EA bot fitness: " + eaFitness);
+
+        if(denominator != 0) {
+            returnFitness = (eaFitness / denominator);//compute average fitness after each round
+        }else{
+            returnFitness = eaFitness;//eaScore must be 0, eaScore + botScore = 0, therefore both are 0.
+        }
+
+        System.out.println("Calculated fitness: " + returnFitness);
         return returnFitness;
     }
 

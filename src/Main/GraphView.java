@@ -1,7 +1,3 @@
-/**
- * Created by Oliver on 02/03/2018.
- * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
- */
 package Main;
 import Framework.Logger;
 import javafx.application.Application;
@@ -28,7 +24,7 @@ class GraphView {
         }
 
         @Override
-        public void start(Stage primaryStage) throws Exception {
+        public void start(Stage primaryStage) {
             primaryStage.setTitle("Robocode Evolutionary Algorithm");
             final NumberAxis xAxis = new NumberAxis();
             final NumberAxis yAxis = new NumberAxis();

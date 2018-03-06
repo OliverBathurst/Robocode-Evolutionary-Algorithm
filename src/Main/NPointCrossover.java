@@ -1,10 +1,10 @@
+package Main;
+import Framework.Crossover;
+import java.util.Arrays;
 /**
  * Created by Oliver on 04/03/2018.
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
  */
-package Main;
-import Framework.Crossover;
-import java.util.Arrays;
 
 public class NPointCrossover implements Crossover {
     private final int crossoverPoint;

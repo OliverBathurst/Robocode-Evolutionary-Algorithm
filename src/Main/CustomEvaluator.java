@@ -13,7 +13,7 @@ class CustomEvaluator implements Evaluator {
 
     @Override
     public float evaluateFitness(Individual individual) {
-        return new Battle(false).getIndividualFitness(individual);
+        return new Battle(false).getIndividualFitnessBatchRun(individual);
     }
 
 }

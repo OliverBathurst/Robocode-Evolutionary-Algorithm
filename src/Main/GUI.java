@@ -2,7 +2,6 @@ package Main;
 import Framework.Logger;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
@@ -19,6 +18,7 @@ class GUI {
     private JSlider generationSlider;
     private JLabel genLimit;
     private JCheckBox generationLimit;
+    private JScrollPane textBox;
     private TestEA testEA;
     private boolean hasStopped = false;
     private int launchCounter = 0;
@@ -43,7 +43,7 @@ class GUI {
             this.jta = j;
         }
         @Override
-        public void write(int b) throws IOException {
+        public void write(int b) {
             jta.append((String.valueOf((char)b)));
         }
     }
