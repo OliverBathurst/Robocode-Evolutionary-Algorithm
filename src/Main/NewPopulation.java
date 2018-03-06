@@ -9,8 +9,8 @@ import java.util.*;
  */
 
 public class NewPopulation implements Population {
-    private final Double[] geneMin = new Double[]{0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0, 0.0};//example mins
-    private final Double[] geneMax = new Double[]{100.0,100.0,360.0,360.0,360.0,360.0,100.0,100.0,500.0,100.0};//example maxes
+    private final Double[] geneMin = new Double[]{0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,                   0.0,0.0,0.0,0.0,0.0,0.0,0.0};//example mins
+    private final Double[] geneMax = new Double[]{100.0,100.0,360.0,360.0,100.0,100.0,100.0,100.0,   8.0,8.0,8.0,8.0,8.0,8.0,8.0};//example maxes
     private final ArrayList<Individual> population;
     private final int populationSize;
     private final Random geneRandomize = new Random();

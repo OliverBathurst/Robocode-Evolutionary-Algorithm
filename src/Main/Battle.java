@@ -21,6 +21,9 @@ class Battle implements BattleMaker {
     private String[] opponents = new String[] {"sample.SittingDuck" ,"sample.Corners","sample.Crazy","sample.Fire","sample.RamFire", "sample.SpinBot", "sample.Target", "sample.VelociRobot", "sample.Walls"};
     private String path = "C:\\robocode\\robots\\sample", robocodePath = "C:/Robocode", jar = "C:\\robocode\\libs\\robocode.jar;",
             packageName = "sample", name = "OliverBathurstEA";
+    private String[] availableMathods = {"fire(", "ahead(", "back(","turnGunRight(", "turnGunLeft(",
+            "turnLeft(", "turnRight(", "turnRadarLeft(", "turnRadarRight("};
+
     private int opponentsSize = 9;
     private final boolean visible;
 
@@ -187,19 +190,19 @@ class Battle implements BattleMaker {
                 "}\n\n" +
                 "public void onScannedRobot(ScannedRobotEvent e) {\n" +
                 "if(!e.getName().contains(getName())){\n" +
-                "fire("+ individual.genes[0] +");\n" +
-                "ahead("+ individual.genes[1] +");\n" +
-                "turnGunRight("+ individual.genes[3] +");\n" +
+                availableMathods[(individual.genes[8]).intValue()] + individual.genes[0] +");\n" +
+                availableMathods[(individual.genes[9]).intValue()] + individual.genes[1] +");\n" +
+                availableMathods[(individual.genes[10]).intValue()] + individual.genes[2] +");\n" +
                 "}\n}\n\n" +
                 "public void onHitByBullet(HitByBulletEvent e){\n" +
-                "turnRadarRight("+ individual.genes[4] +");\n" +
-                "ahead("+ individual.genes[6] +");\n" +
+                availableMathods[(individual.genes[11]).intValue()] + individual.genes[3] +");\n" +
+                availableMathods[(individual.genes[12]).intValue()] + individual.genes[4] +");\n" +
                 "}\n\n" +
                 "public void onHitWall(HitWallEvent e) {\n" +
-                "back(" + individual.genes[7] + ");\n" +
+                availableMathods[(individual.genes[13]).intValue()] + individual.genes[5] +");\n" +
                 "}\n" +
                 "public void onHitRobot(HitRobotEvent e) {\n" +
-                "back(" + individual.genes[8] + ");\n" +
+                availableMathods[(individual.genes[14]).intValue()] + individual.genes[6] +");\n" +
                 "}\n}";
     }
 }
