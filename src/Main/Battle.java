@@ -92,6 +92,7 @@ class Battle implements BattleMaker {
         return returnFitness;
     }
 
+    @Override
     public float getIndividualFitnessBatchRun(Individual individual){
         float eaFitness = 0.0f, botsFitness = 0.0f, returnFitness;
         int opponentsSize = opponents.length;
