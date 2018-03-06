@@ -189,20 +189,17 @@ class Battle implements BattleMaker {
                 "if(!e.getName().contains(getName())){\n" +
                 "fire("+ individual.genes[0] +");\n" +
                 "ahead("+ individual.genes[1] +");\n" +
-                "turnRight("+ individual.genes[2] +");\n" +
                 "turnGunRight("+ individual.genes[3] +");\n" +
                 "}\n}\n\n" +
                 "public void onHitByBullet(HitByBulletEvent e){\n" +
                 "turnRadarRight("+ individual.genes[4] +");\n" +
-                "turnRight("+ individual.genes[5] +");\n" +
                 "ahead("+ individual.genes[6] +");\n" +
                 "}\n\n" +
                 "public void onHitWall(HitWallEvent e) {\n" +
                 "back(" + individual.genes[7] + ");\n" +
-                "}" +
+                "}\n" +
                 "public void onHitRobot(HitRobotEvent e) {\n" +
                 "back(" + individual.genes[8] + ");\n" +
-                "}\n" +
-                "\n}";
+                "}\n}";
     }
 }
