@@ -19,9 +19,10 @@ class GUI {
     private JLabel genLimit;
     private JCheckBox generationLimit;
     private JScrollPane textBox;
+    private JButton writeBest;
     private TestEA testEA;
+    private final CodeGen gen;
     private boolean hasStopped = false;
-    private int launchCounter = 0;
 
     private GUI(){
         runButton.addActionListener(e -> run());
@@ -30,15 +31,17 @@ class GUI {
         write.addActionListener(e -> writeToFile());
         printBest.addActionListener(e -> printBest());
         ((DefaultCaret) outputText.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-        PrintStream out = new PrintStream(new outputPrintStream(outputText) );
+        gen = new CodeGen();
+        PrintStream out = new PrintStream(new outputPrintStream(outputText));
         System.setOut(out);
         System.setErr(out);
         popSize.addChangeListener(e -> populationLabel.setText("Population Size: " + popSize.getValue()));
         generationSlider.addChangeListener(e -> genLimit.setText("Generation Limit: " + generationSlider.getValue()));
+        writeBest.addActionListener(e -> writeBestIndividual());
     }
+
     private class outputPrintStream extends OutputStream  {
         private final JTextArea jta;
-
         outputPrintStream(JTextArea j){
             this.jta = j;
         }
@@ -47,6 +50,7 @@ class GUI {
             jta.append((String.valueOf((char)b)));
         }
     }
+
     public static void main(String[] args){
         JFrame j = new JFrame("Robocode Evolutionary Algorithm");
         j.setContentPane(new GUI().panel1);
@@ -91,13 +95,8 @@ class GUI {
         if(testEA != null) {
             Logger l = testEA.getLogger();
             if (l != null) {
-                if(launchCounter != 1) {
-                    launchCounter++;
-                    System.out.println("Launching...\n");
-                    new GraphView(l).launch();
-                }else{
-                    JOptionPane.showMessageDialog(null, "Cannot call launch more than once");
-                }
+                System.out.println("Launching...\n");
+                new GraphView(l).launch();
             } else {
                 System.out.println("Null log\n");
             }
@@ -108,6 +107,19 @@ class GUI {
 
     private void writeToFile(){
         testEA.getLogger().writeToFile();
+    }
+
+    private void writeBestIndividual() {
+        if(testEA != null){
+            Individual best = testEA.getBest();
+            if(best != null){
+                gen.writeIndividualToFile(best);
+            }else{
+                System.out.println("Null Individual\n");
+            }
+        }else{
+            System.out.println("Null Instance\n");
+        }
     }
 
     private void setupEnvironment(){

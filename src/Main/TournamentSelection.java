@@ -1,11 +1,7 @@
 package Main;
-
 import Framework.Selector;
-
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Random;
 
 /**
  * Created by Oliver on 02/02/2018.
@@ -27,7 +23,7 @@ public class TournamentSelection implements Selector {
         ArrayList<Individual> competitors = new ArrayList<>();
 
         while(selected.size() < number){
-            competitors.clear();
+            competitors.clear();//clear the competitors array list for new selection
             for(int competitor = 0; competitor < number; competitor++){
                 competitors.add(pop.get(numGen.nextInt(pop.size())));
             }
