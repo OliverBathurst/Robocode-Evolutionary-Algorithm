@@ -120,17 +120,17 @@ class Battle implements BattleMaker {
             }
         }
 
-        float avgBotFitness = botsFitness/opponentsSize;
-        float denominator = (eaFitness + avgBotFitness);
-        System.out.println("Average bot fitness: " + avgBotFitness);
-        System.out.println("EA bot fitness: " + eaFitness);
+        //float avgBotFitness = botsFitness/opponentsSize;
+        //float denominator = (eaFitness + avgBotFitness);
+        //System.out.println("Average bot fitness: " + avgBotFitness);
+        //System.out.println("EA bot fitness: " + eaFitness);
 
-        if(denominator != 0) {
-            returnFitness = (eaFitness / denominator);//compute average fitness after each round
-        }else{
-            returnFitness = eaFitness;//eaScore must be 0, eaScore + botScore = 0, therefore both are 0.
-        }
-
+        //if(denominator != 0) {
+        //    returnFitness = (eaFitness / denominator);//compute average fitness after each round
+       // }else{
+        //    returnFitness = eaFitness;//eaScore must be 0, eaScore + botScore = 0, therefore both are 0.
+        //}
+        returnFitness = eaFitness;
         System.out.println("Calculated fitness: " + returnFitness);
         return returnFitness;
     }
