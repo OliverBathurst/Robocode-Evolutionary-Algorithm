@@ -71,7 +71,8 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
             children.clear();
             System.out.println("Crossing over...");
             while(children.size() < population.size()) {//perform crossover on selected parents and add to children
-                children.add(this.crossOp.crossover(parentSelectOp.selectFromPopulation(population),parentSelectOp.selectFromPopulation(population)));//SELECT AND CROSSOVER
+                children.add(this.crossOp.crossover(parentSelectOp.selectFromPopulation(population),
+                        parentSelectOp.selectFromPopulation(population)));//SELECT AND CROSSOVER
             }
             //MUTATE RESULTING OFFSPRING
             System.out.println("Children size: " + children.size());

@@ -2,7 +2,9 @@ package Main;
 
 import Framework.Selector;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Random;
 
 /**
@@ -19,29 +21,29 @@ public class TournamentSelection implements Selector {
 
     @Override
     public ArrayList<Individual> selectIndividualsFromPopulation(ArrayList<Individual> pop, int number) {
-        Random numGen = new Random(System.currentTimeMillis());
+        SecureRandom numGen = new SecureRandom();
 
         ArrayList<Individual> selected = new ArrayList<>();
         ArrayList<Individual> competitors = new ArrayList<>();
-        Individual tempBest;
 
-        int numSelected = 0;
-        while(numSelected < number){
+        while(selected.size() < number){
             for(int competitor = 0; competitor < number; competitor++){
-                competitors.add(competitor, pop.get(numGen.nextInt(pop.size())));
+                competitors.add(pop.get(numGen.nextInt(pop.size())));
             }
-            tempBest = competitors.get(0);
+            Individual tempBest = competitors.get(0);//select first (random number)
             for(int tournament = 0; tournament < number; tournament++){
-                if(tempBest.compareTo(competitors.get(tournament)) > 0){
+                if(tempBest.fitness < competitors.get(tournament).fitness){
                     tempBest = competitors.get(tournament);
                 }
             }
-            selected.add(numSelected, tempBest);
-            numSelected++;
+            selected.add(tempBest);
         }
+        sort(selected);
         return selected;
     }
 
     @Override
-    public void sort(ArrayList<Individual> individuals) { }
+    public void sort(ArrayList<Individual> individuals) {
+        individuals.sort((o1, o2) -> (int) (o1.fitness - o2.fitness));
+    }
 }
