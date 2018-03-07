@@ -18,7 +18,9 @@ import java.io.FileWriter;
  */
 
 class Battle implements BattleMaker {
-    private String[] opponents = new String[] {"sample.SittingDuck" ,"sample.Corners","sample.Crazy","sample.Fire","sample.RamFire", "sample.SpinBot", "sample.Target", "sample.VelociRobot", "sample.Walls"};
+    //private String[] opponents = new String[] {"sample.SittingDuck" ,"sample.Corners","sample.Crazy","sample.Fire","sample.RamFire", "sample.SpinBot", "sample.Target", "sample.VelociRobot", "sample.Walls"};
+    private String[] opponents = new String[] {"sample.Crazy"};
+
     private String path = "C:\\robocode\\robots\\sample", robocodePath = "C:/Robocode", jar = "C:\\robocode\\libs\\robocode.jar;",
             packageName = "sample", name = "OliverBathurstEA";
     private String[] availableMathods = {"fire(", "ahead(", "back(","turnGunRight(", "turnGunLeft(",
