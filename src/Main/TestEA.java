@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 class TestEA extends Thread implements EvolutionaryAlgorithm {
     private int generations = 0, generationsLimit = Integer.MAX_VALUE;//default max value
-    private boolean minimize, finished = false;//Sentinel for while loop, minimise quality
+    private boolean minimize, finished = false, hasTerminated = false;//Sentinel for while loop, minimise quality
     private ArrayList<Individual> population = new ArrayList<>();
     private Individual best, totalBest;
     private Population populationInit;
@@ -124,18 +124,23 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
             if (this.generations >= generationsLimit) {
                 terminate = true;
             }
+            if(hasTerminated){
+                terminate = true;
+            }
         }
         return terminate;
     }
 
     boolean hasTerminated(){
-        return finished;
+        return hasTerminated;
     }
+
     void forceTerminate(){
-        this.finished = true;
+        this.hasTerminated = true;
     }
+
     void resetTermination(){
-        this.finished = false;
+        this.hasTerminated = false;
     }
 
     private void setBest(){

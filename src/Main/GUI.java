@@ -63,15 +63,8 @@ class GUI {
 
     private void run(){
         System.out.println("Running...\n");
-        if(testEA == null){
-            setupEnvironment();
-        }
-        if(testEA.hasTerminated()) {
-            testEA = null;
-            run();
-        }else{
-            testEA.start();
-        }
+        setupEnvironment();
+        testEA.start();
     }
 
     private void stop(){
@@ -146,6 +139,7 @@ class GUI {
         int generationSize = generationSlider.getValue();
         int populationSize = popSize.getValue();
         if(populationSize != 0) {
+            testEA = null;
             testEA = new TestEA();
             testEA.setLogger(new Log());
             testEA.init(1000, false, new NewPopulation(populationSize),
