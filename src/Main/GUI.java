@@ -20,24 +20,26 @@ class GUI {
     private JCheckBox generationLimit;
     private JScrollPane textBox;
     private JButton writeBest;
+    private JButton printTotal;
+    private JButton writeTotalBest;
     private TestEA testEA;
-    private final CodeGen gen;
-    private boolean hasStopped = false;
+    private final CodeGen gen = new CodeGen();
 
     private GUI(){
         runButton.addActionListener(e -> run());
         stopButton.addActionListener(e -> stop());
         openGraphButton.addActionListener(e -> openGraphView());
         write.addActionListener(e -> writeToFile());
-        printBest.addActionListener(e -> printBest());
-        ((DefaultCaret) outputText.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-        gen = new CodeGen();
-        PrintStream out = new PrintStream(new outputPrintStream(outputText));
-        System.setOut(out);
-        System.setErr(out);
+        printBest.addActionListener(e -> printCurrentBest());
         popSize.addChangeListener(e -> populationLabel.setText("Population Size: " + popSize.getValue()));
         generationSlider.addChangeListener(e -> genLimit.setText("Generation Limit: " + generationSlider.getValue()));
         writeBest.addActionListener(e -> writeBestIndividual());
+        printTotal.addActionListener(e -> printTotalBest());
+        writeTotalBest.addActionListener(e -> writeTotalBestToFile());
+        ((DefaultCaret) outputText.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        PrintStream out = new PrintStream(new outputPrintStream(outputText));
+        System.setOut(out);
+        System.setErr(out);
     }
 
     private class outputPrintStream extends OutputStream  {
@@ -62,26 +64,34 @@ class GUI {
     private void run(){
         System.out.println("Running...\n");
         if(testEA == null){
-            hasStopped = false;
             setupEnvironment();
         }
-        if(!hasStopped) {
-            testEA.start();//run once
-        }else{
-            System.out.println("Thread has stopped, restarting\n");
+        if(testEA.hasTerminated()) {
             testEA = null;
             run();
+        }else{
+            testEA.start();
         }
     }
 
-    @SuppressWarnings("deprecation")
     private void stop(){
-        System.out.println("Stopping...\n");
-        testEA.stop();
-        hasStopped = true;
+        System.out.println("Stopping after run...\n");
+        if(testEA != null){
+            testEA.forceTerminate();
+        }else{
+            System.out.println("Null Instance\n");
+        }
     }
 
-    private void printBest(){
+    private void printTotalBest(){
+        if(testEA != null){
+            System.out.println(testEA.printGenome(testEA.getTotalBest()));
+        }else{
+            System.out.println("Null Instance\n");
+        }
+    }
+
+    private void printCurrentBest(){
         Individual i = testEA.getBest();
         if(i != null) {
             System.out.println("Best: " + i.fitness + "\n");
@@ -93,10 +103,9 @@ class GUI {
 
     private void openGraphView(){
         if(testEA != null) {
-            Logger l = testEA.getLogger();
-            if (l != null) {
-                System.out.println("Launching...\n");
-                new GraphView(l).launch();
+            Logger log = testEA.getLogger();
+            if (log != null) {
+                new GraphView(log).launch();
             } else {
                 System.out.println("Null log\n");
             }
@@ -107,6 +116,17 @@ class GUI {
 
     private void writeToFile(){
         testEA.getLogger().writeToFile();
+    }
+
+    private void writeTotalBestToFile(){
+        if(testEA != null){
+            Individual totalBest = testEA.getTotalBest();
+            if(totalBest != null){
+                gen.writeIndividualToFile(totalBest);
+            }
+        }else{
+            System.out.println("Null Instance\n");
+        }
     }
 
     private void writeBestIndividual() {

@@ -15,4 +15,5 @@ public interface EvolutionaryAlgorithm {
     void setLogger(Logger log);
     Logger getLogger();
     Individual getBest();
+    Individual getTotalBest();
 }

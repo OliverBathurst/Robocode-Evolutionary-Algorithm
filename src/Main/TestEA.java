@@ -9,8 +9,9 @@ import java.util.ArrayList;
 
 class TestEA extends Thread implements EvolutionaryAlgorithm {
     private int generations = 0, generationsLimit = Integer.MAX_VALUE;//default max value
+    private boolean minimize, finished = false;//Sentinel for while loop, minimise quality
     private ArrayList<Individual> population = new ArrayList<>();
-    private Individual best;
+    private Individual best, totalBest;
     private Population populationInit;
     private Evaluator evalOp;
     private Crossover crossOp;
@@ -18,7 +19,6 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
     private Mutator mutateOp;
     private Logger log;
     private float targetFitness;
-    private boolean minimize;
 
     @Override
     public void init(float targetFitness, boolean minimise, Population population, Evaluator customEvaluator,
@@ -51,12 +51,16 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
     }
 
     @Override
+    public Individual getTotalBest() {
+        return totalBest;
+    }
+
+    @Override
     public void run() {
         populationInit.createPopulation();//INITIALISE
         population = populationInit.returnPopulation();
         ArrayList<Individual> children = new ArrayList<>();//temp pop for storing children
 
-        boolean finished = false;//Sentinel for while loop
         System.out.println("Generations Limit: " + generationsLimit);
         System.out.println("Population size: " + population.size());
         System.out.println("Evaluating population...");
@@ -124,19 +128,49 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
         return terminate;
     }
 
+    boolean hasTerminated(){
+        return finished;
+    }
+    void forceTerminate(){
+        this.finished = true;
+    }
+    void resetTermination(){
+        this.finished = false;
+    }
+
     private void setBest(){
         float currentFitness = 0f;
+
         for (Individual individual: population) {
             if(individual.fitness >= currentFitness){
                 currentFitness = individual.fitness;
                 this.best = individual;
             }
         }
+        //set global best over run
+        if(this.totalBest != null){
+            if(this.best.fitness > this.totalBest.fitness){
+                this.totalBest = this.best;
+            }
+        }else{
+            this.totalBest = this.best;
+        }
     }
     String printGenome(){
         StringBuilder asString = new StringBuilder();
-        for(int i = 0; i < this.best.getGeneLength(); i++){
-            asString.append("Gene: ").append(i).append(" Value: ").append(this.best.genes[i]).append("\n");
+        if(this.best != null) {
+            for (int i = 0; i < this.best.getGeneLength(); i++) {
+                asString.append("Gene: ").append(i).append(" Value: ").append(this.best.genes[i]).append("\n");
+            }
+        }
+        return asString.toString();
+    }
+    String printGenome(Individual individual){
+        StringBuilder asString = new StringBuilder();
+        if(individual != null) {
+            for (int i = 0; i < individual.getGeneLength(); i++) {
+                asString.append("Gene: ").append(i).append(" Value: ").append(individual.genes[i]).append("\n");
+            }
         }
         return asString.toString();
     }
