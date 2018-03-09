@@ -143,7 +143,7 @@ class GUI {
             testEA = new TestEA();
             testEA.setLogger(new Log());
             testEA.init(1000, false, new NewPopulation(populationSize),
-                    new CustomEvaluator(), new RandomMutator(1), new TournamentSelection(), new GreedySelection(), new UniformCrossover());//UniformCrossover()
+                    new CustomEvaluator(), new RandomMutator(5), new TournamentSelection(), new GreedySelection(), new UniformCrossover());//UniformCrossover()
             if(generationLimit.isSelected()){
                 testEA.setNumGenerations(generationSize);
             }
