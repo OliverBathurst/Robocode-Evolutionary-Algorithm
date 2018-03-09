@@ -65,7 +65,7 @@ class CodeGen implements CodeGenerator{
     public String getJavaCode(Individual individual){
         return "package " + packageName + ";\n" +
                 "import robocode.*;" + "\n" +
-                "public class " + name + " extends Robot{\n" +
+                "public class " + name + " extends AdvancedRobot{\n" +
                 "public void run(){\n" +
                 "while(true) {\n" +
                 "turnGunRight(Double.POSITIVE_INFINITY);\n" +
