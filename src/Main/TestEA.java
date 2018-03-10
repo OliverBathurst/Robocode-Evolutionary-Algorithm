@@ -121,7 +121,7 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
             if ((this.best.fitness > this.targetFitness) && (!this.minimize)) {
                 terminate = true;
             }
-            if (this.generations >= generationsLimit) {
+            if (this.generations >= (generationsLimit - 1)) {
                 terminate = true;
             }
             if(hasTerminated){
