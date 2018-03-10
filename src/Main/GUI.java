@@ -22,6 +22,8 @@ class GUI {
     private JButton writeBest;
     private JButton printTotal;
     private JButton writeTotalBest;
+    private JLabel mutationRate;
+    private JTextField mutationRateBox;
     private TestEA testEA;
     private final CodeGen gen = new CodeGen();
 
@@ -138,12 +140,29 @@ class GUI {
     private void setupEnvironment(){
         int generationSize = generationSlider.getValue();
         int populationSize = popSize.getValue();
+
+        Double mutationRateValue;//default mutation rate
+        String mutation = mutationRateBox.getText().trim();
+
+        try{
+            mutationRateValue = Double.parseDouble(mutation);
+        }catch (Exception e){
+            try{
+                Integer intValue = Integer.parseInt(mutation);
+                mutationRateValue = intValue.doubleValue();
+            }catch(Exception e2){
+                mutationRateValue = 5.0d;
+            }
+        }
+
+        System.out.println("Mutation rate: " + mutationRateValue);
+
         if(populationSize != 0) {
             testEA = null;
             testEA = new TestEA();
             testEA.setLogger(new Log());
             testEA.init(1000, false, new NewPopulation(populationSize),
-                    new CustomEvaluator(), new RandomMutator(5), new TournamentSelection(), new GreedySelection(), new UniformCrossover());//UniformCrossover()
+                    new CustomEvaluator(), new RandomMutator(mutationRateValue), new TournamentSelection(), new GreedySelection(), new UniformCrossover());//UniformCrossover()
             if(generationLimit.isSelected()){
                 testEA.setNumGenerations(generationSize);
             }
