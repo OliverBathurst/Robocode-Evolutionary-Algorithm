@@ -15,7 +15,8 @@ import java.io.PrintWriter;
 
 class CodeGen implements CodeGenerator{
     private String path = "C:\\robocode\\robots\\sample", jar = "C:\\robocode\\libs\\robocode.jar;",
-            packageName = "sample", name = "OliverBathurstEA";
+            packageName = "sample", currentName = "OliverBathurstEA";
+    private final String defaultName = "OliverBathurstEA";
     private final String[] availableMethods = {"fireAtEnemy(e,", "ahead(", "back(","turnGunRight(", "turnGunLeft(",
             "turnLeft(", "turnRight(", "turnRadarLeft(", "turnRadarRight("};
 
@@ -23,7 +24,7 @@ class CodeGen implements CodeGenerator{
 
     @Override
     public void setRobotName(String name){
-        this.name = name;
+        this.currentName = name;
     }
     @Override
     public void setRobotsDir(String path){
@@ -37,36 +38,28 @@ class CodeGen implements CodeGenerator{
     public void setPackageName(String packageName){
         this.packageName = packageName;
     }
-
-    @Override
-    public String writeAndCompileIndividual(Individual individual){
-        String filePath = path + "\\" + name + ".java";
-        try{
-            BufferedWriter out = new BufferedWriter(new FileWriter(filePath));
-            out.write(getJavaCode(individual));
-            out.close();
-
-            Process process = Runtime.getRuntime().exec("javac -cp " + jar + " " + filePath);
-            process.waitFor();//block thread, this needs to finish
-            if(process.exitValue() != 0) {
-                System.out.println("Exited with value: " + process.exitValue());
-            }
-        }catch(Exception e){
-            System.err.println("Error: " + e.getMessage());
-        }
-        return packageName + "." + name;
-    }
-
     @Override
     public String getRobotName() {
-        return name;
+        return currentName;
+    }
+    @Override
+    public String writeAndCompileIndividual(Individual individual){
+        currentName = defaultName;
+        compile(individual, path + "\\" + currentName + ".java");
+        return packageName + "." + currentName;
+    }
+
+    String writeAndCompileIndividual(Individual individual, String customName){
+        currentName = customName;
+        compile(individual, path + "\\" + customName + ".java");
+        return packageName + "." + customName;
     }
 
     @Override
     public String getJavaCode(Individual individual){
         return "package " + packageName + ";\n" +
                 "import robocode.*;" + "\n" +
-                "public class " + name + " extends Robot{\n\n" +
+                "public class " + currentName + " extends Robot{\n\n" +
                 "public void run(){\n" +
                 "\twhile(true) {\n" +
                 "\t\tturnGunRight(Double.POSITIVE_INFINITY);\n" +
@@ -117,6 +110,21 @@ class CodeGen implements CodeGenerator{
                 pw.write(getJavaCode(individual));
                 pw.close();
             } catch (Exception ignored) {}
+        }
+    }
+    private void compile(Individual individual, String filePath){
+        try{
+            BufferedWriter out = new BufferedWriter(new FileWriter(filePath));
+            out.write(getJavaCode(individual));
+            out.close();
+
+            Process process = Runtime.getRuntime().exec("javac -cp " + jar + " " + filePath);
+            process.waitFor();//block thread, this needs to finish
+            if(process.exitValue() != 0) {
+                System.out.println("Exited with value: " + process.exitValue());
+            }
+        }catch(Exception e){
+            System.err.println("Error: " + e.getMessage());
         }
     }
 }

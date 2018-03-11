@@ -8,6 +8,8 @@ import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.BattleErrorEvent;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Oliver on 03/02/2018.
@@ -19,12 +21,18 @@ class Battle implements BattleMaker {
     private String[] opponents = new String[] {"sample.Crazy"};
     private final CodeGen code = new CodeGen();
     private final String robocodePath = "C:/Robocode";
-    private int opponentsSize = 9;
+    private int opponentsSize = 9, helperBotsNumber = 0;
     private final boolean visible;
-
+    private boolean helperBots;
 
     Battle(boolean visible){
         this.visible = visible;
+    }
+
+    Battle(boolean visible, boolean helperBots, int numberHelpers){
+        this.visible = visible;
+        this.helperBots = helperBots;
+        this.helperBotsNumber = numberHelpers;
     }
 
     @Override
@@ -79,6 +87,8 @@ class Battle implements BattleMaker {
         float eaFitness = 0.0f, botsFitness = 0.0f, returnFitness;
         int opponentsSize = opponents.length;
 
+        generateHelpers(individual);
+
         BattleObserver battleObserver = new BattleObserver();
         RobocodeEngine engine = new RobocodeEngine(new File(robocodePath));//Run from C:/Robocode
         engine.addBattleListener(battleObserver);
@@ -96,7 +106,6 @@ class Battle implements BattleMaker {
                 botsFitness += br.getScore();
             }
         }
-
         //float avgBotFitness = botsFitness/opponentsSize;
         //float denominator = (eaFitness + avgBotFitness);
         //System.out.println("Average bot fitness: " + avgBotFitness);
@@ -111,6 +120,8 @@ class Battle implements BattleMaker {
         System.out.println("Calculated fitness: " + returnFitness);
         return returnFitness;
     }
+
+
 
     class BattleObserver extends BattleAdaptor {
 
@@ -136,5 +147,17 @@ class Battle implements BattleMaker {
             opponentString.append(s).append(",");
         }
         return opponentString.toString();
+    }
+
+    private void generateHelpers(Individual individual){
+        if(helperBotsNumber > 0) {
+            ArrayList<String> newOpponents = new ArrayList<>();
+            newOpponents.addAll(Arrays.asList(opponents));//add existing opponents
+
+            for (int i = 0; i < helperBotsNumber; i++) {
+                newOpponents.add(code.writeAndCompileIndividual(individual, "Clone" + i));//generate a new clone and add to opponents array list
+            }
+            opponents = newOpponents.toArray(new String[newOpponents.size()]);//convert array list to array and rebind opponents array
+        }
     }
 }
