@@ -158,7 +158,6 @@ class GUI {
         System.out.println("Mutation rate: " + mutationRateValue);
 
         if(populationSize != 0) {
-            testEA = null;
             testEA = new TestEA();
             testEA.setLogger(new Log());
             testEA.init(1000, false, new NewPopulation(populationSize),
