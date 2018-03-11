@@ -96,7 +96,11 @@ class GUI {
      */
     private void printTotalBest(){
         if(testEA != null){
-            System.out.println(testEA.printGenome(testEA.getTotalBest()));
+            Individual i = testEA.getTotalBest();
+            if(i != null) {
+                System.out.println("Global Best: " + i.fitness + "\n");
+                System.out.println(testEA.printGenome(i));
+            }
         }else{
             System.out.println("Null Instance\n");
         }

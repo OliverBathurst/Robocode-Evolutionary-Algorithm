@@ -16,6 +16,7 @@ import java.io.PrintWriter;
 class CodeGen implements CodeGenerator{
     private String path = "C:\\robocode\\robots\\sample", jar = "C:\\robocode\\libs\\robocode.jar;",
             packageName = "sample", currentName = "OliverBathurstEA";
+    private final String defaultName = "OliverBathurstEA";
     private final String[] availableMethods = {"fireAtEnemy(e,", "ahead(", "back(","turnGunRight(", "turnGunLeft(",
             "turnLeft(", "turnRight(", "turnRadarLeft(", "turnRadarRight("};//available methods, their insertion into robot's Java file determined by gene
 
@@ -39,17 +40,16 @@ class CodeGen implements CodeGenerator{
     }
     @Override
     public String getRobotName() {
-        return currentName;
+        return defaultName;
     }
 
     /**
      * Write and compile an individual, return path
      */
     @Override
-    public String writeAndCompileIndividual(Individual individual){
-        currentName = "OliverBathurstEA";//set default name
-        compile(individual, path + "\\" + currentName + ".java");//compile and write to file
-        return packageName + "." + currentName;
+    public String writeAndCompileIndividual(Individual individual){//set default name
+        compile(individual, path + "\\" + defaultName + ".java");//compile and write to file
+        return packageName + "." + defaultName;
     }
     /**
      * Write and compile an individual with custom name, return path
@@ -126,15 +126,15 @@ class CodeGen implements CodeGenerator{
                 "}\n\n" +
                 "public void fireAtEnemy(Object e, Double d) {\n" +
                 "\tif(e instanceof ScannedRobotEvent){\n" +
-                "\t\tif(!((ScannedRobotEvent) e).getName().contains(getName())){\n" +
+                "\t\tif(!((ScannedRobotEvent) e).getName().contains(\"Clone\")){\n" +
                 "\t\t\tfire(d);\n"+
                 "\t\t}\n" +
                 "\t}else if(e instanceof HitByBulletEvent){\n" +
-                "\t\tif(!((HitByBulletEvent) e).getName().contains(getName())){\n" +
+                "\t\tif(!((HitByBulletEvent) e).getName().contains(\"Clone\")){\n" +
                 "\t\t\tfire(d);\n"+
                 "\t\t}\n" +
                 "\t}else if(e instanceof HitRobotEvent){\n" +
-                "\t\tif(!((HitRobotEvent) e).getName().contains(getName())){\n" +
+                "\t\tif(!((HitRobotEvent) e).getName().contains(\"Clone\")){\n" +
                 "\t\t\tfire(d);\n"+
                 "\t\t}\n" +
                 "\t}else{\n" +

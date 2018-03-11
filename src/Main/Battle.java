@@ -118,20 +118,22 @@ class Battle implements BattleMaker {
             if(br.getTeamLeaderName().contains(code.getRobotName())){
                 eaFitness = br.getScore();
             }else{
-                botsFitness += br.getScore();
+                if(!br.getTeamLeaderName().contains("Clone")) {//don't count friendly scores
+                    botsFitness += br.getScore();
+                }
             }
         }
-        //float avgBotFitness = botsFitness/opponentsSize;
-        //float denominator = (eaFitness + avgBotFitness);
+        float avgBotFitness = botsFitness/opponentsSize;
+        float denominator = (eaFitness + avgBotFitness);
         //System.out.println("Average bot fitness: " + avgBotFitness);
         //System.out.println("EA bot fitness: " + eaFitness);
 
-        //if(denominator != 0) {
-        //    returnFitness = (eaFitness / denominator);//compute average fitness after each round
-       // }else{
-        //    returnFitness = eaFitness;//eaScore must be 0, eaScore + botScore = 0, therefore both are 0.
-        //}
-        returnFitness = eaFitness;
+        if(denominator != 0) {
+            returnFitness = (eaFitness / denominator);//compute average fitness after each round
+        }else{
+            returnFitness = eaFitness;//eaScore must be 0, eaScore + botScore = 0, therefore both are 0.
+        }
+
         System.out.println("Calculated fitness: " + returnFitness);
         return returnFitness;
     }
