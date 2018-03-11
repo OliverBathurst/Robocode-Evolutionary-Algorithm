@@ -134,8 +134,8 @@ class Battle implements BattleMaker {
             returnFitness = eaFitness;//eaScore must be 0, eaScore + botScore = 0, therefore both are 0.
         }
 
-        System.out.println("Calculated fitness: " + returnFitness);
-        return returnFitness;
+        System.out.println("Calculated fitness: " + eaFitness);
+        return eaFitness;//returnFitness
     }
 
     /**
