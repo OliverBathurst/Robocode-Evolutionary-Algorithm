@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 
 public interface Population {
-    void createPopulation();
+    ArrayList<Individual> createPopulation();
     Individual createIndividual();
     ArrayList<Individual> returnPopulation();
     void sort();

@@ -15,10 +15,12 @@ public class Individual extends PopulationMember implements Comparable<Individua
         super.fitness = 0f;
     }
 
-    int getGeneLength(){return this.genes.length;}
+    int getGeneLength(){
+        return this.genes.length;//return length of genome
+    }
 
     void setFitness(float fitness){
-        this.fitness = fitness;
+        this.fitness = fitness;//set fitness of individual
     }
 
     @Override

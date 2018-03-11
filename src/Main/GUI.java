@@ -24,6 +24,9 @@ class GUI {
     private JButton writeTotalBest;
     private JLabel mutationRate;
     private JTextField mutationRateBox;
+    private JCheckBox battleVisible;
+    private JLabel numHelpersLabel;
+    private JSlider numHelpersSlider;
     private TestEA testEA;
     private final CodeGen gen = new CodeGen();
 
@@ -35,6 +38,7 @@ class GUI {
         printBest.addActionListener(e -> printCurrentBest());
         popSize.addChangeListener(e -> populationLabel.setText("Population Size: " + popSize.getValue()));
         generationSlider.addChangeListener(e -> genLimit.setText("Generation Limit: " + generationSlider.getValue()));
+        numHelpersSlider.addChangeListener(e -> numHelpersLabel.setText("Number of Helpers: " + numHelpersSlider.getValue()));
         writeBest.addActionListener(e -> writeBestIndividual());
         printTotal.addActionListener(e -> printTotalBest());
         writeTotalBest.addActionListener(e -> writeTotalBestToFile());
@@ -44,6 +48,9 @@ class GUI {
         System.setErr(out);
     }
 
+    /**
+     * Custom output stream for printing to GUI box
+     */
     private class outputPrintStream extends OutputStream  {
         private final JTextArea jta;
         outputPrintStream(JTextArea j){
@@ -63,12 +70,18 @@ class GUI {
         j.setVisible(true);
     }
 
+    /**
+     * Sets up the environment and starts the main evolutionary thread
+     */
     private void run(){
         System.out.println("Running...\n");
         setupEnvironment();
         testEA.start();
     }
 
+    /**
+     * Terminates the run after the generation is finished
+     */
     private void stop(){
         System.out.println("Stopping after run...\n");
         if(testEA != null){
@@ -78,6 +91,9 @@ class GUI {
         }
     }
 
+    /**
+     * Prints the global bes solution over the run
+     */
     private void printTotalBest(){
         if(testEA != null){
             System.out.println(testEA.printGenome(testEA.getTotalBest()));
@@ -86,6 +102,9 @@ class GUI {
         }
     }
 
+    /**
+     * Prints the current fittest individual
+     */
     private void printCurrentBest(){
         Individual i = testEA.getBest();
         if(i != null) {
@@ -96,6 +115,9 @@ class GUI {
         }
     }
 
+    /**
+     * Opens graph view with log, can only be launched once per app launch
+     */
     private void openGraphView(){
         if(testEA != null) {
             Logger log = testEA.getLogger();
@@ -109,21 +131,30 @@ class GUI {
         }
     }
 
+    /**
+     * Calls the save to file dialog (writes generations and fitness per generation
+     */
     private void writeToFile(){
         testEA.getLogger().writeToFile();
     }
 
+    /**
+     * Writes the best individual to robot file
+     */
     private void writeTotalBestToFile(){
         if(testEA != null){
             Individual totalBest = testEA.getTotalBest();
             if(totalBest != null){
-                gen.writeIndividualToFile(totalBest);
+                gen.writeIndividualToFile(totalBest);//use code gen to write individual to file
             }
         }else{
             System.out.println("Null Instance\n");
         }
     }
 
+    /**
+     * Writes current best to file (opens file save dialog)
+     */
     private void writeBestIndividual() {
         if(testEA != null){
             Individual best = testEA.getBest();
@@ -137,6 +168,9 @@ class GUI {
         }
     }
 
+    /**
+     * Sets up values based on GUI options, initialises evolutionary algorithm
+     */
     private void setupEnvironment(){
         int generationSize = generationSlider.getValue();
         int populationSize = popSize.getValue();
@@ -161,7 +195,8 @@ class GUI {
             testEA = new TestEA();
             testEA.setLogger(new Log());
             testEA.init(1000, false, new NewPopulation(populationSize),
-                    new CustomEvaluator(), new RandomMutator(mutationRateValue), new TournamentSelection(), new GreedySelection(), new UniformCrossover());//UniformCrossover()
+                    new CustomEvaluator(battleVisible.isSelected(), numHelpersSlider.getValue()), new RandomMutator(mutationRateValue),
+                    new TournamentSelection(), new GreedySelection(), new UniformCrossover());
             if(generationLimit.isSelected()){
                 testEA.setNumGenerations(generationSize);
             }

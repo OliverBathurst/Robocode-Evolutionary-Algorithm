@@ -57,51 +57,51 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
 
     @Override
     public void run() {
-        populationInit.createPopulation();//INITIALISE
-        population = populationInit.returnPopulation();
+        population = populationInit.createPopulation();//INITIALISE POP
         ArrayList<Individual> children = new ArrayList<>();//temp pop for storing children
 
         System.out.println("Generations Limit: " + generationsLimit);
         System.out.println("Population size: " + population.size());
-        System.out.println("Evaluating population...");
-
-        for (Individual individual: population) {
-            individual.setFitness(evalOp.evaluateFitness(individual));//EVALUATE
-        }
 
         System.out.println("Entering evolutionary loop");
 
         while(!finished){
-            children.clear();
+            System.out.println("Evaluating population...");
+
+            //EVALUATE INITIAL POP
+            for (Individual individual: population) {
+                individual.setFitness(evalOp.evaluateFitness(individual));
+            }
+
+            children.clear();//clear out children for next run
             System.out.println("Crossing over...");
             while(children.size() < population.size()) {//perform crossover on selected parents and add to children
-                children.add(this.crossOp.crossover(parentSelectOp.selectFromPopulation(population),
+                children.add(crossOp.crossover(parentSelectOp.selectFromPopulation(population),
                         parentSelectOp.selectFromPopulation(population)));//SELECT AND CROSSOVER
             }
+
             //MUTATE RESULTING OFFSPRING
             System.out.println("Children size: " + children.size());
             System.out.println("Mutating...");
             for (Individual individual: children) {
                 mutateOp.mutate(individual);//mutate
             }
+
             //EVALUATE NEW CANDIDATES
             System.out.println("Evaluating children...");
             for(Individual childIndividual: children) {
-                childIndividual.setFitness(evalOp.evaluateFitness(childIndividual));
+                childIndividual.setFitness(evalOp.evaluateFitness(childIndividual));//set their fitnesses by battle
             }
 
             System.out.println("Clearing and adding...");
-            int populationSize = population.size();
-
+            int populationSize = population.size();//retain size
             population.clear();//clear pop ready for next gen
             population.addAll(genSelectOp.selectIndividualsFromPopulation(children, populationSize));//SELECT FOR NEXT GEN
             System.out.println("New population size: " + population.size());
 
-            setBest();
-
-            finished = terminateCondition();
-
-            this.generations++;
+            setBest();//set current and global best
+            finished = terminateCondition();//check terminate condition
+            this.generations++;//increment generations
 
             if(this.best != null) {
                 log.log(generations, this.best.fitness);
@@ -109,47 +109,51 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
                         + "\nGenome:\n" + printGenome());
             }
         }
-        setBest();
+        setBest();//finally, set best
     }
+
+    /**
+     * Handles the termination of the evolutionary algorithm run
+     */
     @Override
     public boolean terminateCondition() {
         boolean terminate = false;
-        if(this.best != null) {
+
+        if(this.best != null) {//initial check
             if ((this.best.fitness < this.targetFitness) && (this.minimize)) {
-                terminate = true;
+                terminate = true;//if the job is to minimise fitness and best is below that target, terminate
             }
             if ((this.best.fitness > this.targetFitness) && (!this.minimize)) {
-                terminate = true;
+                terminate = true;//if the job is to maximise fitness and best is above that target, terminate
             }
-            if (this.generations >= (generationsLimit - 1)) {
-                terminate = true;
-            }
-            if(hasTerminated){
-                terminate = true;
-            }
+        }
+
+        if (this.generations >= (generationsLimit - 1)) {
+            terminate = true;//reached gen limit
+        }
+        if(hasTerminated){
+            terminate = true;//check the user has terminated forcefully
         }
         return terminate;
     }
 
-    boolean hasTerminated(){
-        return hasTerminated;
-    }
-
+    /**
+     * Forcefully terminate the run (completes current run before finishing)
+     */
     void forceTerminate(){
         this.hasTerminated = true;
     }
 
-    void resetTermination(){
-        this.hasTerminated = false;
-    }
-
+    /**
+     * Sets the current best and the global best solution (individual
+     */
     private void setBest(){
-        float currentFitness = 0f;
+        float currentFitness = 0f;//initialise to 0 so the best individual will always be set after completion
 
-        for (Individual individual: population) {
-            if(individual.fitness >= currentFitness){
-                currentFitness = individual.fitness;
-                this.best = individual;
+        for (Individual individual: population) {//iterate over population members
+            if(individual.fitness >= currentFitness){//if the individual fitness > the current fitness
+                currentFitness = individual.fitness;//set new highest fitness
+                this.best = individual;//set current best
             }
         }
         //set global best over run
@@ -158,9 +162,13 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
                 this.totalBest = this.best;
             }
         }else{
-            this.totalBest = this.best;
+            this.totalBest = this.best;//if not currently set, current best = total best (gen 0)
         }
     }
+
+    /**
+     * Collects the genome of the current best individual
+     */
     String printGenome(){
         StringBuilder asString = new StringBuilder();
         if(this.best != null) {
@@ -170,6 +178,9 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
         }
         return asString.toString();
     }
+    /**
+     * Collects the genome of a given individual as a string
+     */
     String printGenome(Individual individual){
         StringBuilder asString = new StringBuilder();
         if(individual != null) {

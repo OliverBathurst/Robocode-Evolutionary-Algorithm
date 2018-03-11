@@ -18,39 +18,54 @@ import java.util.Arrays;
 
 class Battle implements BattleMaker {
     //private String[] opponents = new String[] {"sample.SittingDuck" ,"sample.Corners","sample.Crazy","sample.Fire","sample.RamFire", "sample.SpinBot", "sample.Target", "sample.VelociRobot", "sample.Walls"};
+    private final ArrayList<String> newOpponents = new ArrayList<>();
     private String[] opponents = new String[] {"sample.Crazy"};
-    private final CodeGen code = new CodeGen();
     private final String robocodePath = "C:/Robocode";
     private int opponentsSize = 9, helperBotsNumber = 0;
+    private final CodeGen code = new CodeGen();
     private final boolean visible;
-    private boolean helperBots;
 
+    /**
+     * init with Battle visibility
+     */
     Battle(boolean visible){
         this.visible = visible;
     }
 
-    Battle(boolean visible, boolean helperBots, int numberHelpers){
+    /**
+     * init with a number of helper clones
+     */
+    Battle(boolean visible, int numberHelpers){
         this.visible = visible;
-        this.helperBots = helperBots;
         this.helperBotsNumber = numberHelpers;
     }
 
+    /**
+     * Set opponents via string array
+     */
     @Override
     public void setOpponents(String[] opponents){
         this.opponents = opponents;
         this.opponentsSize = opponents.length;
     }
 
+    /**
+     * Sets number of opponents for battle
+     */
     @Override
     public void setNumOpponents(int number) {
         opponentsSize = (number > opponents.length) ? opponents.length : number;
     }
 
+    /**
+     * Gets fitness of individual via multiple battles
+     */
     @Override
     public float getIndividualFitness(Individual individual){
         float returnFitness = 0.0f;
 
         String robotPath = code.writeAndCompileIndividual(individual);
+        String helperBots = generateHelperBotStrings(individual);
 
         for (int i = 0; i < (opponentsSize > opponents.length ? opponents.length : opponentsSize); i++) {//fight against each opponent
             System.out.println("Running battle between: " + code.getRobotName() + " and " + opponents[i]);
@@ -59,7 +74,7 @@ class Battle implements BattleMaker {
             engine.addBattleListener(battleObserver);
             engine.setVisible(visible);
             engine.runBattle(new BattleSpecification(1, new BattlefieldSpecification(800, 600),
-                    engine.getLocalRepository(robotPath + ", " + opponents[i])), true); // waits till the battle finishes
+                    engine.getLocalRepository(robotPath + ", " + opponents[i] + helperBots)), true); // waits till the battle finishes
             engine.close();
 
             BattleResults[] battleResults = battleObserver.getResults();
@@ -121,8 +136,9 @@ class Battle implements BattleMaker {
         return returnFitness;
     }
 
-
-
+    /**
+     * Observer to return results of a battle
+     */
     class BattleObserver extends BattleAdaptor {
 
         robocode.BattleResults[] results;
@@ -140,6 +156,9 @@ class Battle implements BattleMaker {
         }
     }
 
+    /**
+     * Creates a string from the opponent array for use in battle setup
+     */
     @Override
     public String stringifyOpponentArray(String[] opponents){
         StringBuilder opponentString = new StringBuilder();
@@ -149,9 +168,12 @@ class Battle implements BattleMaker {
         return opponentString.toString();
     }
 
+    /**
+     * Generates N helper clones of individual and adds them to array
+     */
     private void generateHelpers(Individual individual){
         if(helperBotsNumber > 0) {
-            ArrayList<String> newOpponents = new ArrayList<>();
+            newOpponents.clear();//clear
             newOpponents.addAll(Arrays.asList(opponents));//add existing opponents
 
             for (int i = 0; i < helperBotsNumber; i++) {
@@ -159,5 +181,20 @@ class Battle implements BattleMaker {
             }
             opponents = newOpponents.toArray(new String[newOpponents.size()]);//convert array list to array and rebind opponents array
         }
+    }
+
+    /**
+     * Generates string of helper bots for use in battle initialisation e.g. sample.Clone1, sample.Clone2...
+     */
+    private String generateHelperBotStrings(Individual individual){
+        StringBuilder toReturn = new StringBuilder();
+        if(helperBotsNumber > 0) {//if requested
+            newOpponents.clear();//clear
+            newOpponents.addAll(Arrays.asList(opponents));//add existing opponents
+            for (int i = 0; i < helperBotsNumber; i++) {
+                toReturn.append(", ").append(code.writeAndCompileIndividual(individual, "Clone" + i));//gen clone with new name
+            }
+        }
+        return toReturn.toString();//return the string
     }
 }

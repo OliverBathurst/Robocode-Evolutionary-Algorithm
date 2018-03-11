@@ -14,20 +14,29 @@ import java.util.Map;
  */
 
 public class Log implements Logger {
-    private final HashMap<Object, Object> log = new HashMap<>();
+    private final HashMap<Object, Object> log = new HashMap<>();//for storing run info
 
     Log(){}
 
+    /**
+     * Return map
+     */
     @Override
     public HashMap<Object, Object> getLog() {
         return log;
     }
 
+    /**
+     * Puts key in map for later writing
+     */
     @Override
     public void log(Object key, Object value) {
         log.put(key, value);
     }
 
+    /**
+     * Writes all values in map to file
+     */
     @Override
     public void writeToFile() {
         JFileChooser fileChooser = new JFileChooser();

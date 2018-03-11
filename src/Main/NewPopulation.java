@@ -1,7 +1,6 @@
 package Main;
-
 import Framework.Population;
-
+import java.security.SecureRandom;
 import java.util.*;
 /**
  * Created by Oliver on 29/01/2018.
@@ -11,9 +10,9 @@ import java.util.*;
 public class NewPopulation implements Population {
     private final Double[] geneMin = new Double[]{0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,                   0.0,0.0,0.0,0.0,0.0,0.0,0.0};//example mins
     private final Double[] geneMax = new Double[]{100.0,100.0,360.0,360.0,100.0,100.0,100.0,100.0,   8.0,8.0,8.0,8.0,8.0,8.0,8.0};//example maxes
+    private final SecureRandom geneRandomize = new SecureRandom();
     private final ArrayList<Individual> population;
     private final int populationSize;
-    private final Random geneRandomize = new Random();
 
     NewPopulation(int size){
         this.populationSize = size;
@@ -31,17 +30,20 @@ public class NewPopulation implements Population {
     public int getSize() {
         return population.size();
     }
+
     @Override
-    public void createPopulation() {
+    public ArrayList<Individual> createPopulation() {
         for(int i = 0; i < populationSize; i++) {
             population.add(createIndividual());
         }
+        return population;
     }
+
     @Override
     public Individual createIndividual() {
         Double[] genes = new Double[geneMin.length];
 
-        for(int i = 0; i < geneMin.length; i++){
+        for(int i = 0; i < genes.length; i++){
             genes[i] = geneMin[i] + (geneMax[i] - geneMin[i]) * geneRandomize.nextDouble();
         }
 

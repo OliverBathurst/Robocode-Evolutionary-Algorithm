@@ -11,8 +11,8 @@ import java.util.Map;
 /**
  * Created by Oliver on 29/01/2018.
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
+ * Displays fitness over generations on a graph
  */
-
 class GraphView {
     private static Logger log;
 
@@ -47,10 +47,18 @@ class GraphView {
         }
     }
 
+    /**
+     * Initialise with log of (generations, fitness)
+     */
+
     GraphView(Logger l){
         log = l;
     }
 
+
+    /**
+     * Launch graph
+     */
     void launch(){
         new GUIView().main(null);
     }

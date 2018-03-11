@@ -1,8 +1,7 @@
 package Main;
 
 import Framework.Mutator;
-
-import java.util.Random;
+import java.security.SecureRandom;
 
 /**
  * Created by Oliver on 29/01/2018.
@@ -10,8 +9,8 @@ import java.util.Random;
  */
 
 class RandomMutator implements Mutator {
+    private final SecureRandom random = new SecureRandom();
     private double percentage;
-    private final Random random = new Random();
 
     RandomMutator(double mutationPercentage){this.percentage = mutationPercentage;}
 
@@ -19,7 +18,7 @@ class RandomMutator implements Mutator {
     public void mutate(Individual individual) {
         for(int i = 0; i < individual.getGeneLength(); i++){
             if((random.nextDouble() * (100)) <= percentage){
-                individual.genes[i] = individual.geneMin[i] + (individual.geneMax[i] - individual.geneMin[i]) * random.nextDouble();
+                individual.genes[i] = individual.geneMin[i] + (individual.geneMax[i] - individual.geneMin[i]) * random.nextDouble();//mutate that gene
             }
         }
     }

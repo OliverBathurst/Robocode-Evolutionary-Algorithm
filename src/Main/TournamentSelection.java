@@ -24,6 +24,7 @@ public class TournamentSelection implements Selector {
 
         while(selected.size() < number){
             competitors.clear();//clear the competitors array list for new selection
+
             for(int competitor = 0; competitor < number; competitor++){
                 competitors.add(pop.get(numGen.nextInt(pop.size())));
             }

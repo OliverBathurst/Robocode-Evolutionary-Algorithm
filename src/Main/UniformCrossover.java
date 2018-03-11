@@ -1,9 +1,8 @@
 package Main;
 
 import Framework.Crossover;
-
+import java.security.SecureRandom;
 import java.util.Arrays;
-import java.util.Random;
 
 /**
  * Created by Oliver on 29/01/2018.
@@ -11,10 +10,13 @@ import java.util.Random;
  */
 
 public class UniformCrossover implements Crossover {
-    private final Random numGen = new Random(System.currentTimeMillis());
+    private final SecureRandom numGen = new SecureRandom();//use SecureRandom for non-pseudo randoms
 
     UniformCrossover(){}
 
+    /**
+     * This performs uniform crossover on two parents and creates a new child
+     */
     @Override
     public Individual crossover(Individual parentA, Individual parentB) {
         Double[] newGenes = Arrays.copyOf(parentA.genes, parentA.genes.length);//setup with parent A's genes as a base
@@ -24,6 +26,6 @@ public class UniformCrossover implements Crossover {
                 newGenes[gene] = parentB.genes[gene];//substitute with parent B's gene
             }
         }
-        return new Individual(newGenes, parentA.geneMin, parentA.geneMax, parentA.geneLength);
+        return new Individual(newGenes, parentA.geneMin, parentA.geneMax, parentA.geneLength);//return the new individual
     }
 }
