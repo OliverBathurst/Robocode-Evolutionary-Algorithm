@@ -8,8 +8,41 @@ import java.util.*;
  */
 
 public class NewPopulation implements Population {
-    private final Double[] geneMin = new Double[]{0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,                   0.0,0.0,0.0,0.0,0.0,0.0,0.0};//example mins
-    private final Double[] geneMax = new Double[]{100.0,100.0,360.0,360.0,100.0,100.0,100.0,100.0,   8.0,8.0,8.0,8.0,8.0,8.0,8.0};//example maxes
+    private final Double[] geneMin = new Double[]{
+            //0-3 the number of methods to include in each event
+            0.0,0.0,0.0,0.0,//min values for methods per callback (event)
+
+            //the method indexes for event 1, 4-12
+            0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,//min values for event 1's methods
+            //the method indexes for event 2, 13-21
+            0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,//min values for event 2's methods
+            //the method indexes for event 3, 22-30
+            0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,//min values for event 3's methods
+            //the method indexes for event 4, 31-39
+            0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,//min values for event 4's methods
+
+            //the method values to use for event 1, 40-48
+            0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,//which method values to use
+            //the method values to use for event 2, 49-57
+            0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,//which method values to use
+            //the method values to use for event 3, 58-66
+            0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,//which method values to use
+            //the method values to use for event 4, 67-75
+            0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,//min values for event 4's methods
+    };
+    private final Double[] geneMax = new Double[]{
+            8.0,8.0,8.0,8.0,
+
+            8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,//max values for event 1's method indexes
+            8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,//max values for event 2's method indexes
+            8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,//max values for event 3's method indexes
+            8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,//max values for event 4's method indexes
+
+            500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0,
+            500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0,
+            500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0,
+            500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0//which method max values to use
+    };
     private final SecureRandom geneRandomize = new SecureRandom();
     private final ArrayList<Individual> population;
     private final int populationSize;

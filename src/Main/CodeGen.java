@@ -96,6 +96,18 @@ class CodeGen implements CodeGenerator{
         }
     }
 
+    private String event(Individual individual, int index, int startIndex, int startIndexValue){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < individual.genes[index].intValue(); i++){
+            sb.append("\t").append(availableMethods[individual.genes[startIndex].intValue()]).append(individual.genes[startIndexValue])
+                    .append(");\n");
+            startIndex++;
+            startIndexValue++;
+        }
+        return sb.toString();
+    }
+
+
     /**
      * Generate Java code with an individual
      */
@@ -110,19 +122,16 @@ class CodeGen implements CodeGenerator{
                 "\t}\n" +
                 "}\n\n" +
                 "public void onScannedRobot(ScannedRobotEvent e) {\n" +
-                "\t" + availableMethods[(individual.genes[8]).intValue()] + individual.genes[0] +");\n" +
-                "\t" + availableMethods[(individual.genes[9]).intValue()] + individual.genes[1] +");\n" +
-                "\t" + availableMethods[(individual.genes[10]).intValue()] + individual.genes[2] +");\n" +
+                    event(individual, 0, 4, 40) +
                 "}\n\n" +
                 "public void onHitByBullet(HitByBulletEvent e){\n" +
-                "\t" + availableMethods[(individual.genes[11]).intValue()] + individual.genes[3] +");\n" +
-                "\t" + availableMethods[(individual.genes[12]).intValue()] + individual.genes[4] +");\n" +
+                    event(individual, 1, 13, 49) +
                 "}\n\n" +
                 "public void onHitWall(HitWallEvent e) {\n" +
-                "\t" + availableMethods[(individual.genes[13]).intValue()] + individual.genes[5] +");\n" +
+                    event(individual, 2, 22, 58) +
                 "}\n\n" +
                 "public void onHitRobot(HitRobotEvent e) {\n" +
-                "\t" + availableMethods[(individual.genes[14]).intValue()] + individual.genes[6] +");\n" +
+                    event(individual, 3, 31, 67) +
                 "}\n\n" +
                 "public void fireAtEnemy(Object e, Double d) {\n" +
                 "\tif(e instanceof ScannedRobotEvent){\n" +
