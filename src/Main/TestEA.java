@@ -27,9 +27,9 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
         this.minimize = minimise;
         this.populationInit = population;
         this.evalOp = customEvaluator;
+        this.mutateOp = mutate;
         this.parentSelectOp = parent;
         this.genSelectOp = generation;
-        this.mutateOp = mutate;
         this.crossOp = crossover;
     }
     @Override
@@ -74,6 +74,7 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
             }
 
             children.clear();//clear out children for next run
+
             System.out.println("Crossing over...");
             while(children.size() < population.size()) {//perform crossover on selected parents and add to children
                 children.add(crossOp.crossover(parentSelectOp.selectFromPopulation(population),

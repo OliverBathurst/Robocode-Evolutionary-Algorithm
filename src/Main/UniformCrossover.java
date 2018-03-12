@@ -11,8 +11,11 @@ import java.util.Arrays;
 
 public class UniformCrossover implements Crossover {
     private final SecureRandom numGen = new SecureRandom();//use SecureRandom for non-pseudo randoms
+    private final int crossoverRate;
 
-    UniformCrossover(){}
+    UniformCrossover(int rate){
+        this.crossoverRate = rate;
+    }
 
     /**
      * This performs uniform crossover on two parents and creates a new child
@@ -22,7 +25,7 @@ public class UniformCrossover implements Crossover {
         Double[] newGenes = Arrays.copyOf(parentA.genes, parentA.genes.length);//setup with parent A's genes as a base
 
         for(int gene = 0; gene < newGenes.length - 1; gene++){//iterate over all genes
-            if(this.numGen.nextDouble() > 0.5){//50/50 chance
+            if((numGen.nextDouble() * 100) < crossoverRate){
                 newGenes[gene] = parentB.genes[gene];//substitute with parent B's gene
             }
         }

@@ -8,12 +8,10 @@ import Framework.Evaluator;
  */
 
 class CustomEvaluator implements Evaluator {
-    private boolean visible = false;
-    private int numberHelpers = 0;
+    private final Battle battle;
 
     CustomEvaluator(boolean visible, int numClones){
-        this.visible = visible;
-        this.numberHelpers = numClones;
+        this.battle = new Battle(visible, numClones);//setup Battle object
     }
 
     /**
@@ -21,7 +19,7 @@ class CustomEvaluator implements Evaluator {
      */
     @Override
     public float evaluateFitness(Individual individual) {
-        return new Battle(visible, numberHelpers).getIndividualFitnessBatchRun(individual);//setup battle
+        return battle.getIndividualFitnessBatchRun(individual);//setup battle
     }
 
 }

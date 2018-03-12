@@ -27,6 +27,8 @@ class GUI {
     private JCheckBox battleVisible;
     private JLabel numHelpersLabel;
     private JSlider numHelpersSlider;
+    private JSlider sliderCrossoverRate;
+    private JLabel crossoverRate;
     private TestEA testEA;
     private final CodeGen gen = new CodeGen();
 
@@ -39,6 +41,7 @@ class GUI {
         popSize.addChangeListener(e -> populationLabel.setText("Population Size: " + popSize.getValue()));
         generationSlider.addChangeListener(e -> genLimit.setText("Generation Limit: " + generationSlider.getValue()));
         numHelpersSlider.addChangeListener(e -> numHelpersLabel.setText("Number of Helpers: " + numHelpersSlider.getValue()));
+        sliderCrossoverRate.addChangeListener(e -> crossoverRate.setText("Crossover Rate: " + sliderCrossoverRate.getValue()));
         writeBest.addActionListener(e -> writeBestIndividual());
         printTotal.addActionListener(e -> printTotalBest());
         writeTotalBest.addActionListener(e -> writeTotalBestToFile());
@@ -176,6 +179,7 @@ class GUI {
      * Sets up values based on GUI options, initialises evolutionary algorithm
      */
     private void setupEnvironment(){
+        int crossoverRate = sliderCrossoverRate.getValue();
         int generationSize = generationSlider.getValue();
         int populationSize = popSize.getValue();
 
@@ -189,18 +193,19 @@ class GUI {
                 Integer intValue = Integer.parseInt(mutation);
                 mutationRateValue = intValue.doubleValue();
             }catch(Exception e2){
-                mutationRateValue = 5.0d;
+                mutationRateValue = 3.0d;
             }
         }
 
         System.out.println("Mutation rate: " + mutationRateValue);
+        System.out.println("Crossover rate: " + crossoverRate);
 
         if(populationSize != 0) {
             testEA = new TestEA();
             testEA.setLogger(new Log());
             testEA.init(1000, false, new NewPopulation(populationSize),
                     new CustomEvaluator(battleVisible.isSelected(), numHelpersSlider.getValue()), new RandomMutator(mutationRateValue),
-                    new TournamentSelection(), new GreedySelection(), new UniformCrossover());
+                    new TournamentSelection(), new GreedySelection(), new UniformCrossover(crossoverRate));
             if(generationLimit.isSelected()){
                 testEA.setNumGenerations(generationSize);
             }
