@@ -18,11 +18,14 @@ import java.util.Arrays;
 
 class Battle implements BattleMaker {
     //private String[] opponents = new String[] {"sample.SittingDuck" ,"sample.Corners","sample.Crazy","sample.Fire","sample.RamFire", "sample.SpinBot", "sample.Target", "sample.VelociRobot", "sample.Walls"};
+    private final BattlefieldSpecification battleSpec = new BattlefieldSpecification(800, 600);
+    private final RobocodeEngine engine = new RobocodeEngine(new File("C:/Robocode"));//Run from C:/Robocode
+    private final BattleObserver battleObserver = new BattleObserver();
     private final ArrayList<String> newOpponents = new ArrayList<>();
-    private String[] opponents = new String[] {"sample.Crazy"};
-    private final String robocodePath = "C:/Robocode";
-    private int opponentsSize = 9, helperBotsNumber = 0;
     private final CodeGen code = new CodeGen();
+    private String[] opponents = new String[] {"sample.Crazy"};
+    private int opponentsSize = 9, helperBotsNumber = 0;
+
     private final boolean visible;
 
     /**
@@ -69,11 +72,10 @@ class Battle implements BattleMaker {
 
         for (int i = 0; i < (opponentsSize > opponents.length ? opponents.length : opponentsSize); i++) {//fight against each opponent
             System.out.println("Running battle between: " + code.getRobotName() + " and " + opponents[i]);
-            BattleObserver battleObserver = new BattleObserver();
-            RobocodeEngine engine = new RobocodeEngine(new File(robocodePath));//Run from C:/Robocode
+
             engine.addBattleListener(battleObserver);
             engine.setVisible(visible);
-            engine.runBattle(new BattleSpecification(1, new BattlefieldSpecification(800, 600),
+            engine.runBattle(new BattleSpecification(1, battleSpec,
                     engine.getLocalRepository(robotPath + ", " + opponents[i] + helperBots)), true); // waits till the battle finishes
             engine.close();
 
@@ -104,12 +106,9 @@ class Battle implements BattleMaker {
 
         generateHelpers(individual);
 
-        BattleObserver battleObserver = new BattleObserver();
-        RobocodeEngine engine = new RobocodeEngine(new File(robocodePath));//Run from C:/Robocode
         engine.addBattleListener(battleObserver);
-
         engine.setVisible(visible);
-        engine.runBattle(new BattleSpecification(1, new BattlefieldSpecification(800, 600),
+        engine.runBattle(new BattleSpecification(1, battleSpec,
                 engine.getLocalRepository(code.writeAndCompileIndividual(individual) + ", "
                         + stringifyOpponentArray(opponents))), true); // waits till the battle finishes
         engine.close();
