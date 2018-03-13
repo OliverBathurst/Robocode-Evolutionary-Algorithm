@@ -17,6 +17,7 @@ public class TournamentSelection implements Selector {
 
     @Override
     public ArrayList<Individual> selectIndividualsFromPopulation(ArrayList<Individual> pop, int number) {
+        assert number > 0;
         SecureRandom numGen = new SecureRandom();
 
         ArrayList<Individual> selected = new ArrayList<>();
@@ -28,6 +29,7 @@ public class TournamentSelection implements Selector {
             for(int competitor = 0; competitor < number; competitor++){
                 competitors.add(pop.get(numGen.nextInt(pop.size())));
             }
+
             Individual tempBest = competitors.get(0);//select first (random number)
             for(int tournament = 0; tournament < number; tournament++){
                 if(tempBest.fitness < competitors.get(tournament).fitness){
