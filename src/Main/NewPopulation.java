@@ -57,7 +57,12 @@ public class NewPopulation implements Population {
     }
     @Override
     public void sort(){
-        population.sort((o1, o2) -> (int) (o1.fitness - o2.fitness));
+        population.sort(new Comparator<Individual>() {
+            @Override
+            public int compare(Individual o1, Individual o2) {
+                return o1.compareTo(o2);
+            }
+        });
     }
     @Override
     public int getSize() {

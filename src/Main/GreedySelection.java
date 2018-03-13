@@ -35,11 +35,6 @@ public class GreedySelection implements Selector {
             @Override
             public int compare(Individual o1, Individual o2) {
                 return o1.compareTo(o2);
-                /*if(o1.fitness>o2.fitness) {
-                    return -1;
-                }else{
-                    return 1;
-                }*/
             }
         });//sort ascending
     }
