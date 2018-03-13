@@ -82,7 +82,7 @@ class Battle implements BattleMaker {
             BattleResults[] battleResults = battleObserver.getResults();
             float eaScore = battleResults[1].getScore(), botScore = battleResults[0].getScore();//assume
 
-            if (battleResults[0].getTeamLeaderName().contains(code.getRobotName())) {//if not at index 0, flip indexes
+            if (battleResults[0].getTeamLeaderName().contains("OliverBathurstEA")) {//if not at index 0, flip indexes
                 eaScore = battleResults[0].getScore();
                 botScore = battleResults[1].getScore();
             }
@@ -104,7 +104,7 @@ class Battle implements BattleMaker {
         float eaFitness = 0.0f, botsFitness = 0.0f, returnFitness;
         int opponentsSize = opponents.length;
 
-        generateHelpers(individual);
+        //generateHelpers(individual);
 
         engine.addBattleListener(battleObserver);
         engine.setVisible(visible);
@@ -114,7 +114,7 @@ class Battle implements BattleMaker {
         engine.close();
 
         for(BattleResults br: battleObserver.getResults()){
-            if(br.getTeamLeaderName().contains(code.getRobotName())){
+            if(br.getTeamLeaderName().contains("OliverBathurstEA")){
                 eaFitness = br.getScore();
             }else{
                 if(!br.getTeamLeaderName().contains("Clone")) {//don't count friendly scores

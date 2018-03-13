@@ -24,7 +24,7 @@ public class UniformCrossover implements Crossover {
     public Individual crossover(Individual parentA, Individual parentB) {
         Double[] newGenes = Arrays.copyOf(parentA.genes, parentA.genes.length);//setup with parent A's genes as a base
 
-        for(int gene = 0; gene < newGenes.length - 1; gene++){//iterate over all genes
+        for(int gene = 0; gene < newGenes.length; gene++){//iterate over all genes
             if((numGen.nextDouble() * 100) < crossoverRate){
                 newGenes[gene] = parentB.genes[gene];//substitute with parent B's gene
             }

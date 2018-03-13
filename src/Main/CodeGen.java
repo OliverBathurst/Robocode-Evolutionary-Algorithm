@@ -16,7 +16,6 @@ import java.io.PrintWriter;
 class CodeGen implements CodeGenerator{
     private String path = "C:\\robocode\\robots\\sample", jar = "C:\\robocode\\libs\\robocode.jar;",
             packageName = "sample", currentName = "OliverBathurstEA";
-    private final String defaultName = "OliverBathurstEA";
     private final String[] availableMethods = {"fireAtEnemy(e,", "ahead(", "back(","turnGunRight(", "turnGunLeft(",
             "turnLeft(", "turnRight(", "turnRadarLeft(", "turnRadarRight("};//available methods, their insertion into robot's Java file determined by gene
 
@@ -40,7 +39,7 @@ class CodeGen implements CodeGenerator{
     }
     @Override
     public String getRobotName() {
-        return defaultName;
+        return currentName;
     }
 
     /**
@@ -48,8 +47,9 @@ class CodeGen implements CodeGenerator{
      */
     @Override
     public String writeAndCompileIndividual(Individual individual){//set default name
-        compile(individual, path + "\\" + defaultName + ".java");//compile and write to file
-        return packageName + "." + defaultName;
+        currentName = "OliverBathurstEA";
+        compile(individual, path + "\\" + currentName + ".java");//compile and write to file
+        return packageName + "." + currentName;
     }
     /**
      * Write and compile an individual with custom name, return path
@@ -99,7 +99,11 @@ class CodeGen implements CodeGenerator{
     private String event(Individual individual, int index, int startIndex, int startIndexValue){
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < individual.genes[index].intValue(); i++){
-            sb.append("\t").append(availableMethods[individual.genes[startIndex].intValue()]).append(individual.genes[startIndexValue])
+
+            Long roundedGene = Math.round(individual.genes[startIndex]);//round the gene (between 1-8)
+            Double doubleRounded = roundedGene.doubleValue();//get double value of rounded gene (should be now .0)
+            //get int value (we round first because intValue() ALWAYS rounds down (which is incorrect
+            sb.append("\t").append(availableMethods[doubleRounded.intValue()]).append(individual.genes[startIndexValue])
                     .append(");\n");
             startIndex++;
             startIndexValue++;

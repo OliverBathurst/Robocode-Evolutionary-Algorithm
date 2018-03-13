@@ -79,7 +79,7 @@ class GUI {
     private void run(){
         System.out.println("Running...\n");
         setupEnvironment();
-        testEA.start();
+        testEA.start();//start thread
     }
 
     /**

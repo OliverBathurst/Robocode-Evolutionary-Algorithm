@@ -22,21 +22,21 @@ public class NewPopulation implements Population {
             0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,//min values for event 4's methods
 
             //the method values to use for event 1, 40-48
-            0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,//which method values to use
+            -500.0,-500.0,-500.0,-500.0,-500.0,-500.0,-500.0,-500.0,-500.0,//which method values to use
             //the method values to use for event 2, 49-57
-            0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,//which method values to use
+            -500.0,-500.0,-500.0,-500.0,-500.0,-500.0,-500.0,-500.0,-500.0,//which method values to use
             //the method values to use for event 3, 58-66
-            0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,//which method values to use
+            -500.0,-500.0,-500.0,-500.0,-500.0,-500.0,-500.0,-500.0,-500.0,//which method values to use
             //the method values to use for event 4, 67-75
-            0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,//min values for event 4's methods
+            -500.0,-500.0,-500.0,-500.0,-500.0,-500.0,-500.0,-500.0,-500.0,//min values for event 4's methods
     };
     private final Double[] geneMax = new Double[]{
             8.0,8.0,8.0,8.0,
 
-            8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,//max values for event 1's method indexes
-            8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,//max values for event 2's method indexes
-            8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,//max values for event 3's method indexes
-            8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,//max values for event 4's method indexes
+            8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,//max values for event 1's method indexes (8.1 for rounding (so 8 is possible))
+            8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,//max values for event 2's method indexes
+            8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,//max values for event 3's method indexes
+            8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,//max values for event 4's method indexes
 
             500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0,
             500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0,

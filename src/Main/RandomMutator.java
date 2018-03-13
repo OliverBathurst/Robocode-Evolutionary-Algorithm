@@ -17,7 +17,7 @@ class RandomMutator implements Mutator {
     @Override
     public void mutate(Individual individual) {
         for(int i = 0; i < individual.getGeneLength(); i++){
-            if((random.nextDouble() * (100)) <= percentage){
+            if((random.nextDouble() * (100)) < percentage){
                 individual.genes[i] = individual.geneMin[i] + (individual.geneMax[i] - individual.geneMin[i]) * random.nextDouble();//mutate that gene
             }
         }

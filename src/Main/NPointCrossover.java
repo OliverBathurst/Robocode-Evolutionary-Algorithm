@@ -18,7 +18,7 @@ public class NPointCrossover implements Crossover {
         Double[] newGenes = Arrays.copyOf(parentA.genes, parentA.genes.length);
 
         int counter = 0;
-        while (counter < newGenes.length-1){
+        while (counter < newGenes.length){
             newGenes[counter] = parentB.genes[counter];//crossover
             counter += crossoverPoint;//add n to counter
         }
