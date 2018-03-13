@@ -96,8 +96,12 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
 
             System.out.println("Clearing and adding...");
             int populationSize = population.size();//retain size
+            Individual best = genSelectOp.selectFromPopulation(population);//select best from pop
             population.clear();//clear pop ready for next gen
-            population.addAll(genSelectOp.selectIndividualsFromPopulation(children, populationSize));//SELECT FOR NEXT GEN
+
+            population.add(best);//add in best
+            population.addAll(genSelectOp.selectIndividualsFromPopulation(children, populationSize-1));//SELECT FOR NEXT GEN
+
             System.out.println("New population size: " + population.size());
 
             setBest();//set current and global best

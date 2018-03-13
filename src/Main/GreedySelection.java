@@ -3,6 +3,7 @@ package Main;
 import Framework.Selector;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Created by Oliver on 29/01/2018.
@@ -30,6 +31,16 @@ public class GreedySelection implements Selector {
      */
     @Override
     public void sort(ArrayList<Individual> individuals) {
-        individuals.sort((o1, o2) -> (int) (o1.fitness - o2.fitness));//sort ascending
+        individuals.sort(new Comparator<Individual>() {
+            @Override
+            public int compare(Individual o1, Individual o2) {
+                return o1.compareTo(o2);
+                /*if(o1.fitness>o2.fitness) {
+                    return -1;
+                }else{
+                    return 1;
+                }*/
+            }
+        });//sort ascending
     }
 }

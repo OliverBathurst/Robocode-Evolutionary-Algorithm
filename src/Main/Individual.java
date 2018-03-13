@@ -28,6 +28,6 @@ public class Individual extends PopulationMember implements Comparable<Individua
         if(this.fitness == o.fitness){
             return 0;
         }
-        return this.fitness > o.fitness ? 1 : -1;
+        return this.fitness > o.fitness ? -1 : 1;
     }
 }
