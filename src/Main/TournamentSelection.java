@@ -2,6 +2,7 @@ package Main;
 import Framework.Selector;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Created by Oliver on 02/02/2018.
@@ -45,6 +46,11 @@ public class TournamentSelection implements Selector {
 
     @Override
     public void sort(ArrayList<Individual> individuals) {
-        individuals.sort((o1, o2) -> (int) (o1.fitness - o2.fitness));
+        individuals.sort(new Comparator<Individual>() {
+            @Override
+            public int compare(Individual o1, Individual o2) {
+                return o1.compareTo(o2);
+            }
+        });
     }
 }
