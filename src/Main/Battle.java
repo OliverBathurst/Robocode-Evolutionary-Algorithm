@@ -75,8 +75,9 @@ class Battle implements BattleMaker {
 
             engine.addBattleListener(battleObserver);
             engine.setVisible(visible);
-            engine.runBattle(new BattleSpecification(1, battleSpec,
-                    engine.getLocalRepository(robotPath + ", " + opponents[i] + helperBots)), true); // waits till the battle finishes
+            BattleSpecification battleSpecification = new BattleSpecification(1, battleSpec,
+                    engine.getLocalRepository(robotPath + ", " + opponents[i] + helperBots));
+            engine.runBattle(battleSpecification, initialPositions(battleSpecification), true); // waits till the battle finishes
             engine.close();
 
             BattleResults[] battleResults = battleObserver.getResults();
@@ -108,9 +109,10 @@ class Battle implements BattleMaker {
 
         engine.addBattleListener(battleObserver);
         engine.setVisible(visible);
-        engine.runBattle(new BattleSpecification(1, battleSpec,
+        BattleSpecification battleSpecification = new BattleSpecification(1, battleSpec,
                 engine.getLocalRepository(code.writeAndCompileIndividual(individual) + ", "
-                        + stringifyOpponentArray(opponents))), true); // waits till the battle finishes
+                        + stringifyOpponentArray(opponents)));
+        engine.runBattle(battleSpecification, initialPositions(battleSpecification), true); // waits till the battle finishes
         engine.close();
 
         for(BattleResults br: battleObserver.getResults()){
@@ -197,5 +199,20 @@ class Battle implements BattleMaker {
             }
         }
         return toReturn.toString();//return the string
+    }
+
+    private String initialPositions(BattleSpecification battleSpecification){
+        String initialPositions = "";
+
+        initialPositions += Integer.toString(battleSpecification.getBattlefield().getWidth()/5) + ",";
+        initialPositions += Integer.toString(battleSpecification.getBattlefield().getHeight()/2) + ",";
+        initialPositions += Integer.toString(360) + ",";
+
+        initialPositions += Integer.toString(battleSpecification.getBattlefield().getWidth() - (battleSpecification.getBattlefield().getWidth()/5)) + ",";
+        initialPositions += Integer.toString(battleSpecification.getBattlefield().getHeight()/2) + ",";
+        initialPositions += Integer.toString(360);
+
+        System.out.println("Setup initial positions: " + initialPositions);
+        return initialPositions;
     }
 }
