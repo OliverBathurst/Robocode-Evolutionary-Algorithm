@@ -23,7 +23,7 @@ class Battle implements BattleMaker {
     private final BattleObserver battleObserver = new BattleObserver();
     private final ArrayList<String> newOpponents = new ArrayList<>();
     private final CodeGen code = new CodeGen();
-    private String[] opponents = new String[] {"sample.SittingDuck"};
+    private String[] opponents = new String[] {"sample.Crazy"};
     private int opponentsSize = 9, helperBotsNumber = 0;
 
     private final boolean visible;
