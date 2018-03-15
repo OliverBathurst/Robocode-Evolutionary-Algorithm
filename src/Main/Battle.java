@@ -23,7 +23,7 @@ class Battle implements BattleMaker {
     private final BattleObserver battleObserver = new BattleObserver();
     private final ArrayList<String> newOpponents = new ArrayList<>();
     private final CodeGen code = new CodeGen();
-    private String[] opponents = new String[] {"sample.Crazy"};
+    private String[] opponents = new String[] {"sample.RamFire"};
     private int opponentsSize = 9, helperBotsNumber = 0;
 
     private final boolean visible;
@@ -213,7 +213,7 @@ class Battle implements BattleMaker {
         initialPositions += Integer.toString(battleSpecification.getBattlefield().getHeight()/2) + ",";
         initialPositions += Integer.toString(0) + "),";
 
-        System.out.println("Setup initial positions: " + initialPositions);
+        //System.out.println("Setup initial positions: " + initialPositions);
         return initialPositions;
     }
 }
