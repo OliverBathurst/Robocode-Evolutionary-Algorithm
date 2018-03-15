@@ -63,6 +63,7 @@ class GUI {
         @Override
         public void write(int b) {
             jta.append((String.valueOf((char)b)));
+            jta.setCaretPosition(jta.getDocument().getLength());
         }
     }
 

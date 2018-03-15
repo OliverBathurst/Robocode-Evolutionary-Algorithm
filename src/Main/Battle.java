@@ -22,8 +22,8 @@ class Battle implements BattleMaker {
     private final BattleObserver battleObserver = new BattleObserver();
     private final ArrayList<String> newOpponents = new ArrayList<>();
     private final CodeGen code = new CodeGen();
-    private String[] opponents = new String[] {"sample.Crazy"};
-    private int opponentsSize = 9, helperBotsNumber = 0;
+    private String[] opponents = new String[] {"sample.RamFire"};
+    private int helperBotsNumber = 0;
 
     private final boolean visible;
 
@@ -48,94 +48,68 @@ class Battle implements BattleMaker {
     @Override
     public void setOpponents(String[] opponents){
         this.opponents = opponents;
-        this.opponentsSize = opponents.length;
     }
 
     /**
      * Sets number of opponents for battle
      */
     @Override
-    public void setNumOpponents(int number) {
-        opponentsSize = (number > opponents.length) ? opponents.length : number;
-    }
+    public void setNumOpponents(int number) {}
 
     /**
      * Gets fitness of individual via multiple battles
      */
     @Override
     public float getIndividualFitness(Individual individual){
-        float returnFitness = 0.0f;
-
-        String robotPath = code.writeAndCompileIndividual(individual);
-        String helperBots = generateHelperBotStrings(individual);
-
-        for (int i = 0; i < (opponentsSize > opponents.length ? opponents.length : opponentsSize); i++) {//fight against each opponent
-            System.out.println("Running battle between: " + code.getRobotName() + " and " + opponents[i]);
-
-            engine.addBattleListener(battleObserver);
-            engine.setVisible(visible);
-            BattleSpecification battleSpecification = new BattleSpecification(1, battleSpec,
-                    engine.getLocalRepository(robotPath + ", " + opponents[i] + helperBots));
-            engine.runBattle(battleSpecification, initialPositions(battleSpecification, 2), true); // waits till the battle finishes
-            engine.close();
-
-            BattleResults[] battleResults = battleObserver.getResults();
-            float eaScore = battleResults[1].getScore(), botScore = battleResults[0].getScore();//assume
-
-            if (battleResults[0].getTeamLeaderName().contains("OliverBathurstEA")) {//if not at index 0, flip indexes
-                eaScore = battleResults[0].getScore();
-                botScore = battleResults[1].getScore();
-            }
-
-            float denominator = (eaScore + botScore);
-            if(denominator != 0) {
-                returnFitness += (eaScore / denominator);//compute average fitness after each round
-            }else{
-                returnFitness += eaScore;//eaScore must be 0, eaScore + botScore = 0, therefore both are 0.
-            }
-        }
-        returnFitness = returnFitness/opponentsSize;//average fitness over all battles
-        System.out.println("Calculated fitness of: " + returnFitness);
-        return returnFitness;
+        return 0.0f;//method not needed anymore, opt for batch run
     }
 
     @Override
     public float getIndividualFitnessBatchRun(Individual individual){
-        float eaFitness = 0.0f, botsFitness = 0.0f, returnFitness;//default fitnesses
-        //generateHelpers(individual); //generate clones
+        generateHelpers(individual); //generate clones
 
         engine.addBattleListener(battleObserver);
         engine.setVisible(visible);
         BattleSpecification battleSpecification = new BattleSpecification(1, battleSpec,
                 engine.getLocalRepository(code.writeAndCompileIndividual(individual) + ", "
                         + stringifyOpponentArray(opponents)));
-        engine.runBattle(battleSpecification, initialPositions(battleSpecification, opponents.length + 1), true); // waits till the battle finishes
+        engine.runBattle(battleSpecification, initialPositions(battleSpecification, opponents.length), true); // waits till the battle finishes
         engine.close();
 
-        for(BattleResults br: battleObserver.getResults()){
+        return getFitness(battleObserver.getResults());//return fitness
+    }
+
+    @Override
+    public float getFitness(BattleResults[] battleResults) {
+        float returnFitness = 0.0f;
+        /*float eaFitness = 0.0f, botsFitness = 0.0f;//default fitnesses
+        for(BattleResults br: battleResults){
             if(br.getTeamLeaderName().contains("OliverBathurstEA")){
                 eaFitness = br.getScore();
-            }
-            /*else{
+            }else{
                 if(!br.getTeamLeaderName().contains("Clone")) {//don't count friendly scores
                     botsFitness += br.getScore();
                 }
-            }*/
+            }
         }
-        /*int opponentsSize = opponents.length;
-        float avgBotFitness = botsFitness/opponentsSize;
+        float avgBotFitness = botsFitness/(opponents.length - helperBotsNumber);//calculate enemy bot avg. fitness
         float denominator = (eaFitness + avgBotFitness);
         System.out.println("Average bot fitness: " + avgBotFitness);
-        //System.out.println("EA bot fitness: " + eaFitness);
+        System.out.println("EA bot fitness: " + eaFitness);
 
-        if(denominator != 0) {
-            returnFitness = (eaFitness / denominator);//compute average fitness after each round
+        if(denominator != 0) {//check for div by 0
+            returnFitness = (eaFitness / denominator);//compute total fitness: eaFitness/(eaFitness + botFitness)
         }else{
             returnFitness = eaFitness;//eaScore must be 0, eaScore + botScore = 0, therefore both are 0.
         }*/
-
-        System.out.println("Calculated fitness: " + eaFitness);
-        return eaFitness;//return fitness
+        for(BattleResults br: battleResults){
+            if(br.getTeamLeaderName().contains("OliverBathurstEA")){
+                returnFitness = br.getScore();
+                break;
+            }
+        }
+        System.out.println("Calculated fitness: " + returnFitness);
+        return returnFitness;
     }
 
     /**
@@ -214,18 +188,17 @@ class Battle implements BattleMaker {
 
         boolean switchSides = false;// swap sides each time (iteration)
         //ITERATE OVER ALL POSITIONS
-        for(Integer i: positions){
+        for(int i: positions){
             if(!switchSides) {
                 initialPositions.append("(").append(Integer.toString(battleSpecification.getBattlefield().getWidth() / (numberOpponents - i))).append(",");
-                switchSides = true;
+                switchSides = true;//switch sides
             }else{
                 initialPositions.append("(").append(Integer.toString(battleSpecification.getBattlefield().getWidth() - (battleSpecification.getBattlefield().getWidth() / (numberOpponents - i)))).append(",");
                 switchSides = false;
             }
             initialPositions.append(Integer.toString(battleSpecification.getBattlefield().getHeight() / 2)).append(",");
-            initialPositions.append(Integer.toString(360)).append("0)").append(",");
+            initialPositions.append(Integer.toString(360)).append(",").append(Integer.toString(0)).append("),");
         }
-        System.out.println("Setup initial positions: " + initialPositions);
         return initialPositions.toString();
     }
 }

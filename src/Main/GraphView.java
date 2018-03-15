@@ -16,6 +16,7 @@ import java.util.Map;
 class GraphView {
     private static Logger log;
 
+    @SuppressWarnings("WeakerAccess")
     public static class GUIView extends Application {
         private XYChart.Series<Number, Number> series;
 
