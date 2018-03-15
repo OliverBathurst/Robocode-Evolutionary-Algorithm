@@ -1,15 +1,13 @@
 package Main;
-
 import Framework.Selector;
-
 import java.util.ArrayList;
-import java.util.Comparator;
 
 /**
  * Created by Oliver on 29/01/2018.
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
  */
 
+@SuppressWarnings("Convert2Lambda")
 public class GreedySelection implements Selector {
 
     @Override
@@ -31,11 +29,6 @@ public class GreedySelection implements Selector {
      */
     @Override
     public void sort(ArrayList<Individual> individuals) {
-        individuals.sort(new Comparator<Individual>() {
-            @Override
-            public int compare(Individual o1, Individual o2) {
-                return o1.compareTo(o2);
-            }
-        });//sort ascending
+        individuals.sort(Individual::compareTo);//sort ascending
     }
 }

@@ -60,6 +60,7 @@ class GraphView {
      * Launch graph
      */
     void launch(){
-        new GUIView().main(null);
+        new GUIView();
+        GUIView.main(null);
     }
 }

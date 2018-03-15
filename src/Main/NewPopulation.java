@@ -7,6 +7,7 @@ import java.util.*;
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
  */
 
+@SuppressWarnings("Convert2Lambda")
 public class NewPopulation implements Population {
     private final Double[] geneMin = new Double[]{
             //0-3 the number of methods to include in each event
@@ -57,12 +58,7 @@ public class NewPopulation implements Population {
     }
     @Override
     public void sort(){
-        population.sort(new Comparator<Individual>() {
-            @Override
-            public int compare(Individual o1, Individual o2) {
-                return o1.compareTo(o2);
-            }
-        });
+        population.sort(Individual::compareTo);
     }
     @Override
     public int getSize() {

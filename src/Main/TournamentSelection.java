@@ -2,13 +2,13 @@ package Main;
 import Framework.Selector;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 /**
  * Created by Oliver on 02/02/2018.
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
  */
 
+@SuppressWarnings("Convert2Lambda")
 public class TournamentSelection implements Selector {
 
     @Override
@@ -46,11 +46,6 @@ public class TournamentSelection implements Selector {
 
     @Override
     public void sort(ArrayList<Individual> individuals) {
-        individuals.sort(new Comparator<Individual>() {
-            @Override
-            public int compare(Individual o1, Individual o2) {
-                return o1.compareTo(o2);
-            }
-        });
+        individuals.sort(Individual::compareTo);
     }
 }

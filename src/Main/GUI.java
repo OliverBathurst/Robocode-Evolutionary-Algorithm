@@ -29,6 +29,7 @@ class GUI {
     private JSlider numHelpersSlider;
     private JSlider sliderCrossoverRate;
     private JLabel crossoverRate;
+    private JCheckBox elitismCheckBox;
     private TestEA testEA;
     private final CodeGen gen = new CodeGen();
 
@@ -77,7 +78,6 @@ class GUI {
      * Sets up the environment and starts the main evolutionary thread
      */
     private void run(){
-        System.out.println("Running...\n");
         setupEnvironment();
         testEA.start();//start thread
     }
@@ -86,11 +86,11 @@ class GUI {
      * Terminates the run after the generation is finished
      */
     private void stop(){
-        System.out.println("Stopping after run...\n");
+        System.out.println("\nStopping after run...");
         if(testEA != null){
             testEA.forceTerminate();
         }else{
-            System.out.println("Null Instance\n");
+            System.out.println("\nNull Instance");
         }
     }
 
@@ -101,11 +101,11 @@ class GUI {
         if(testEA != null){
             Individual i = testEA.getTotalBest();
             if(i != null) {
-                System.out.println("Global Best: " + i.fitness + "\n");
+                System.out.println("\nGlobal Best: " + i.fitness + "\n");
                 System.out.println(testEA.printGenome(i));
             }
         }else{
-            System.out.println("Null Instance\n");
+            System.out.println("\nNull Instance");
         }
     }
 
@@ -115,10 +115,10 @@ class GUI {
     private void printCurrentBest(){
         Individual i = testEA.getBest();
         if(i != null) {
-            System.out.println("Best: " + i.fitness + "\n");
+            System.out.println("\nBest: " + i.fitness + "\n");
             System.out.println(testEA.printGenome());
         }else{
-            System.out.println("Null individual\n");
+            System.out.println("\nNull individual");
         }
     }
 
@@ -131,10 +131,10 @@ class GUI {
             if (log != null) {
                 new GraphView(log).launch();
             } else {
-                System.out.println("Null log\n");
+                System.out.println("\nNull log");
             }
         }else{
-            System.out.println("Null Instance\n");
+            System.out.println("\nNull Instance");
         }
     }
 
@@ -155,7 +155,7 @@ class GUI {
                 gen.writeIndividualToFile(totalBest);//use code gen to write individual to file
             }
         }else{
-            System.out.println("Null Instance\n");
+            System.out.println("\nNull Instance");
         }
     }
 
@@ -168,10 +168,10 @@ class GUI {
             if(best != null){
                 gen.writeIndividualToFile(best);
             }else{
-                System.out.println("Null Individual\n");
+                System.out.println("\nNull Individual");
             }
         }else{
-            System.out.println("Null Instance\n");
+            System.out.println("\nNull Instance");
         }
     }
 
@@ -197,13 +197,13 @@ class GUI {
             }
         }
 
-        System.out.println("Mutation rate: " + mutationRateValue);
-        System.out.println("Crossover rate: " + crossoverRate);
+        System.out.println("\nMutation rate: " + mutationRateValue);
+        System.out.println("\nCrossover rate: " + crossoverRate);
 
         if(populationSize != 0) {
             testEA = new TestEA();
             testEA.setLogger(new Log());
-            testEA.init(1000, false, new NewPopulation(populationSize),
+            testEA.init(1000, false, elitismCheckBox.isSelected(), new NewPopulation(populationSize),
                     new CustomEvaluator(battleVisible.isSelected(), numHelpersSlider.getValue()), new RandomMutator(mutationRateValue),
                     new TournamentSelection(), new GreedySelection(), new UniformCrossover(crossoverRate));
             if(generationLimit.isSelected()){

@@ -8,7 +8,7 @@ import Main.Individual;
  */
 
 public interface EvolutionaryAlgorithm {
-    void init(float targetFitness, boolean minimise, Population population,
+    void init(float targetFitness, boolean minimise, boolean elitism, Population population,
               Evaluator customEvaluator, Mutator mutate, Selector parent, Selector generation, Crossover crossover);
     boolean terminateCondition();
     void setNumGenerations(int number);

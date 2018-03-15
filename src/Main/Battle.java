@@ -17,7 +17,6 @@ import java.util.Arrays;
  */
 
 class Battle implements BattleMaker {
-    //private String[] opponents = new String[] {"sample.SittingDuck" ,"sample.Corners","sample.Crazy","sample.Fire","sample.RamFire", "sample.SpinBot", "sample.Target", "sample.VelociRobot", "sample.Walls"};
     private final BattlefieldSpecification battleSpec = new BattlefieldSpecification(800, 600);
     private final RobocodeEngine engine = new RobocodeEngine(new File("C:/Robocode"));//Run from C:/Robocode
     private final BattleObserver battleObserver = new BattleObserver();
@@ -77,7 +76,7 @@ class Battle implements BattleMaker {
             engine.setVisible(visible);
             BattleSpecification battleSpecification = new BattleSpecification(1, battleSpec,
                     engine.getLocalRepository(robotPath + ", " + opponents[i] + helperBots));
-            engine.runBattle(battleSpecification, initialPositions(battleSpecification), true); // waits till the battle finishes
+            engine.runBattle(battleSpecification, initialPositions(battleSpecification, 2), true); // waits till the battle finishes
             engine.close();
 
             BattleResults[] battleResults = battleObserver.getResults();
@@ -102,41 +101,41 @@ class Battle implements BattleMaker {
 
     @Override
     public float getIndividualFitnessBatchRun(Individual individual){
-        float eaFitness = 0.0f, botsFitness = 0.0f, returnFitness;
-        int opponentsSize = opponents.length;
-
-        //generateHelpers(individual);
+        float eaFitness = 0.0f, botsFitness = 0.0f, returnFitness;//default fitnesses
+        //generateHelpers(individual); //generate clones
 
         engine.addBattleListener(battleObserver);
         engine.setVisible(visible);
         BattleSpecification battleSpecification = new BattleSpecification(1, battleSpec,
                 engine.getLocalRepository(code.writeAndCompileIndividual(individual) + ", "
                         + stringifyOpponentArray(opponents)));
-        engine.runBattle(battleSpecification, initialPositions(battleSpecification), true); // waits till the battle finishes
+        engine.runBattle(battleSpecification, initialPositions(battleSpecification, opponents.length + 1), true); // waits till the battle finishes
         engine.close();
 
         for(BattleResults br: battleObserver.getResults()){
             if(br.getTeamLeaderName().contains("OliverBathurstEA")){
                 eaFitness = br.getScore();
-            }else{
+            }
+            /*else{
                 if(!br.getTeamLeaderName().contains("Clone")) {//don't count friendly scores
                     botsFitness += br.getScore();
                 }
-            }
+            }*/
         }
+        /*int opponentsSize = opponents.length;
         float avgBotFitness = botsFitness/opponentsSize;
         float denominator = (eaFitness + avgBotFitness);
-        //System.out.println("Average bot fitness: " + avgBotFitness);
+        System.out.println("Average bot fitness: " + avgBotFitness);
         //System.out.println("EA bot fitness: " + eaFitness);
 
         if(denominator != 0) {
             returnFitness = (eaFitness / denominator);//compute average fitness after each round
         }else{
             returnFitness = eaFitness;//eaScore must be 0, eaScore + botScore = 0, therefore both are 0.
-        }
+        }*/
 
         System.out.println("Calculated fitness: " + eaFitness);
-        return eaFitness;//returnFitness
+        return eaFitness;//return fitness
     }
 
     /**
@@ -201,18 +200,32 @@ class Battle implements BattleMaker {
         return toReturn.toString();//return the string
     }
 
-    private String initialPositions(BattleSpecification battleSpecification){
-        String initialPositions = "";
+    /**
+     * Sets initial positions for robots (EXTREMELY IMPORTANT)
+     */
+    private String initialPositions(BattleSpecification battleSpecification, int numberOpponents){
+        StringBuilder initialPositions = new StringBuilder();//init string builder
+        ArrayList<Integer> positions = new ArrayList<>();//store positions (alternating sides of the battlefield)
 
-        initialPositions += Integer.toString(battleSpecification.getBattlefield().getWidth()/5) + ",";
-        initialPositions += Integer.toString(battleSpecification.getBattlefield().getHeight()/2) + ",";
-        initialPositions += Integer.toString(360) + ",";
+        for (int i = 0; i < numberOpponents; i++) {
+            positions.add(i);//add two of the same index for alternating sides of battlefield
+            positions.add(i);//(one for each side) such that both are the same distance from their sides (fair fight)
+        }
 
-        initialPositions += Integer.toString(battleSpecification.getBattlefield().getWidth() - (battleSpecification.getBattlefield().getWidth()/5)) + ",";
-        initialPositions += Integer.toString(battleSpecification.getBattlefield().getHeight()/2) + ",";
-        initialPositions += Integer.toString(360);
-
+        boolean switchSides = false;// swap sides each time (iteration)
+        //ITERATE OVER ALL POSITIONS
+        for(Integer i: positions){
+            if(!switchSides) {
+                initialPositions.append("(").append(Integer.toString(battleSpecification.getBattlefield().getWidth() / (numberOpponents - i))).append(",");
+                switchSides = true;
+            }else{
+                initialPositions.append("(").append(Integer.toString(battleSpecification.getBattlefield().getWidth() - (battleSpecification.getBattlefield().getWidth() / (numberOpponents - i)))).append(",");
+                switchSides = false;
+            }
+            initialPositions.append(Integer.toString(battleSpecification.getBattlefield().getHeight() / 2)).append(",");
+            initialPositions.append(Integer.toString(360)).append(")").append(",");
+        }
         System.out.println("Setup initial positions: " + initialPositions);
-        return initialPositions;
+        return initialPositions.toString();
     }
 }

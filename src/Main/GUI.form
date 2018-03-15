@@ -27,6 +27,7 @@
             <constraints/>
             <properties>
               <editable value="false"/>
+              <text value="//ROBOCODE EVOLUTIONARY ALGORITHM"/>
             </properties>
           </component>
         </children>
@@ -192,6 +193,15 @@
           <paintTicks value="false"/>
           <snapToTicks value="false"/>
           <valueIsAdjusting value="false"/>
+        </properties>
+      </component>
+      <component id="93e00" class="javax.swing.JCheckBox" binding="elitismCheckBox">
+        <constraints>
+          <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Elitism"/>
+          <toolTipText value="Fittest parent automatically continue to next generation"/>
         </properties>
       </component>
     </children>

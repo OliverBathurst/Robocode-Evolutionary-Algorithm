@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 class TestEA extends Thread implements EvolutionaryAlgorithm {
     private int generations = 0, generationsLimit = Integer.MAX_VALUE;//default max value
-    private boolean minimize, finished = false, hasTerminated = false;//Sentinel for while loop, minimise quality
+    private boolean minimize, finished = false, hasTerminated = false, elitism = false;//Sentinel for while loop, minimise quality
     private ArrayList<Individual> population = new ArrayList<>();
     private Individual best, totalBest;
     private Population populationInit;
@@ -21,10 +21,11 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
     private float targetFitness;
 
     @Override
-    public void init(float targetFitness, boolean minimise, Population population, Evaluator customEvaluator,
+    public void init(float targetFitness, boolean minimise, boolean elitism, Population population, Evaluator customEvaluator,
                      Mutator mutate, Selector parent, Selector generation, Crossover crossover) {
         this.targetFitness = targetFitness;
         this.minimize = minimise;
+        this.elitism = elitism;
         this.populationInit = population;
         this.evalOp = customEvaluator;
         this.mutateOp = mutate;
@@ -62,6 +63,7 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
 
         System.out.println("Generations Limit: " + generationsLimit);
         System.out.println("Population size: " + population.size());
+        System.out.println("Elitism: " + this.elitism);
 
         System.out.println("Entering evolutionary loop");
 
@@ -75,6 +77,7 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
 
             children.clear();//clear out children for next run
 
+            //CROSSOVER CHILDREN
             System.out.println("Crossing over...");
             while(children.size() < population.size()) {//perform crossover on selected parents and add to children
                 children.add(crossOp.crossover(parentSelectOp.selectFromPopulation(population),
@@ -95,24 +98,27 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
             }
 
             System.out.println("Clearing and adding...");
-            int populationSize = population.size();//retain size
-            Individual best = genSelectOp.selectFromPopulation(population);//select best from pop
+            int populationSize = population.size();//retain size of population
+
+            Individual best = genSelectOp.selectFromPopulation(population);//select best from pop to bring forward (if elitism enabled)
             population.clear();//clear pop ready for next gen
 
-            population.add(best);//add in best
-            population.addAll(genSelectOp.selectIndividualsFromPopulation(children, populationSize-1));//SELECT FOR NEXT GEN
+            if(this.elitism){//if elitism is enabled
+                population.add(best);//add in best from parents population
+                population.addAll(genSelectOp.selectIndividualsFromPopulation(children, populationSize-1));//SELECT FOR NEXT GEN (fill in the rest of places with fittest children)
+            }else{//copy all children in to population via greedy selection
+                population.addAll(genSelectOp.selectIndividualsFromPopulation(children, populationSize));
+            }
 
-            System.out.println("New population size: " + population.size());
+            System.out.println("New population size: " + population.size());//should be the same size, use for verification
 
             setBest();//set current and global best
             finished = terminateCondition();//check terminate condition
             this.generations++;//increment generations
 
-            if(this.best != null) {
-                log.log(generations, this.best.fitness);
-                System.out.println("Generation: " + this.generations + "\nFitness: " + this.best.fitness
-                        + "\nGenome:\n" + printGenome());
-            }
+            log.log(generations, this.best.fitness);//log for writing to CSV and graph view
+            System.out.println("Generation: " + this.generations + "\nFitness: " + this.best.fitness + "\nGenome:\n" + printGenome());
+
         }
         setBest();//finally, set best
     }
@@ -154,20 +160,20 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
      */
     private void setBest(){
         float currentFitness = 0f;//initialise to 0 so the best individual will always be set after completion
-
+        //SET CURRENT BEST
         for (Individual individual: population) {//iterate over population members
             if(individual.fitness >= currentFitness){//if the individual fitness > the current fitness
                 currentFitness = individual.fitness;//set new highest fitness
                 this.best = individual;//set current best
             }
         }
-        //set global best over run
+        //SET GLOBAL BEST OVER RUN SO FAR
         if(this.totalBest != null){
             if(this.best.fitness > this.totalBest.fitness){
                 this.totalBest = this.best;
             }
         }else{
-            this.totalBest = this.best;//if not currently set, current best = total best (gen 0)
+            this.totalBest = this.best;//if not currently set, total best = current best (gen 0)
         }
     }
 

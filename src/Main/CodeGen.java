@@ -43,7 +43,7 @@ class CodeGen implements CodeGenerator{
     }
 
     /**
-     * Write and compile an individual, return path
+     * Write and compile an individual, return path e.g. sample.OliverBathurst
      */
     @Override
     public String writeAndCompileIndividual(Individual individual){//set default name
@@ -52,7 +52,7 @@ class CodeGen implements CodeGenerator{
         return packageName + "." + currentName;
     }
     /**
-     * Write and compile an individual with custom name, return path
+     * Write and compile an individual with custom name, return path e.g. sample.CustomName
      */
     String writeAndCompileIndividual(Individual individual, String customName){
         currentName = customName;
@@ -96,10 +96,13 @@ class CodeGen implements CodeGenerator{
         }
     }
 
+    /**
+     * Returns a set of methods with values, number of methods to insert into a call-back (event), the methods to include,
+     * and the values for each method are determined by genes
+     */
     private String event(Individual individual, int index, int startIndex, int startIndexValue){
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < individual.genes[index].intValue(); i++){
-
             Long roundedGene = Math.round(individual.genes[startIndex]);//round the gene (between 1-8)
             Double doubleRounded = roundedGene.doubleValue();//get double value of rounded gene (should be now .0)
             //get int value (we round first because intValue() ALWAYS rounds down (which is incorrect
