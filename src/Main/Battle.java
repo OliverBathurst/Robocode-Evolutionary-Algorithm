@@ -223,7 +223,7 @@ class Battle implements BattleMaker {
                 switchSides = false;
             }
             initialPositions.append(Integer.toString(battleSpecification.getBattlefield().getHeight() / 2)).append(",");
-            initialPositions.append(Integer.toString(360)).append(")").append(",");
+            initialPositions.append(Integer.toString(360)).append("0)").append(",");
         }
         System.out.println("Setup initial positions: " + initialPositions);
         return initialPositions.toString();
