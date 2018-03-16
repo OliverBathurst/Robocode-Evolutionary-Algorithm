@@ -11,6 +11,7 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
     private int generations = 0, generationsLimit = Integer.MAX_VALUE;//default max value
     private boolean minimize, finished = false, hasTerminated = false, elitism = false;//Sentinel for while loop, minimise quality
     private ArrayList<Individual> population = new ArrayList<>();
+    private Logger logAverages = new Log();
     private Individual best, totalBest;
     private Population populationInit;
     private Evaluator evalOp;
@@ -74,6 +75,15 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
             for (Individual individual: population) {
                 individual.setFitness(evalOp.evaluateFitness(individual));
             }
+
+            //CALCULATE AVERAGE FITNESS FOR GENERATION
+            float averageFitnessGeneration = 0.0f;
+            for (Individual individual: population) {
+                averageFitnessGeneration += individual.fitness;
+            }
+            logAverages.log(generations, (averageFitnessGeneration/population.size()));
+            //////////////////////////////////////////
+
 
             children.clear();//clear out children for next run
 
@@ -200,5 +210,8 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
             }
         }
         return asString.toString();
+    }
+    Logger getAverages(){
+        return logAverages;
     }
 }

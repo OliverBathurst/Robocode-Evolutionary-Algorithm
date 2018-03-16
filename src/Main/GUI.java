@@ -30,6 +30,7 @@ class GUI {
     private JSlider sliderCrossoverRate;
     private JLabel crossoverRate;
     private JCheckBox elitismCheckBox;
+    private JButton writeAvg;
     private TestEA testEA;
     private final CodeGen gen = new CodeGen();
 
@@ -43,6 +44,7 @@ class GUI {
         generationSlider.addChangeListener(e -> genLimit.setText("Generation Limit: " + generationSlider.getValue()));
         numHelpersSlider.addChangeListener(e -> numHelpersLabel.setText("Number of Helpers: " + numHelpersSlider.getValue()));
         sliderCrossoverRate.addChangeListener(e -> crossoverRate.setText("Crossover Rate: " + sliderCrossoverRate.getValue()));
+        writeAvg.addActionListener(e -> writeAverages());
         writeBest.addActionListener(e -> writeBestIndividual());
         printTotal.addActionListener(e -> printTotalBest());
         writeTotalBest.addActionListener(e -> writeTotalBestToFile());
@@ -159,6 +161,18 @@ class GUI {
             System.out.println("\nNull Instance");
         }
     }
+
+    /**
+     * write avg fitnesses over generations (CSV file)
+     */
+    private void writeAverages(){
+        if(testEA != null){
+            testEA.getAverages().writeToFile();
+        }else{
+            System.out.println("\nNull Instance");
+        }
+    }
+
 
     /**
      * Writes current best to file (opens file save dialog)
