@@ -82,26 +82,6 @@ class Battle implements BattleMaker {
     @Override
     public float getFitness(BattleResults[] battleResults) {
         float returnFitness = 0.0f;
-        /*float eaFitness = 0.0f, botsFitness = 0.0f;//default fitnesses
-        for(BattleResults br: battleResults){
-            if(br.getTeamLeaderName().contains("OliverBathurstEA")){
-                eaFitness = br.getScore();
-            }else{
-                if(!br.getTeamLeaderName().contains("Clone")) {//don't count friendly scores
-                    botsFitness += br.getScore();
-                }
-            }
-        }
-        float avgBotFitness = botsFitness/(opponents.length - helperBotsNumber);//calculate enemy bot avg. fitness
-        float denominator = (eaFitness + avgBotFitness);
-        System.out.println("Average bot fitness: " + avgBotFitness);
-        System.out.println("EA bot fitness: " + eaFitness);
-
-        if(denominator != 0) {//check for div by 0
-            returnFitness = (eaFitness / denominator);//compute total fitness: eaFitness/(eaFitness + botFitness)
-        }else{
-            returnFitness = eaFitness;//eaScore must be 0, eaScore + botScore = 0, therefore both are 0.
-        }*/
         for(BattleResults br: battleResults){
             if(br.getTeamLeaderName().contains("OliverBathurstEA")){
                 returnFitness = br.getScore();

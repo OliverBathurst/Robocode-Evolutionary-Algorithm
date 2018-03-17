@@ -6,8 +6,8 @@ import robocode.*;
  * This class is an example of what the robot Java file typically looks like
  * The values in each method are determined by the genes of the robot
  */
-class OliverBathurstEA extends Robot {
-    @SuppressWarnings("InfiniteLoopStatement")
+public class OliverBathurstEA extends AdvancedRobot{
+
     public void run(){
         while(true) {
             turnGunRight(Double.POSITIVE_INFINITY);
@@ -15,35 +15,46 @@ class OliverBathurstEA extends Robot {
     }
 
     public void onScannedRobot(ScannedRobotEvent e) {
-        turnGunRight(88.52620056792767);
-        turnLeft(2.412960851011736);
-        ahead(153.61489546221063);
+        turnRight(-330.596968532769);
     }
 
     public void onHitByBullet(HitByBulletEvent e){
-        turnGunRight(261.9726502353522);
-        turnRadarLeft(15.510032852584942);
+        ahead(-340.7054933377207);
+        turnRadarLeft(-444.74914633856065);
+        back(142.52172106161413);
+        turnGunRight(-84.72812012130095);
+        turnGunLeft(242.57445868205798);
+        turnGunRight(-212.24309913356888);
+        turnLeft(22.14759310468662);
     }
 
     public void onHitWall(HitWallEvent e) {
-        turnGunRight(88.70092579836357);
+        turnRadarRight(-298.3977548920367);
+        turnGunLeft(173.88035616017055);
     }
 
     public void onHitRobot(HitRobotEvent e) {
-        turnRight(77.6986745451936);
+        ahead(303.1169395655379);
+        turnRight(-154.56739711267375);
+        back(207.3349274979289);
+        turnRight(-412.760610481228);
+        turnRadarLeft(-443.67785539079154);
     }
 
     public void fireAtEnemy(Object e, Double d) {
         if(e instanceof ScannedRobotEvent){
-            if(!((ScannedRobotEvent) e).getName().contains(getName())){
+            String opponentName = ((ScannedRobotEvent) e).getName();
+            if(!opponentName.contains("Clone") && !opponentName.contains("OliverBathurstEA")){
                 fire(d);
             }
         }else if(e instanceof HitByBulletEvent){
-            if(!((HitByBulletEvent) e).getName().contains(getName())){
+            String opponentName = ((HitByBulletEvent) e).getName();
+            if(!opponentName.contains("Clone") && !opponentName.contains("OliverBathurstEA")){
                 fire(d);
             }
         }else if(e instanceof HitRobotEvent){
-            if(!((HitRobotEvent) e).getName().contains(getName())){
+            String opponentName = ((HitRobotEvent) e).getName();
+            if(!opponentName.contains("Clone") && !opponentName.contains("OliverBathurstEA")){
                 fire(d);
             }
         }else{

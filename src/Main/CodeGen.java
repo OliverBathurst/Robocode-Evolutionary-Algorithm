@@ -142,15 +142,18 @@ class CodeGen implements CodeGenerator{
                 "}\n\n" +
                 "public void fireAtEnemy(Object e, Double d) {\n" +
                 "\tif(e instanceof ScannedRobotEvent){\n" +
-                "\t\tif(!((ScannedRobotEvent) e).getName().contains(\"Clone\")){\n" +
+                "\t\tString opponentName = ((ScannedRobotEvent) e).getName();\n" +
+                "\t\tif(!opponentName.contains(\"Clone\") && !opponentName.contains(\"OliverBathurstEA\")){\n" +
                 "\t\t\tfire(d);\n"+
                 "\t\t}\n" +
                 "\t}else if(e instanceof HitByBulletEvent){\n" +
-                "\t\tif(!((HitByBulletEvent) e).getName().contains(\"Clone\")){\n" +
+                "\t\tString opponentName = ((HitByBulletEvent) e).getName();\n" +
+                "\t\tif(!opponentName.contains(\"Clone\") && !opponentName.contains(\"OliverBathurstEA\")){\n" +
                 "\t\t\tfire(d);\n"+
                 "\t\t}\n" +
                 "\t}else if(e instanceof HitRobotEvent){\n" +
-                "\t\tif(!((HitRobotEvent) e).getName().contains(\"Clone\")){\n" +
+                "\t\tString opponentName = ((HitRobotEvent) e).getName();\n" +
+                "\t\tif(!opponentName.contains(\"Clone\") && !opponentName.contains(\"OliverBathurstEA\")){\n" +
                 "\t\t\tfire(d);\n"+
                 "\t\t}\n" +
                 "\t}else{\n" +
