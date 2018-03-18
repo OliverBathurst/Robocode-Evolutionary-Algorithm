@@ -22,7 +22,6 @@ class Battle implements BattleMaker {
     private final CodeGen code = new CodeGen();//for generating Java code
     private String[] opponents = new String[] {"sample.RamFire"};
     private int helperBotsNumber = 0;//default helper bot number
-
     private final boolean visible;
 
     /**

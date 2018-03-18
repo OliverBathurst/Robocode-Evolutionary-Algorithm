@@ -218,7 +218,7 @@ class GUI {
         if(populationSize != 0) {
             testEA = new TestEA();
             testEA.setLogger(new Log());
-            testEA.init(1000, false, elitismCheckBox.isSelected(), new NewPopulation(populationSize),
+            testEA.init(Integer.MAX_VALUE, false, elitismCheckBox.isSelected(), new NewPopulation(populationSize),
                     new CustomEvaluator(battleVisible.isSelected(), numHelpersSlider.getValue()), new RandomMutator(mutationRateValue),
                     new TournamentSelection(5), new GreedySelection(), new UniformCrossover(crossoverRate));
             if(generationLimit.isSelected()){
