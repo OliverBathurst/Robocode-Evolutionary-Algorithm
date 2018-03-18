@@ -90,7 +90,7 @@ class CodeGen implements CodeGenerator{
             System.err.println("Error: " + e.getMessage());
             success = false;
         }
-        return success ? packageName + "." + name : packageName + "." + "SittingDuck";//return useless robot on failure
+        return success ? packageName + "." + name : packageName + ".SittingDuck";//return useless robot on failure
     }
 
     /**
