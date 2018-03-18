@@ -8,14 +8,11 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 
 /**
- * Created by Oliver on 07/03/2018.
- * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
- * Last updated 09/03/2018
+ * Generates and compiles the Java code (robots)
  */
-
 class CodeGen implements CodeGenerator{
     private String path = "C:\\robocode\\robots\\sample", jar = "C:\\robocode\\libs\\robocode.jar;",
-            packageName = "sample", currentName = "OliverBathurstEA";
+            packageName = "sample", defaultName = "OliverBathurstEA";//change these based on setup
     private final String[] availableMethods = {"fireAtEnemy(e,", "ahead(", "back(","turnGunRight(", "turnGunLeft(",
             "turnLeft(", "turnRight(", "turnRadarLeft(", "turnRadarRight("};//available methods, their insertion into robot's Java file determined by gene
 
@@ -23,7 +20,7 @@ class CodeGen implements CodeGenerator{
 
     @Override
     public void setRobotName(String name){
-        this.currentName = name;
+        this.defaultName = name;
     }
     @Override
     public void setRobotsDir(String path){
@@ -39,25 +36,21 @@ class CodeGen implements CodeGenerator{
     }
     @Override
     public String getRobotName() {
-        return currentName;
+        return defaultName;
     }
 
     /**
-     * Write and compile an individual, return path e.g. sample.OliverBathurst
+     * Write and compile an individual, return path e.g. sample.OliverBathurstEA
      */
     @Override
     public String writeAndCompileIndividual(Individual individual){//set default name
-        currentName = "OliverBathurstEA";
-        compile(individual, path + "\\" + currentName + ".java");//compile and write to file
-        return packageName + "." + currentName;
+        return compile(individual, path + "\\" + defaultName + ".java", defaultName);//compile and write to file;
     }
     /**
-     * Write and compile an individual with custom name, return path e.g. sample.CustomName
+     * Write and compile an individual with custom name, return path e.g. sample.Clone
      */
     String writeAndCompileIndividual(Individual individual, String customName){
-        currentName = customName;
-        compile(individual, path + "\\" + currentName + ".java");
-        return packageName + "." + currentName;
+        return compile(individual, path + "\\" + customName + ".java", customName);//compile with custom name
     }
 
     /**
@@ -71,7 +64,7 @@ class CodeGen implements CodeGenerator{
         if (fileChooser.showSaveDialog(new JFrame()) == JFileChooser.APPROVE_OPTION) {
             try {
                 PrintWriter pw = new PrintWriter(new File(fileChooser.getSelectedFile().getAbsolutePath() + ".java"));
-                pw.write(getJavaCode(individual));
+                pw.write(getJavaCode(individual, "OliverBathurstEA"));
                 pw.close();
             } catch (Exception ignored) {}
         }
@@ -80,20 +73,24 @@ class CodeGen implements CodeGenerator{
     /**
      * Compile individual using file path
      */
-    private void compile(Individual individual, String filePath){
+    private String compile(Individual individual, String filePath, String name){
+        boolean success = true;
         try{
             BufferedWriter out = new BufferedWriter(new FileWriter(filePath));
-            out.write(getJavaCode(individual));
+            out.write(getJavaCode(individual, name));
             out.close();
 
             Process process = Runtime.getRuntime().exec("javac -cp " + jar + " " + filePath);
-            process.waitFor();//block thread, this needs to finish
+            process.waitFor();//block thread, this needs to finish first
             if(process.exitValue() != 0) {
                 System.out.println("Exited with value: " + process.exitValue());
+                success = false;
             }
         }catch(Exception e){
             System.err.println("Error: " + e.getMessage());
+            success = false;
         }
+        return success ? packageName + "." + name : packageName + "." + "SittingDuck";//return useless robot on failure
     }
 
     /**
@@ -103,10 +100,8 @@ class CodeGen implements CodeGenerator{
     private String event(Individual individual, int index, int startIndex, int startIndexValue){
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < individual.genes[index].intValue(); i++){
-            Long roundedGene = Math.round(individual.genes[startIndex]);//round the gene (between 1-8)
-            Double doubleRounded = roundedGene.doubleValue();//get double value of rounded gene (should be now .0)
-            //get int value (we round first because intValue() ALWAYS rounds down (which is incorrect
-            sb.append("\t").append(availableMethods[doubleRounded.intValue()]).append(individual.genes[startIndexValue])
+            int doubleRounded = ((Long) Math.round(individual.genes[startIndex])).intValue();//round the gene (between 1-8), get double value of rounded gene (should be now .0),
+            sb.append("\t").append(availableMethods[doubleRounded]).append(individual.genes[startIndexValue])//get int value (we round first because intValue() ALWAYS rounds down (which is incorrect)
                     .append(");\n");
             startIndex++;
             startIndexValue++;
@@ -119,10 +114,10 @@ class CodeGen implements CodeGenerator{
      * Generate Java code with an individual
      */
     @Override
-    public String getJavaCode(Individual individual){
+    public String getJavaCode(Individual individual, String name){
         return "package " + packageName + ";\n" +
                 "import robocode.*;" + "\n" +
-                "public class " + currentName + " extends AdvancedRobot{\n\n" +
+                "public class " + name + " extends AdvancedRobot{\n\n" +
                 "public void run(){\n" +
                 "\twhile(true) {\n" +
                 "\t\tturnGunRight(Double.POSITIVE_INFINITY);\n" +

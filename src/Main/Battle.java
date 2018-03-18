@@ -12,18 +12,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Created by Oliver on 03/02/2018.
- * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
+ * Battle class, responsible for evaluating/returning fitness of robots
  */
-
 class Battle implements BattleMaker {
     private final BattlefieldSpecification battleSpec = new BattlefieldSpecification(800, 600);
     private final RobocodeEngine engine = new RobocodeEngine(new File("C:/Robocode"));//Run from C:/Robocode
-    private final BattleObserver battleObserver = new BattleObserver();
+    private final BattleObserver battleObserver = new BattleObserver();//for observing results
     private final ArrayList<String> newOpponents = new ArrayList<>();
-    private final CodeGen code = new CodeGen();
+    private final CodeGen code = new CodeGen();//for generating Java code
     private String[] opponents = new String[] {"sample.RamFire"};
-    private int helperBotsNumber = 0;
+    private int helperBotsNumber = 0;//default helper bot number
 
     private final boolean visible;
 
@@ -64,12 +62,15 @@ class Battle implements BattleMaker {
         return 0.0f;//method not needed anymore, opt for batch run
     }
 
+    /**
+     * Makes a battle with multiple opponents/helpers
+     */
     @Override
     public float getIndividualFitnessBatchRun(Individual individual){
         generateHelpers(individual); //generate clones
 
-        engine.addBattleListener(battleObserver);
-        engine.setVisible(visible);
+        engine.addBattleListener(battleObserver);//set battle listener
+        engine.setVisible(visible);//set visibility
         BattleSpecification battleSpecification = new BattleSpecification(1, battleSpec,
                 engine.getLocalRepository(code.writeAndCompileIndividual(individual) + ", "
                         + stringifyOpponentArray(opponents)));
@@ -79,13 +80,16 @@ class Battle implements BattleMaker {
         return getFitness(battleObserver.getResults());//return fitness
     }
 
+    /**
+     * Gets fitness of an individual based on battle results
+     */
     @Override
     public float getFitness(BattleResults[] battleResults) {
         float returnFitness = 0.0f;
         for(BattleResults br: battleResults){
-            if(br.getTeamLeaderName().contains("OliverBathurstEA")){
-                returnFitness = br.getScore();
-                break;
+            if(br.getTeamLeaderName().contains("OliverBathurstEA")){//if it's the robot being evaluated
+                returnFitness = br.getScore();//set score
+                break;//break out of loop
             }
         }
         System.out.println("Calculated fitness: " + returnFitness);
@@ -179,6 +183,6 @@ class Battle implements BattleMaker {
             initialPositions.append(Integer.toString(battleSpecification.getBattlefield().getHeight() / 2)).append(",");
             initialPositions.append(Integer.toString(360)).append(",").append(Integer.toString(0)).append("),");
         }
-        return initialPositions.toString();
+        return initialPositions.toString();//return positions as a string
     }
 }

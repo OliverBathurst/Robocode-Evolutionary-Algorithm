@@ -26,30 +26,30 @@ class GraphView {
 
         @Override
         public void start(Stage primaryStage) {
-            primaryStage.setTitle("Robocode Evolutionary Algorithm");
-            final NumberAxis xAxis = new NumberAxis();
+            primaryStage.setTitle("Robocode Evolutionary Algorithm");//title
+            final NumberAxis xAxis = new NumberAxis();//axes
             final NumberAxis yAxis = new NumberAxis();
             xAxis.setLabel("Generations");
-            yAxis.setLabel("Fitness");
-            final LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+            yAxis.setLabel("Fitness");//set labels
+            final LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);//init line chart
             lineChart.setTitle("Fitness over Generations");
             series = new XYChart.Series<>();
             series.setName("Fitness");
 
             int counter = 0;
-            for (Map.Entry me : log.getLog().entrySet()) {
+            for (Map.Entry me : log.getLog().entrySet()) {//add data points from the log
                 series.getData().add(new XYChart.Data<>(counter, (float) me.getValue()));
                 counter++;
             }
 
-            lineChart.getData().add(series);
-            primaryStage.setScene(new Scene(lineChart, 800, 600));
-            primaryStage.show();
+            lineChart.getData().add(series);//add the series
+            primaryStage.setScene(new Scene(lineChart, 800, 600));//set scene
+            primaryStage.show();//show
         }
     }
 
     /**
-     * Initialise with log of (generations, fitness)
+     * Initialise with log of (generation number, fitness)
      */
 
     GraphView(Logger l){

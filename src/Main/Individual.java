@@ -7,22 +7,34 @@ package Main;
 
 public class Individual extends PopulationMember implements Comparable<Individual>{
 
+    /**
+     * Create new individual with initial genes, the bounds for the genes and the genome length
+     */
     Individual(Double[] startGenes, Double[] geneMin, Double[] geneMax, int genomeLength){
-        super.genes = startGenes;
-        super.geneLength = genomeLength;
-        super.geneMin = geneMin;
-        super.geneMax = geneMax;
-        super.fitness = 0f;
+        this.genes = startGenes;
+        this.geneLength = genomeLength;
+        this.geneMin = geneMin;
+        this.geneMax = geneMax;
+        this.fitness = 0f;//init fitness
     }
 
-    int getGeneLength(){
+    /**
+     * Returns length of genome
+     */
+    int getGenomeLength(){
         return this.genes.length;//return length of genome
     }
 
+    /**
+     * Set individual fitness
+     */
     void setFitness(float fitness){
         this.fitness = fitness;//set fitness of individual
     }
 
+    /**
+     * Compare fitness to other population member (individual)
+     */
     @Override
     public int compareTo(Individual o) {
         if(this.fitness == o.fitness){

@@ -193,7 +193,7 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
     String printGenome(){
         StringBuilder asString = new StringBuilder();
         if(this.best != null) {
-            for (int i = 0; i < this.best.getGeneLength(); i++) {
+            for (int i = 0; i < this.best.getGenomeLength(); i++) {
                 asString.append("Gene: ").append(i).append(" Value: ").append(this.best.genes[i]).append("\n");
             }
         }
@@ -205,7 +205,7 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
     String printGenome(Individual individual){
         StringBuilder asString = new StringBuilder();
         if(individual != null) {
-            for (int i = 0; i < individual.getGeneLength(); i++) {
+            for (int i = 0; i < individual.getGenomeLength(); i++) {
                 asString.append("Gene: ").append(i).append(" Value: ").append(individual.genes[i]).append("\n");
             }
         }

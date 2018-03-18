@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 public class UniformCrossover implements Crossover {
     private final SecureRandom numGen = new SecureRandom();//use SecureRandom for non-pseudo randoms
-    private final int crossoverRate;
+    private final int crossoverRate;//percentage chance of crossover
 
     UniformCrossover(int rate){
         this.crossoverRate = rate;

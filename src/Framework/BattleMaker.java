@@ -1,11 +1,9 @@
 package Framework;
-
 import Main.Individual;
 import robocode.BattleResults;
 
 /**
- * Created by Oliver on 04/02/2018.
- * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
+ * BattleMaker interface
  */
 
 @SuppressWarnings({"EmptyMethod", "SameReturnValue"})

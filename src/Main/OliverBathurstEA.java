@@ -3,10 +3,11 @@ import robocode.*;
 /**
  * Created by Oliver on 09/03/2018.
  * Written by Oliver Bathurst <oliverbathurst12345@gmail.com>
+ *
  * This class is an example of what the robot Java file typically looks like
  * The values in each method are determined by the genes of the robot
  */
-public class OliverBathurstEA extends AdvancedRobot{
+class OliverBathurstEA extends AdvancedRobot{
 
     public void run(){
         while(true) {

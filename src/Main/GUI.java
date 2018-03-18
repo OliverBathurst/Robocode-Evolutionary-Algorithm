@@ -220,7 +220,7 @@ class GUI {
             testEA.setLogger(new Log());
             testEA.init(1000, false, elitismCheckBox.isSelected(), new NewPopulation(populationSize),
                     new CustomEvaluator(battleVisible.isSelected(), numHelpersSlider.getValue()), new RandomMutator(mutationRateValue),
-                    new TournamentSelection(), new GreedySelection(), new UniformCrossover(crossoverRate));
+                    new TournamentSelection(5), new GreedySelection(), new UniformCrossover(crossoverRate));
             if(generationLimit.isSelected()){
                 testEA.setNumGenerations(generationSize);
             }

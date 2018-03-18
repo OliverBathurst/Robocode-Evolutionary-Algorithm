@@ -14,7 +14,7 @@ import java.util.Map;
  */
 
 public class Log implements Logger {
-    private final HashMap<Object, Object> log = new HashMap<>();//for storing run info
+    private final HashMap<Object, Object> log = new HashMap<>();//for storing run info like avg fitnesses and best fitness over gens
 
     Log(){}
 
@@ -45,7 +45,7 @@ public class Log implements Logger {
 
         if (fileChooser.showSaveDialog(new JFrame()) == JFileChooser.APPROVE_OPTION) {
             try {
-                PrintWriter pw = new PrintWriter(new File(fileChooser.getSelectedFile().getAbsolutePath() + ".csv"));
+                PrintWriter pw = new PrintWriter(new File(fileChooser.getSelectedFile().getAbsolutePath() + ".csv"));//write to CSV file
                 StringBuilder sb = new StringBuilder();
 
                 for (Map.Entry<Object, Object> pair : log.entrySet()) {

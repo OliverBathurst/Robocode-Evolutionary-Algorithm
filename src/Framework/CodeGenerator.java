@@ -1,7 +1,9 @@
 package Framework;
-
 import Main.Individual;
 
+/**
+ * Interface for Java code generation
+ */
 public interface CodeGenerator {
     void setRobotName(String name);
     void setJarPath(String jarPath);
@@ -9,5 +11,5 @@ public interface CodeGenerator {
     void setPackageName(String packageName);
     String writeAndCompileIndividual(Individual individual);
     String getRobotName();
-    String getJavaCode(Individual individual);
+    String getJavaCode(Individual individual, String name);
 }

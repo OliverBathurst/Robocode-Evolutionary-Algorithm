@@ -42,12 +42,15 @@ public class NewPopulation implements Population {
             500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0,
             500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0,
             500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0,
-            500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0//which method max values to use
+            500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0,500.0//method max values to use
     };
-    private final SecureRandom geneRandomize = new SecureRandom();
-    private final ArrayList<Individual> population;
+    private final SecureRandom geneRandomize = new SecureRandom();//use SecureRandom for more random randoms
+    private final ArrayList<Individual> population;//population members list
     private final int populationSize;
 
+    /**
+     * Initialise constructor with size
+     */
     NewPopulation(int size){
         this.populationSize = size;
         this.population = new ArrayList<>(size);
@@ -56,23 +59,37 @@ public class NewPopulation implements Population {
     public ArrayList<Individual> returnPopulation() {
         return population;
     }
+
+    /**
+     * Sort population via fitness
+     */
     @Override
     public void sort(){
         population.sort(Individual::compareTo);
     }
+
+    /**
+     * Get size of population
+     */
     @Override
     public int getSize() {
         return population.size();
     }
 
+    /**
+     * Fills in population with individuals, returns population
+     */
     @Override
     public ArrayList<Individual> createPopulation() {
         for(int i = 0; i < populationSize; i++) {
-            population.add(createIndividual());
+            population.add(createIndividual());//add in a new individual
         }
         return population;
     }
 
+    /**
+     * Creates an individual with randomised starting genes, returns new individual
+     */
     @Override
     public Individual createIndividual() {
         Double[] genes = new Double[geneMin.length];
