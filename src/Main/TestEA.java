@@ -66,15 +66,15 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
         System.out.println("Population size: " + population.size());
         System.out.println("Elitism: " + this.elitism);
 
+        //EVALUATE INITIAL POP
+        for (Individual individual: population) {
+            individual.setFitness(evalOp.evaluateFitness(individual));
+        }
+
         System.out.println("Entering evolutionary loop");
 
         while(!finished){
             System.out.println("Evaluating population...");
-
-            //EVALUATE INITIAL POP
-            for (Individual individual: population) {
-                individual.setFitness(evalOp.evaluateFitness(individual));
-            }
 
             //CALCULATE AVERAGE FITNESS FOR GENERATION
             float averageFitnessGeneration = 0.0f;
@@ -83,8 +83,7 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
             }
             logAverages.log(generations, (averageFitnessGeneration/population.size()));
             //////////////////////////////////////////
-
-
+            
             children.clear();//clear out children for next run
 
             //CROSSOVER CHILDREN
