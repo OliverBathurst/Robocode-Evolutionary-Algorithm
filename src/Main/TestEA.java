@@ -83,7 +83,7 @@ class TestEA extends Thread implements EvolutionaryAlgorithm {
             }
             logAverages.log(generations, (averageFitnessGeneration/population.size()));
             //////////////////////////////////////////
-            
+
             children.clear();//clear out children for next run
 
             //CROSSOVER CHILDREN
