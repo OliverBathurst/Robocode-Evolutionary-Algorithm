@@ -215,7 +215,7 @@ class GUI {
         System.out.println("\nMutation rate: " + mutationRateValue);
         System.out.println("\nCrossover rate: " + crossoverRate);
 
-        if(populationSize != 0) {
+        if(populationSize > 0 && generationSize > 0) {
             testEA = new TestEA();
             testEA.setLogger(new Log());
             testEA.init(Integer.MAX_VALUE, false, elitismCheckBox.isSelected(), new NewPopulation(populationSize),
