@@ -7,7 +7,7 @@ import robocode.*;
  * This class is an example of what the robot Java file typically looks like
  * The values in each method are determined by the genes of the robot
  */
-class OliverBathurstEA extends AdvancedRobot{
+class OliverBathurstEA extends Robot{
 
     public void run(){
         while(true) {
